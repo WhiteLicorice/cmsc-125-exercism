@@ -11,79 +11,97 @@
 # Example: verify single exercise in Docker
 # bin/verify-exercises-in-docker two-fer
 
-set -eo pipefail
+# Example: verify all exercises against specified test runner
+# bin/verify-exercises-in-docker -i my-local-image
 
-die() { echo "$*" >&2; exit 1; }
+set -e
+shopt -s nullglob
 
-required_tool() {
-    command -v "${1}" >/dev/null 2>&1 ||
-        die "${1} is required but not installed. Please install it and make sure it's in your PATH."
+die() {
+    echo "$*" >&2
+    exit 1
 }
 
-required_tool docker
+required_tool() {
+    command -v "${1}" >/dev/null 2>&1 || die "${1} is required but not installed. Please install it and make sure it's in your PATH."
+}
 
 copy_example_or_exemplar_to_solution() {
-    jq -c '[.files.solution, .files.exemplar // .files.example] | transpose | map({src: .[1], dst: .[0]}) | .[]' .meta/config.json \
-    | while read -r src_and_dst; do
-        cp "$(jq -r '.src' <<< "${src_and_dst}")" "$(jq -r '.dst' <<< "${src_and_dst}")"
+    local dir="${1}"
+    jq -r '[.files.solution, .files.exemplar // .files.example] | transpose | map(select(.[0] and .[1]))[][]' "${dir}/.meta/config.json" \
+    | while read -r dst; read -r src; do
+        cp "${dir}/${src}" "${dir}/${dst}"
     done
 }
 
-pull_docker_image() {
-    docker pull exercism/risc-v-test-runner ||
-        die $'Could not find the `exercism/risc-v-test-runner` Docker image.\nCheck the test runner docs at https://exercism.org/docs/building/tooling/test-runners for more information.'
-}
-
 run_tests() {
-    local slug
-    slug="${1}"
-    docker run \
-        --rm \
-        --network none \
-        --read-only \
-        --mount type=bind,src="${PWD}",dst=/solution \
-        --mount type=bind,src="${PWD}",dst=/output \
-        --mount type=tmpfs,dst=/tmp \
-        exercism/risc-v-test-runner "${slug}" /solution /output
-    jq -e '.status == "pass"' "${PWD}/results.json" >/dev/null 2>&1
+    local slug="${1}" dir="${2}"
+    local -a docker_args
+
+    docker_args+=( --rm --network none )
+    docker_args+=( --mount "type=bind,src=${dir},dst=/solution" )
+    # /tmp needs to be a proper volume to run the compiled executable; tmpfs is not executable.
+    docker_args+=( --mount "type=volume,dst=/tmp" )
+
+    # /solution is used both as the location to read the code from and as a destination for the results.json file.
+    docker run "${docker_args[@]}" "${image}" "${slug}" /solution /solution
+    jq -e '.status == "pass"' "${dir}/results.json" >/dev/null 2>&1
 }
 
 verify_exercise() {
-    local dir
-    local slug
-    local tmp_dir
-    dir=$(realpath "${1}")
-    slug=$(basename "${dir}")
-    tmp_dir=$(mktemp -d -t "exercism-verify-${slug}-XXXXX")
+    local dir slug tmpdir
+    dir="${1%/}"
+    slug="${dir##*/}"
+    tmpdir="$(mktemp -d -t "exercism-verify-${slug}-XXXXX")"
 
     echo "Verifying ${slug} exercise..."
-
     (
-        trap 'rm -rf "$tmp_dir"' EXIT    # remove tempdir when subshell ends
-        cp -r "${dir}/." "${tmp_dir}"
-        cd "${tmp_dir}"
-
-        copy_example_or_exemplar_to_solution
-        run_tests "${slug}"
+        trap 'rm -rf "${tmpdir}"' EXIT    # remove tempdir when subshell ends
+        cp -r "${dir}/." "${tmpdir}" || exit
+        copy_example_or_exemplar_to_solution "${tmpdir}"
+        run_tests "${slug}" "${tmpdir}" || { cat "${tmpdir}/results.json"; exit 1; }
     )
 }
 
 verify_exercises() {
-    local exercise_slug
-    exercise_slug="${1}"
+    local -a exercises
+    local parent path
+    if (( $# )); then
+        for slug; do
+            for parent in concept practice; do
+                path="./exercises/${parent}/${slug}"
+                [[ -d "${path}" ]] && exercises+=( "${path}" )
+            done
+        done
+    else
+        exercises=( ./exercises/{concept,practice}/*/ )
+    fi
+    (( ${#exercises[@]} )) || die "No matching exercises found"
 
-    shopt -s nullglob
-    count=0
-    for exercise_dir in ./exercises/{concept,practice}/${exercise_slug}/; do
-        if [[ -d "${exercise_dir}" ]]; then
-            verify_exercise "${exercise_dir}"
-            ((++count))
-        fi
+    rc=0
+    for exercise_dir in "${exercises[@]}"; do
+        verify_exercise "${exercise_dir}" || rc=$?
     done
-    ((count > 0)) || die 'no matching exercises found!'
+    return "$rc"
 }
 
-pull_docker_image
 
-exercise_slug="${1:-*}"
-verify_exercises "${exercise_slug}"
+required_tool docker
+required_tool jq
+
+image=''
+while getopts i: opt; do
+    case "${opt}" in
+        i) image="${OPTARG}" ;;
+        ?) die "Unknown option: -$OPTARG" ;;
+    esac
+done
+shift "$((OPTIND - 1))"
+
+if [[ -z "${image}" ]]; then
+    image="exercism/risc-v-test-runner:latest"
+    docker pull "${image}" ||
+        die "docker pull ${image} failed. Check the test runner docs at https://exercism.org/docs/building/tooling/test-runners for more information."
+fi
+
+verify_exercises "$@"

@@ -45,7 +45,7 @@ require_files_template "example"
 [[ -f ./bin/fetch-configlet ]] || die "Run this script from the repo's root directory."
 
 author=''
-difficulty='1'
+difficulty='4'
 while getopts :ha:d: opt; do
     case $opt in
         h) help_and_exit ;;
@@ -59,6 +59,7 @@ shift "$((OPTIND - 1))"
 (( $# >= 1 )) || help_and_exit
 
 slug="${1}"
+snake="${slug//-/_}"
 
 if [[ -z "${author}" ]]; then
     read -rp 'Your GitHub username: ' author
@@ -67,13 +68,19 @@ fi
 ./bin/fetch-configlet
 ./bin/configlet create --practice-exercise "${slug}" --author "${author}" --difficulty "${difficulty}"
 
+filter='.exercises.practice = (.exercises.practice | sort_by(.difficulty, (.name|ascii_upcase)))'
+jq "${filter}" config.json > config.sorted && mv config.sorted config.json
+
 exercise_dir="exercises/practice/${slug}"
 files=$(jq -r --arg dir "${exercise_dir}" '.files | to_entries | map({key: .key, value: (.value | map("'"'"'" + $dir + "/" + . + "'"'"'") | join(" and "))}) | from_entries' "${exercise_dir}/.meta/config.json")
+cp "templates/Makefile" "${exercise_dir}/"
+cp -r "templates/vendor" "${exercise_dir}/"
+touch "generators/exercises/${snake}.py"
 
 cat << NEXT_STEPS
 
 Your next steps are:
-- Create the test suite in $(jq -r '.test' <<< "${files}")
+- Generate the test suite in $(jq -r '.test' <<< "${files}")
   - The tests should be based on the canonical data at 'https://github.com/exercism/problem-specifications/blob/main/exercises/${slug}/canonical-data.json'
   - Any test cases you don't implement, mark them in 'exercises/practice/${slug}/.meta/tests.toml' with "include = false"
 - Create the example solution in $(jq -r '.example' <<< "${files}")
