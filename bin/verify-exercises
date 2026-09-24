@@ -2,13 +2,18 @@
 
 # Synopsis:
 # Verify that each exercise's example/exemplar solution passes the tests.
-# You can either verify all exercises or a single exercise.
+# You can either verify all exercises, concurrently, or a single exercise.
 
-# Example: verify all exercises
+# Requires: bash, flock, jq, make, qemu-riscv32, zig
+
+# Example: verify all exercises, one job per processor
 # bin/verify-exercises
 
-# Example: verify single exercise
-# bin/verify-exercises two-fer
+# Example: verify all exercises, four at a time
+# JOBS=4 bin/verify-exercises
+
+# Example: verify particular exercise(s)
+# bin/verify-exercises hello-world leap
 
 set -eo pipefail
 
@@ -19,76 +24,86 @@ required_tool() {
         die "${1} is required but not installed. Please install it and make sure it's in your PATH."
 }
 
-required_tool jq
+for tool in flock jq make qemu-riscv32 zig; do
+    required_tool "${tool}"
+done
 
+# Runs from within a copy of the exercise directory.
 copy_example_or_exemplar_to_solution() {
-    jq -c '[.files.solution, .files.exemplar // .files.example] | transpose | map({src: .[1], dst: .[0]}) | .[]' .meta/config.json \
-    | while read -r src_and_dst; do
-        cp "$(jq -r '.src' <<< "${src_and_dst}")" "$(jq -r '.dst' <<< "${src_and_dst}")"
+    jq -r '[.files.solution, .files.exemplar // .files.example] | transpose[] | @tsv' .meta/config.json \
+    | while IFS=$'\t' read -r dst src; do
+        cp "${src}" "${dst}"
     done
 }
 
+# Every test after the first ships skipped. Blank the skips rather than
+# deleting the lines, so line numbers in test output still match the file.
 unskip_tests() {
-    # shellcheck disable=SC2034
     jq -r '.files.test[]' .meta/config.json | while read -r test_file; do
-        echo noop # TODO: replace this with the command to unskip the tests.
-        # Note: this function runs from within an exercise directory.
-        # Note: the exercise directory is a temporary directory, so feel
-        # free to modify its (test) files as needed.
-        # Note: ignore this function if either:
-        #   - skipping tests is not supported, or
-        #   - skipping tests does not require modifying the test files.
-        # Example: sed -i 's/test.skip/test/g' "${test_file}"
+        sed -i 's/^[[:space:]]*TEST_IGNORE();[[:space:]]*$//' "${test_file}"
     done
 }
 
+# The test program exits non-zero when any test fails.
 run_tests() {
-    echo noop # TODO: replace this with the command to run the tests for the exercise.
-    # Note: this function runs from within an exercise directory.
-    # Note: the exercise directory is a temporary directory, so feel
-    # free to modify its files as needed.
-    # Note: return a zero exit code if all tests pass, otherwise non-zero.
-    # Example: `npm test`
-    # Example: `python3 -m pytest two_fer_test.py`
+    make -s clean && make -s tests && qemu-riscv32 ./tests
 }
 
+# Prints one line per exercise, followed by the build and test output when
+# the exercise failed. Everything is printed under a lock, so that concurrent
+# runs do not interleave their output.
 verify_exercise() {
-    local dir
-    local slug
-    local tmp_dir
-
+    local dir slug tmp_dir output
     dir=$(realpath "${1}")
     slug=$(basename "${dir}")
     tmp_dir=$(mktemp -d -t "exercism-verify-${slug}-XXXXX")
 
-    echo "Verifying ${slug} exercise..."
-
-    (
-        trap 'rm -rf "$tmp_dir"' EXIT    # remove tempdir when subshell ends
-        cp -r "${dir}/." "${tmp_dir}"
-        cd "${tmp_dir}"
-
-        copy_example_or_exemplar_to_solution
-        unskip_tests
-        run_tests
-    )
+    if output=$(
+        exec 2>&1
+        trap 'rm -rf "${tmp_dir}"' EXIT    # remove tempdir when subshell ends
+        cp -r "${dir}/." "${tmp_dir}" \
+        && cd "${tmp_dir}" \
+        && copy_example_or_exemplar_to_solution \
+        && unskip_tests \
+        && run_tests
+    ); then
+        printf '%s: PASS\n' "${slug}" | flock "${BASH_SOURCE[0]}" cat
+    else
+        printf '%s: FAIL\n%s\n' "${slug}" "${output}" | flock "${BASH_SOURCE[0]}" cat
+        return 1
+    fi
 }
 
-verify_exercises() {
-    local exercise_slug
-
-    exercise_slug="${1}"
+verify_one_slug() {
+    local exercise_dir count=0
 
     shopt -s nullglob
-    count=0
-    for exercise_dir in ./exercises/{concept,practice}/${exercise_slug}/; do
-        if [[ -d "${exercise_dir}" ]]; then
-            verify_exercise "${exercise_dir}"
-            ((++count))
-        fi
+    for exercise_dir in ./exercises/{concept,practice}/"${1}"/; do
+        [[ -d "${exercise_dir}" ]] || continue
+        verify_exercise "${exercise_dir}"
+        ((++count))
     done
-    ((count > 0)) || die 'no matching exercises found!'
+    ((count > 0)) || die "no exercise named ${1}!"
 }
 
-exercise_slug="${1:-*}"
-verify_exercises "${exercise_slug}"
+all_slugs() {
+    local exercise_dir
+
+    shopt -s nullglob
+    for exercise_dir in ./exercises/{concept,practice}/*/; do
+        basename "${exercise_dir}"
+    done
+}
+
+# Reads slugs from stdin and fans out, one invocation of this script per slug.
+verify_slugs() {
+    xargs -P "${JOBS:-$(nproc)}" -n 1 "${BASH_SOURCE[0]}" || exit 1
+}
+
+if (( $# == 1 )); then
+    verify_one_slug "${1}"
+elif (( $# > 1 )); then
+    printf '%s\n' "$@" | verify_slugs
+else
+    all_slugs | verify_slugs
+fi
