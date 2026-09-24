@@ -1,15 +1,77 @@
 # Installation
 
-<!-- TODO: write document
+Solutions on this track are written in 32-bit RISC-V assembly and run under emulation, so no RISC-V hardware is needed.
+Each exercise ships with a Makefile that builds the tests and runs them.
+To use it, you need three tools:
 
-  This document should describe what the student needs to install
-  to allow working on the track on their local system using the CLI.
+- [Zig][zig], which provides the RISC-V assembler, C compiler and linker through `zig cc`.
+- [Make][make], which runs the build.
+- `qemu-riscv32` from [QEMU][qemu], which runs the resulting program.
 
-  You can include the installation instructions in this document, but
-  usually it is better to link to a resource with the official installation
-  instructions, to prevent the instructions from becoming outdated.
+## macOS
 
-  The contents of this document are displayed on the track's documentation
-  page at `https://exercism.org/docs/tracks/<track>/installation`.
+Launch a Linux virtual machine using any suitable virtualization solution (e.g., [Lima][lima]) and follow a Linux distribution section below.
 
-  See https://exercism.org/docs/building/tracks/docs for more information. -->
+## Windows
+
+Use [Windows Subsystem for Linux][wsl] and follow a Linux distribution section below.
+Alternatively, set up a Linux virtual machine.
+
+## Debian / Ubuntu
+
+Install Make and QEMU's user-mode emulators:
+
+```shell
+sudo apt install make qemu-user
+```
+
+Then install Zig 0.15.2 or later as described under [Direct download][zig-install].
+
+## Fedora
+
+Install all three tools with:
+
+```shell
+sudo dnf install zig make qemu-user
+```
+
+## Arch Linux
+
+Install all three tools with:
+
+```shell
+sudo pacman -S zig make qemu-user
+```
+
+## openSUSE Tumbleweed
+
+Install all three tools with:
+
+```shell
+sudo zypper install zig make qemu-linux-user
+```
+
+## Checking your installation
+
+Confirm that all three tools are found:
+
+```shell
+zig version
+make --version
+qemu-riscv32 --version
+```
+
+Then download an exercise with the Exercism CLI and run its tests:
+
+```shell
+exercism download --track=risc-v --exercise=hello-world
+cd ~/exercism/risc-v/hello-world/
+make
+```
+
+[zig]: https://ziglang.org/
+[zig-install]: https://ziglang.org/learn/getting-started/#direct
+[make]: https://www.gnu.org/software/make/
+[qemu]: https://www.qemu.org/
+[wsl]: https://docs.microsoft.com/en-gb/windows/wsl/about
+[lima]: https://lima-vm.io/
