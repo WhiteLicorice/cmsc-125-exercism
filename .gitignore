@@ -7,3 +7,7 @@ bin/latest-configlet.zip
 bin/configlet.zip
 *.pyc
 __pycache__/
+
+# Build products from running make in an exercise directory
+*.o
+/exercises/*/*/tests
