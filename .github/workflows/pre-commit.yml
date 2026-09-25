@@ -1,4 +1,4 @@
-name: arm64-assembly / pre-commit checks
+name: RISC-V / pre-commit checks
 
 on:
   push:
