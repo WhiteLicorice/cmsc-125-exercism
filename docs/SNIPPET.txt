@@ -1,1 +1,10 @@
-TODO: add snippet
+/* unsigned gcd(unsigned a, unsigned b); */
+gcd:
+        beqz    a1, .done       /* b == 0: a is the answer */
+.loop:
+        remu    t0, a0, a1      /* a mod b */
+        move    a0, a1
+        move    a1, t0
+        bnez    a1, .loop       /* gcd(a, b) = gcd(b, a mod b) */
+.done:
+        ret
