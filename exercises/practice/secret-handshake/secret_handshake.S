@@ -1,5 +1,5 @@
 .text
-.globl commands
+.global commands
 
 commands:
         ret

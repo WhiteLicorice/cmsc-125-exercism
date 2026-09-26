@@ -1,5 +1,5 @@
 .text
-.globl clean
+.global clean
 
 clean:
         ret

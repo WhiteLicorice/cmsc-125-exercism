@@ -1,5 +1,5 @@
 .text
-.globl leap_year
+.global leap_year
 
 leap_year:
         ret

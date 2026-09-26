@@ -1,5 +1,5 @@
 .text
-.globl annotate
+.global annotate
 
 /*
 | Register | Usage        | type    | Description                                   |

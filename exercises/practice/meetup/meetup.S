@@ -14,7 +14,7 @@
 .equ SUNDAY, 7
 
 .text
-.globl meetup
+.global meetup
 
 meetup:
         ret

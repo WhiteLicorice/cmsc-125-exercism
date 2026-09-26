@@ -1,5 +1,5 @@
 .text
-.globl value
+.global value
 
 color_code:
         lw      t0, 0(a0)

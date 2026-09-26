@@ -1,5 +1,5 @@
 .text
-.globl is_valid
+.global is_valid
 
 /* extern int is_valid(const char *isbn); */
 is_valid:

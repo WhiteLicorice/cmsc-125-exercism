@@ -1,5 +1,5 @@
 .text
-.globl total
+.global total
 
 
 /* void count(size_t basket_count, const uint16_t *basket, uint16_t *tally); */

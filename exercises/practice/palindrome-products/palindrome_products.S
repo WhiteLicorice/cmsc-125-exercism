@@ -2,8 +2,8 @@
 .equ INVALID_INPUT, -1
 
 .text
-.globl largest
-.globl smallest
+.global largest
+.global smallest
 
 largest:
         ret

@@ -1,5 +1,5 @@
 .text
-.globl convert
+.global convert
 
 convert:
         ret

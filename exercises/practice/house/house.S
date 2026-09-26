@@ -1,5 +1,5 @@
 .text
-.globl recite
+.global recite
 
 recite:
         ret

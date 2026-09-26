@@ -1,5 +1,5 @@
 .text
-.globl total
+.global total
 
 total:
         ret

@@ -10,7 +10,7 @@ gigaohms:
 
 
 .text
-.globl label
+.global label
 
 color_code:
         lw      t0, 0(a0)

@@ -25,7 +25,7 @@ word_array:
                 .word 0
 
 .text
-.globl answer
+.global answer
 
 /*
     Attempts to read a known word from input string a1

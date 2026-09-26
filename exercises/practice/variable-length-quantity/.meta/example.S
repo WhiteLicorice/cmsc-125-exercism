@@ -1,6 +1,6 @@
 .text
-.globl encode
-.globl decode
+.global encode
+.global decode
 
 /* extern size_t encode(uint8_t *buffer, const uint32_t *integers, size_t integer_count); */
 encode:

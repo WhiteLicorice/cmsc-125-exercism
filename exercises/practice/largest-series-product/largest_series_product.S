@@ -3,7 +3,7 @@
 .equ INSUFFICIENT_DIGITS, -3
 
 .text
-.globl largest_product
+.global largest_product
 
 largest_product:
         ret

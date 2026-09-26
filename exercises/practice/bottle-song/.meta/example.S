@@ -17,7 +17,7 @@ numbers_table:
 
 
 .text
-.globl recite
+.global recite
 
 
 /* char *copy(char *dest, void *, void *, const char *source); */

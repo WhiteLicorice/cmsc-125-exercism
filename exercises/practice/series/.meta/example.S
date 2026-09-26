@@ -1,5 +1,5 @@
 .text
-.globl slices
+.global slices
 
 /*
 | Register | Usage        | Type    | Description                    |

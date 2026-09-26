@@ -7,7 +7,7 @@
 .equ THYMINE, 6
 
 .text
-.globl nucleotide_counts
+.global nucleotide_counts
 
 /* extern void nucleotide_counts(int16_t *counts, const char *strand); */
 nucleotide_counts:

@@ -1,5 +1,5 @@
 .text
-.globl abbreviate
+.global abbreviate
 
 abbreviate:
         ret

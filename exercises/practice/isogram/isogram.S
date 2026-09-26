@@ -1,5 +1,5 @@
 .text
-.globl is_isogram
+.global is_isogram
 
 is_isogram:
         ret

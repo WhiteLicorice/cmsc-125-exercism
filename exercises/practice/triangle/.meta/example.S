@@ -1,7 +1,7 @@
 .text
-.globl equilateral
-.globl isosceles
-.globl scalene
+.global equilateral
+.global isosceles
+.global scalene
 
 /* extern int equilateral(long a, long b, long c); */
 equilateral:

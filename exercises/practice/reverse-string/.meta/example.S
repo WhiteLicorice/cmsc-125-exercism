@@ -1,5 +1,5 @@
 .text
-.globl reverse
+.global reverse
 
 /* extern void reverse(char *str); */
 reverse:

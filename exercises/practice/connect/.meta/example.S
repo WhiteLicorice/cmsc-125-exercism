@@ -1,7 +1,7 @@
 .text
 
 
-.globl find_dimensions
+.global find_dimensions
 
 find_dimensions:
         move    t5, zero
@@ -33,7 +33,7 @@ find_dimensions:
         ret
 
 
-.globl init_parents
+.global init_parents
 
 init_parents:
         mul     t0, t5, t6
@@ -50,7 +50,7 @@ init_parents:
         ret
 
 
-.globl root
+.global root
 
 root:
         slli    a1, a1, 2
@@ -72,7 +72,7 @@ root:
         ret
 
 
-.globl merge
+.global merge
 
 merge:
         move    t3, ra
@@ -107,7 +107,7 @@ merge:
         ret
 
 
-.globl index
+.global index
 
 index:
         mul     a0, t5, a1
@@ -116,7 +116,7 @@ index:
         ret
 
 
-.globl occupant
+.global occupant
 
 occupant:
         slli    a1, a1, 2
@@ -131,7 +131,7 @@ occupant:
         ret
 
 
-.globl edge
+.global edge
 
 edge:
         move    a7, ra
@@ -158,7 +158,7 @@ edge:
         ret
 
 
-.globl adjacent
+.global adjacent
 
 adjacent:
         move    a7, ra
@@ -203,7 +203,7 @@ adjacent:
         ret
 
 
-.globl edges
+.global edges
 
 edges:
         addi    sp, sp, -16
@@ -276,7 +276,7 @@ edges:
         ret
 
 
-.globl adjacents
+.global adjacents
 
 adjacents:
         addi    sp, sp, -16
@@ -352,7 +352,7 @@ adjacents:
         ret
 
 
-.globl winner
+.global winner
 
 /* extern char winner(const char *board); */
 winner:

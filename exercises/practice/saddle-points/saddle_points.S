@@ -1,5 +1,5 @@
 .text
-.globl saddle_points
+.global saddle_points
 
 saddle_points:
         ret

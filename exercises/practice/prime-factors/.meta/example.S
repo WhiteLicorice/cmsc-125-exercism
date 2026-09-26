@@ -1,5 +1,5 @@
 .text
-.globl factors
+.global factors
 
 /* extern size_t factors(uint32_t* dest, uint32_t value); */
 factors:

@@ -4,7 +4,7 @@
 .equ SUPERLIST, 3
 
 .text
-.globl sublist
+.global sublist
 
 sublist:
         ret

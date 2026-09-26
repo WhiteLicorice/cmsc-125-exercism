@@ -1,5 +1,5 @@
 .text
-.globl plants
+.global plants
 
 plants:
         ret

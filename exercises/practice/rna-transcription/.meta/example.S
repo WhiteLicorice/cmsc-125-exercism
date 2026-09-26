@@ -4,7 +4,7 @@
 table: .byte 85, 0, 71, 0, 0, 0, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 0, 0, 0, 0, 0, 0
 
 .text
-.globl to_rna
+.global to_rna
 
 /* extern void to_rna(char *buffer, const char *dna); */
 to_rna:

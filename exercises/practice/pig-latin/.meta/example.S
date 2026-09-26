@@ -4,7 +4,7 @@ vowels:
         .byte 1,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0
 
 .text
-.globl translate
+.global translate
 
 /*
 | Register | Usage        | Type    | Description                             |

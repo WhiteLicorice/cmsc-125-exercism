@@ -1,5 +1,5 @@
 .text
-.globl score
+.global score
 
 score:
         ret

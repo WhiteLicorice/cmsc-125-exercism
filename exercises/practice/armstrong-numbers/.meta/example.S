@@ -1,5 +1,5 @@
 .text
-.globl is_armstrong_number
+.global is_armstrong_number
 
 /* extern int is_armstrong_number(unsigned long number); */
 is_armstrong_number:

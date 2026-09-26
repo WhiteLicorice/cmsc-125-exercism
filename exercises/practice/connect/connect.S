@@ -1,5 +1,5 @@
 .text
-.globl winner
+.global winner
 
 winner:
         ret

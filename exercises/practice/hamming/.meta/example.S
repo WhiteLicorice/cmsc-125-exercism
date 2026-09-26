@@ -1,7 +1,7 @@
 .equ UNEQUAL_LENGTHS, -1
 
 .text
-.globl distance
+.global distance
 
 /* extern int distance(const char *strand1, const char *strand2); */
 distance:

@@ -1,5 +1,5 @@
 .text
-.globl maximum_value
+.global maximum_value
 
 maximum_value:
         ret

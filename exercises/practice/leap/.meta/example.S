@@ -1,5 +1,5 @@
 .text
-.globl leap_year
+.global leap_year
 
 /* extern int leap_year(long year); */
 leap_year:

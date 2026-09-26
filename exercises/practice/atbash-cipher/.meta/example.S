@@ -1,6 +1,6 @@
 .text
-.globl encode
-.globl decode
+.global encode
+.global decode
 
 /* extern void encode(char *buffer, const char *phrase); */
 encode:

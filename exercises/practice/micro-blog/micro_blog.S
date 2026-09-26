@@ -1,5 +1,5 @@
 .text
-.globl truncate
+.global truncate
 
 truncate:
         ret

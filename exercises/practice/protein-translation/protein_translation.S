@@ -1,5 +1,5 @@
 .text
-.globl proteins
+.global proteins
 
 proteins:
         ret

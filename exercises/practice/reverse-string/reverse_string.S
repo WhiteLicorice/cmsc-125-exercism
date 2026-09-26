@@ -1,5 +1,5 @@
 .text
-.globl reverse
+.global reverse
 
 reverse:
         ret

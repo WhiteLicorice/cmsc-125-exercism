@@ -1,5 +1,5 @@
 .text
-.globl answer
+.global answer
 
 answer:
         ret

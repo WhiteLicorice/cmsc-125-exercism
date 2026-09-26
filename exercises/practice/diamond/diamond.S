@@ -1,5 +1,5 @@
 .text
-.globl rows
+.global rows
 
 rows:
         ret

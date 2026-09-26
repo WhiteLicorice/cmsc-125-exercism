@@ -1,5 +1,5 @@
 .text
-.globl sum
+.global sum
 
 /* extern uint32_t sum(uint32_t limit, const uint32_t *factors, size_t factor_count); */
 sum:

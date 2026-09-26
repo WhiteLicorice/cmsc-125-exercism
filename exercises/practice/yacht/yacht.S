@@ -12,7 +12,7 @@
 .equ YACHT, 11
 
 .text
-.globl score
+.global score
 
 score:
         ret

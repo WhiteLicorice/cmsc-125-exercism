@@ -1,5 +1,5 @@
 .text
-.globl is_pangram
+.global is_pangram
 
 /* extern int is_pangram(const char *sentence); */
 is_pangram:

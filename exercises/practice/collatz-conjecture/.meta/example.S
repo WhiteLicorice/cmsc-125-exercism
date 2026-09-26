@@ -1,7 +1,7 @@
 .equ INVALID_NUMBER, -1
 
 .text
-.globl steps
+.global steps
 
 /* extern int steps(long number); */
 steps:

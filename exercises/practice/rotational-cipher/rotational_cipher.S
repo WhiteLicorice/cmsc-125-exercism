@@ -1,5 +1,5 @@
 .text
-.globl rotate
+.global rotate
 
 rotate:
         ret

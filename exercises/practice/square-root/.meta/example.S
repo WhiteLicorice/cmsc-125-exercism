@@ -1,5 +1,5 @@
 .text
-.globl square_root
+.global square_root
 
 /* extern size_t square_root(size_t radicand); */
 square_root:

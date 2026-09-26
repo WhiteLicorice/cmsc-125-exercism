@@ -1,5 +1,5 @@
 .text
-.globl truncate
+.global truncate
 
 /* extern void truncate(char *buffer, const char *phrase); */
 truncate:

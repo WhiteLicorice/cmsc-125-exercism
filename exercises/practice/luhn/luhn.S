@@ -1,5 +1,5 @@
 .text
-.globl valid
+.global valid
 
 valid:
         ret

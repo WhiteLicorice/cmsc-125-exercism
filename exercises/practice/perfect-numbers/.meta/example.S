@@ -4,7 +4,7 @@
 .equ ABUNDANT, 3
 
 .text
-.globl classify
+.global classify
 
 /* extern category_t classify(int number); */
 classify:

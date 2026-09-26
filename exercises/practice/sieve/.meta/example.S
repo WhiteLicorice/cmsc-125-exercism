@@ -1,5 +1,5 @@
 .text
-.globl sieve
+.global sieve
 
 /*
 | Register | Usage        | Type    | Description                            |

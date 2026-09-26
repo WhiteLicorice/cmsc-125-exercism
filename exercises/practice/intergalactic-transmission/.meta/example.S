@@ -1,8 +1,8 @@
 .equ WRONG_PARITY, -1
 
 .text
-.globl transmit_sequence
-.globl decode_message
+.global transmit_sequence
+.global decode_message
 
 /* extern int transmit_sequence(uint8_t *buffer, const uint8_t *message, int message_length); */
 transmit_sequence:

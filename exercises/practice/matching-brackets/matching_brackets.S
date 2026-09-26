@@ -1,5 +1,5 @@
 .text
-.globl is_paired
+.global is_paired
 
 is_paired:
         ret

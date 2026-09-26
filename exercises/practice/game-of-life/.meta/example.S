@@ -1,5 +1,5 @@
 .text
-.globl tick
+.global tick
 
 /*
 | Register | Usage        | Type    | Description                     |

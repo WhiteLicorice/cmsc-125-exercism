@@ -1,5 +1,5 @@
 .text
-.globl is_isogram
+.global is_isogram
 
 /* extern int is_isogram(const char *phrase); */
 is_isogram:

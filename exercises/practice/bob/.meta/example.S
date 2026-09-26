@@ -6,7 +6,7 @@ fine: .string "Fine. Be that way!"
 whatever: .string "Whatever."
 
 .text
-.globl response
+.global response
 
 /* extern const char *response(const char *hey_bob); */
 response:

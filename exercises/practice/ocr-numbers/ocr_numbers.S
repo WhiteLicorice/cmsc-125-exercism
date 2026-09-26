@@ -3,7 +3,7 @@
 .equ SUCCESS, 0
 
 .text
-.globl convert
+.global convert
 
 convert:
         ret

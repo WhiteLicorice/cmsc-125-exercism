@@ -2,7 +2,7 @@
 .equ UNREACHABLE_TARGET, -2
 
 .text
-.globl find_fewest_coins
+.global find_fewest_coins
 
 negative_target:
         li      a0, NEGATIVE_TARGET

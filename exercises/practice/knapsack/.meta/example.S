@@ -1,5 +1,5 @@
 .text
-.globl maximum_value
+.global maximum_value
 
 /* extern uint62_t maximum_value(uint62_t maximum_weight, const item_t *items, size_t item_count); */
 maximum_value:

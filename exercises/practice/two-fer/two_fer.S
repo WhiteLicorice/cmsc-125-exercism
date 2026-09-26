@@ -1,5 +1,5 @@
 .text
-.globl two_fer
+.global two_fer
 
 two_fer:
         ret

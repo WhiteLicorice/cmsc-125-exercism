@@ -1,5 +1,5 @@
 .text
-.globl rows
+.global rows
 
 /* extern void rows(char *buffer, char letter); */
 rows:

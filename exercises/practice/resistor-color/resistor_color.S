@@ -1,6 +1,6 @@
 .text
-.globl color_code
-.globl colors
+.global color_code
+.global colors
 
 color_code:
         ret

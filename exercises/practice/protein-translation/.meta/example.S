@@ -26,7 +26,7 @@ cysteine:      .string "Cysteine\n"
 tryptophan:    .string "Tryptophan\n"
 
 .text
-.globl proteins
+.global proteins
 
 /* extern void proteins(char *buffer, const char *strand); */
 proteins:

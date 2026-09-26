@@ -1,5 +1,5 @@
 .text
-.globl egg_count
+.global egg_count
 
 /* extern int egg_count(size_t number); */
 egg_count:

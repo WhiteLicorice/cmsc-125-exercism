@@ -9,7 +9,7 @@
 lines: .hword 0x00e, 0x0e0, 0xe00, 0x222, 0x444, 0x888, 0x248, 0x842, 0
 
 .text
-.globl gamestate
+.global gamestate
 
 /*
 | Register | Usage         | Type    | Description                          |

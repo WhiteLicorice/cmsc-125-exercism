@@ -44,7 +44,7 @@ week_array:
 
 
 .text
-.globl meetup
+.global meetup
 
 
 /* int leap_year(void *unused, long year); */

@@ -1,5 +1,5 @@
 .text
-.globl color_code
+.global color_code
 
 /* extern int color_code(const char *color); */
 color_code:

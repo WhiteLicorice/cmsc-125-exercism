@@ -1,6 +1,6 @@
 .text
-.globl drinks_water
-.globl owns_zebra
+.global drinks_water
+.global owns_zebra
 
 drinks_water:
         ret

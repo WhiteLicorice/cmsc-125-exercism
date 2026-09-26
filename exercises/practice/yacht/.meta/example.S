@@ -12,7 +12,7 @@
 .equ YACHT, 11
 
 .text
-.globl score
+.global score
 
 /* extern int score(category_t category, const uint16_t *dice); */
 score:

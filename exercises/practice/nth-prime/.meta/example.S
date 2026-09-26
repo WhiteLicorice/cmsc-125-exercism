@@ -1,5 +1,5 @@
 .text
-.globl prime
+.global prime
 
 /*
 | Register | Usage      | Type    | Description             |

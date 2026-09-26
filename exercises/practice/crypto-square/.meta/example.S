@@ -1,5 +1,5 @@
 .text
-.globl ciphertext
+.global ciphertext
 
 /* extern void ciphertext(char *buffer, const char *plaintext); */
 ciphertext:

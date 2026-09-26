@@ -1,5 +1,5 @@
 .text
-.globl roman
+.global roman
 
 /*
 | Register | Usage        | Type    | Description                               |

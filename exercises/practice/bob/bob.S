@@ -1,5 +1,5 @@
 .text
-.globl response
+.global response
 
 response:
         ret

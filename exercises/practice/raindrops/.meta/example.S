@@ -4,7 +4,7 @@ plang: .string "Plang"
 plong: .string "Plong"
 
 .text
-.globl convert
+.global convert
 
 /* extern void convert(char *buffer, size_t number); */
 convert:

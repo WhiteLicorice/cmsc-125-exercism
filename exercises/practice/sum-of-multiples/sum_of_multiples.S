@@ -1,5 +1,5 @@
 .text
-.globl sum
+.global sum
 
 sum:
         ret

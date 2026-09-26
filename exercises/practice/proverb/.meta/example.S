@@ -21,7 +21,7 @@ stop:     .string ".\n"
 
 
 .text
-.globl recite
+.global recite
 
 
 /* char *copy(char *dest, void *, const char *source); */

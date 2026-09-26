@@ -2,9 +2,9 @@
 .equ INVALID_INPUT, -1
 
 .text
-.globl is_palindrome
-.globl largest
-.globl smallest
+.global is_palindrome
+.global largest
+.global smallest
 
 
 /* extern int32_t is_palindrome(void *, void *, void *, int n); */

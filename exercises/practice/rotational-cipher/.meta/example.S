@@ -1,5 +1,5 @@
 .text
-.globl rotate
+.global rotate
 
 /* extern void rotate(char *buffer, const char *text, long shift_key); */
 rotate:

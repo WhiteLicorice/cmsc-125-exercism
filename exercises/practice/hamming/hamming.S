@@ -1,7 +1,7 @@
 .equ UNEQUAL_LENGTHS, -1
 
 .text
-.globl distance
+.global distance
 
 distance:
         ret

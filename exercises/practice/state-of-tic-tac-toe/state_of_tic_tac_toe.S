@@ -4,7 +4,7 @@
 .equ INVALID, 3
 
 .text
-.globl gamestate
+.global gamestate
 
 gamestate:
         ret

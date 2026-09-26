@@ -1,5 +1,5 @@
 .text
-.globl abbreviate
+.global abbreviate
 
 /* extern void abbreviate(char *buffer, const char *phrase); */
 abbreviate:

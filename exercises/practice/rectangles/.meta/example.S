@@ -1,5 +1,5 @@
 .text
-.globl rectangles
+.global rectangles
 
 /* extern int rectangles(const char **strings); */
 rectangles:

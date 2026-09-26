@@ -1,5 +1,5 @@
 .text
-.globl ciphertext
+.global ciphertext
 
 ciphertext:
         ret

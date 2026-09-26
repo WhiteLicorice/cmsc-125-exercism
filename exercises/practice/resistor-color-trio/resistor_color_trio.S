@@ -1,5 +1,5 @@
 .text
-.globl label
+.global label
 
 label:
         ret

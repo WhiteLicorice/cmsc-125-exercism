@@ -25,6 +25,11 @@ repos:
         language: system
         entry: bin/update-from-templates
         pass_filenames: false
+    -   id: no-globl
+        name: Check that assembly files use .global rather than .globl
+        language: pygrep
+        entry: '^\s*\.globl\b'
+        files: '\.S$'
 -   repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.11.11
     hooks:

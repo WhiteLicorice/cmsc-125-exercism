@@ -1,6 +1,6 @@
 .text
-.globl row
-.globl column
+.global row
+.global column
 
 
 /* extern size_t column(int32_t *buffer, const char *input, size_t index) */

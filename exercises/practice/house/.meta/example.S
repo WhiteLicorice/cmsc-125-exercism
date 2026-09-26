@@ -7,7 +7,7 @@ table:
         .hword -1, 388, 367, 350, 330, 309, 266, 231, 189, 144, 98, 61, 7
 
 .text
-.globl recite
+.global recite
 
 /*
 | Register | Usage        | Type    | Description                  |

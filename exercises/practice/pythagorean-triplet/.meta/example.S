@@ -1,4 +1,4 @@
-.globl triplets_with_sum
+.global triplets_with_sum
 
 /*
 | Register | Usage         | Type    | Description                   |

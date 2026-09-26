@@ -1,7 +1,7 @@
 .text
-.globl equilateral
-.globl isosceles
-.globl scalene
+.global equilateral
+.global isosceles
+.global scalene
 
 equilateral:
         ret

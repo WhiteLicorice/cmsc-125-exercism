@@ -1,6 +1,6 @@
 .text
-.globl row
-.globl column
+.global row
+.global column
 
 row:
         ret

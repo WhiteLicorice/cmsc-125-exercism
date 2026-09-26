@@ -1,5 +1,5 @@
 .text
-.globl value
+.global value
 
 value:
         ret

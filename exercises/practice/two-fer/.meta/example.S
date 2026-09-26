@@ -4,7 +4,7 @@ you: .string "you"
 suffix: .string ", one for me."
 
 .text
-.globl two_fer
+.global two_fer
 
 /* extern void two_fer(char *buffer, const char *name); */
 two_fer:

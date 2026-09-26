@@ -1,5 +1,5 @@
 .text
-.globl triplets_with_sum
+.global triplets_with_sum
 
 triplets_with_sum:
         ret

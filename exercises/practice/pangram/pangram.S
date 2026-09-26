@@ -1,5 +1,5 @@
 .text
-.globl is_pangram
+.global is_pangram
 
 is_pangram:
         ret

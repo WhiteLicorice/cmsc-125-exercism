@@ -2,7 +2,7 @@
 .equ BAD_DIGIT, -2
 
 .text
-.globl rebase
+.global rebase
 
 rebase:
         ret

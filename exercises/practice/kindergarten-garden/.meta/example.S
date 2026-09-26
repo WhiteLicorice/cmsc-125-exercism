@@ -1,4 +1,4 @@
-.globl plants
+.global plants
 
 .rodata
 names:  .string "        clover,         grass,                                      radishes,       violets, "

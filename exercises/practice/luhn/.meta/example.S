@@ -1,5 +1,5 @@
 .text
-.globl valid
+.global valid
 
 /* extern int valid(const char *value); */
 valid:

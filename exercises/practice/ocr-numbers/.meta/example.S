@@ -16,7 +16,7 @@ digit1: .ascii "     |  |   "
 digit0: .ascii " _ | ||_|   "
 
 .text
-.globl convert
+.global convert
 
 /* extern error_t convert(char *buffer, const char *grid); */
 convert:

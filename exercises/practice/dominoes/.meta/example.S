@@ -1,8 +1,8 @@
 .text
-.globl init_parents
-.globl root
-.globl merge
-.globl can_chain
+.global init_parents
+.global root
+.global merge
+.global can_chain
 
 
 init_parents:

@@ -1,5 +1,5 @@
 .text
-.globl combinations
+.global combinations
 
 combinations:
         ret

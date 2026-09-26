@@ -27,7 +27,7 @@ close:  .string "close your eyes, "
 jump:   .string "jump, "
 
 .text
-.globl commands
+.global commands
 
 /* extern void commands(char *buffer, int number); */
 commands:

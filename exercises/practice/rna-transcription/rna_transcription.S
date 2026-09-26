@@ -1,5 +1,5 @@
 .text
-.globl to_rna
+.global to_rna
 
 to_rna:
         ret

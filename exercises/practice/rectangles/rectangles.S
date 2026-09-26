@@ -1,5 +1,5 @@
 .text
-.globl rectangles
+.global rectangles
 
 rectangles:
         ret

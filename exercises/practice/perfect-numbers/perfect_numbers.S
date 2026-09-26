@@ -4,7 +4,7 @@
 .equ ABUNDANT, 3
 
 .text
-.globl classify
+.global classify
 
 classify:
         ret

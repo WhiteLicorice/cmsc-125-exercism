@@ -1,5 +1,5 @@
 .text
-.globl saddle_points
+.global saddle_points
 
 /*
 | Register | Type    | Description                                                |

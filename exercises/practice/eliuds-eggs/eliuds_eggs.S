@@ -1,5 +1,5 @@
 .text
-.globl egg_count
+.global egg_count
 
 egg_count:
         ret

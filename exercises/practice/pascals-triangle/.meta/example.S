@@ -1,5 +1,5 @@
 .text
-.globl rows
+.global rows
 
 /*
 | Register | Usage        | Type    | Description                      |

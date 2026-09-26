@@ -1,6 +1,6 @@
 .text
-.globl encode
-.globl decode
+.global encode
+.global decode
 
 encode:
         ret

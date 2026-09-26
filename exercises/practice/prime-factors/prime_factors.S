@@ -1,5 +1,5 @@
 .text
-.globl factors
+.global factors
 
 factors:
         ret

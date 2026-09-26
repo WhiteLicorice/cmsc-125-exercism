@@ -1,5 +1,5 @@
 .text
-.globl find
+.global find
 
 find:
         ret
