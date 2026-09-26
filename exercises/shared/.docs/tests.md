@@ -1,15 +1,15 @@
 # Tests
 
-<!-- TODO: write document
+To run the tests, execute the following command in the exercise directory:
 
-  This document should contain instructions on how to run the exercise's tests.
+```shell
+make
+```
 
-  The instructions should be short and to the point.
+## Skipped tests
 
-  The docs/TESTS.md file can contain a more verbose description on how to run tests.
-
-  When a student downloads an exercise via the CLI, this file's contents are
-  included into the HELP.md file.
-
-  See https://exercism.org/docs/building/tracks/shared-files for more information.
--->
+Solving an exercise means making all its tests pass.
+By default, only one test (the first one) is executed when you run the tests.
+This is intentional, as it allows you to focus on just making that one test pass.
+Once it passes, you can enable the next test by removing the `TEST_IGNORE();` line.
+When all tests have been enabled and your implementation makes them all pass, you'll have solved the exercise!
