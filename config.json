@@ -656,6 +656,38 @@
       "robot-name"
     ]
   },
+  "key_features": [
+    {
+      "title": "Small and regular",
+      "content": "A few dozen core instructions that all follow the same simple patterns.",
+      "icon": "small"
+    },
+    {
+      "title": "See how computers work",
+      "content": "Work directly with registers and memory. Nothing sits between your code and the processor.",
+      "icon": "powerful"
+    },
+    {
+      "title": "Free and open",
+      "content": "Anyone can read the specification and build a RISC-V chip, without paying licence fees.",
+      "icon": "community"
+    },
+    {
+      "title": "Found in real devices",
+      "content": "RISC-V chips run inside microcontrollers, single-board computers, storage drives and more.",
+      "icon": "widely-used"
+    },
+    {
+      "title": "Made for learning",
+      "content": "Its clean design makes it a popular choice for teaching how processors work.",
+      "icon": "easy"
+    },
+    {
+      "title": "No hardware needed",
+      "content": "Solve exercises in the online editor, or locally with a free emulator.",
+      "icon": "tooling"
+    }
+  ],
   "tags": [
     "execution_mode/compiled",
     "paradigm/imperative",
