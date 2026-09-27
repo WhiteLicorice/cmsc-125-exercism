@@ -14,7 +14,7 @@ That simplicity is also why many universities now use RISC-V to teach how comput
 
 Here is a small taste, a function that adds two numbers:
 
-```riscv
+```riscvasm
 add_numbers:
         add     a0, a0, a1      /* a0 = a0 + a1 */
         ret                     /* return to the caller, with the answer in a0 */

@@ -27,6 +27,13 @@
       "path": "docs/RESOURCES.md",
       "title": "Useful RISC-V resources",
       "blurb": "A collection of useful resources to help you master RISC-V"
+    },
+    {
+      "uuid": "2a1b5c1c-dc12-4869-bb6b-975ec941dd0b",
+      "slug": "example",
+      "path": "docs/EXAMPLE.md",
+      "title": "An example RISC-V function",
+      "blurb": "An example function, showing directives and saving the return address"
     }
   ]
 }
