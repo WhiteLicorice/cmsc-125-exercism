@@ -4,8 +4,8 @@
 # Usage: bin/review-fork <fork-url> <commit>
 #
 # Clone the fork. Fetch the course tag. List each changed path outside the
-# permitted student files. Run make test-lab0 at that commit. Remove the
-# temporary folder.
+# permitted student files. Warn about a solution file that can print its own
+# test result. Run make test-lab0 at that commit. Remove the temporary folder.
 #
 # Exit 0 when no protected path changed. Exit 1 when a protected path changed.
 # Exit 2 on a setup error.
@@ -78,6 +78,18 @@ echo "-> permitted student file changes: ${#permitted_paths[@]}"
 for path in "${permitted_paths[@]-}"; do
   echo "    ${path}"
 done
+
+# A solution runs in the same process as the test runner, so it can print a
+# test result. Warn about a solution file that holds text for that.
+forge=0
+for path in "${tmp}"/fork/exercises/practice/*/*.S; do
+  [ -f "${path}" ] || continue
+  if grep -Fq -e 'Tests' -e 'Failures' -e 'Ignored' -e ':PASS' -e 'OK\n' "${path}"; then
+    echo "    [WARNING] ${path#"${tmp}"/fork/} holds text that can forge a test result"
+    forge=$((forge + 1))
+  fi
+done
+echo "-> solution files that can forge a test result: ${forge}"
 
 echo "-> make test-lab0 at ${commit}"
 if ! git -C "${tmp}/fork" checkout --quiet "${commit}"; then

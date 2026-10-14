@@ -3,6 +3,7 @@
 #
 # Read catalog.tsv for the slug, difficulty, classification, and points.
 # Run the public test suite of each valid claim with a time limit.
+# Accept a claim only when the output matches the test file.
 # Print the earned points and the marks (0.3 x points).
 # Exit non-zero when a claim is invalid, duplicated, or incomplete.
 #
@@ -30,10 +31,26 @@ points_for() {
   awk -F'\t' -v s="$1" '$1==s {print $5}' "${CATALOG}"
 }
 
+# The test names that the exercise test file registers with RUN_TEST(...).
+expected_tests() {
+  local dir="$1" test_file
+  test_file="$(ls "${dir}"/*_test.c 2>/dev/null | head -n 1)"
+  [ -n "${test_file}" ] || return 1
+  grep -oE 'RUN_TEST[[:space:]]*\([[:space:]]*[A-Za-z0-9_]+[[:space:]]*\)' "${test_file}" |
+    sed -E 's/^RUN_TEST[[:space:]]*\([[:space:]]*([A-Za-z0-9_]+)[[:space:]]*\)$/\1/'
+}
+
 # Score one exercise. Print one result line. Return 0 when all tests pass.
+#
+# A claim passes only when the program exits 0, when the output holds one
+# ":<name>:PASS" line for each RUN_TEST in the test file, when no ":FAIL" or
+# ":IGNORE" line is present, when the summary Tests count matches the RUN_TEST
+# count, and when the summary is followed by OK. A solution that prints its own
+# summary fails one of these checks.
 score_claim() {
   local slug="$1" dir="$2"
-  local build_out run_out rc summary tests failures ignored passed
+  local build_out run_out rc summary summary_line followed
+  local tests failures ignored passed expected_count name
 
   (cd "${dir}" && make -s clean) >/dev/null 2>&1 || true
 
@@ -44,31 +61,76 @@ score_claim() {
 
   run_out="$(cd "${dir}" && timeout "${TIME_LIMIT}" qemu-riscv32 ./tests 2>&1)"
   rc=$?
+
+  if [ "${rc}" -eq 124 ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=timeout\n' "${slug}"
+    return 1
+  fi
+  if [ "${rc}" -ge 128 ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=crash\n' "${slug}"
+    return 1
+  fi
+
   summary="$(printf '%s\n' "${run_out}" | grep -E '^[0-9]+ Tests [0-9]+ Failures [0-9]+ Ignored[[:space:]]*$' | tail -n 1)"
-
   if [ -z "${summary}" ]; then
-    if [ "${rc}" -eq 124 ]; then
-      printf '%s: FAIL  passed=- failed=- skipped=-  reason=timeout\n' "${slug}"
-    else
-      printf '%s: FAIL  passed=- failed=- skipped=-  reason=crash\n' "${slug}"
-    fi
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=crash\n' "${slug}"
     return 1
   fi
 
-  read -r tests failures ignored < <(awk '{print $1, $3, $5}' <<< "${summary}")
-  passed=$((tests - failures - ignored))
+  summary_line="$(printf '%s' "${summary}" | sed -E 's/[[:space:]]+$//')"
+  read -r tests failures ignored <<< "$(printf '%s' "${summary_line}" | awk '{print $1, $3, $5}')"
 
-  if [ "${ignored}" -gt 0 ]; then
-    printf '%s: FAIL  passed=%d failed=%d skipped=%d  reason=skipped\n' \
-      "${slug}" "${passed}" "${failures}" "${ignored}"
-    return 1
-  fi
-  if [ "${failures}" -gt 0 ]; then
+  # The line after the summary is OK on a full pass and FAIL on a failure.
+  followed="$(printf '%s\n' "${run_out}" | awk -v s="${summary_line}" '
+    { line=$0; sub(/[[:space:]]+$/, "", line) }
+    line==s { if ((getline nx) > 0) { sub(/[[:space:]]+$/, "", nx); print nx } exit }')"
+
+  # A real failure or skip line makes the exercise incomplete.
+  if printf '%s\n' "${run_out}" | grep -Eq ':FAIL(:|$)'; then
+    passed=$((tests - failures - ignored))
     printf '%s: FAIL  passed=%d failed=%d skipped=%d  reason=failed\n' \
       "${slug}" "${passed}" "${failures}" "${ignored}"
     return 1
   fi
+  if printf '%s\n' "${run_out}" | grep -Eq ':IGNORE(:|$)'; then
+    passed=$((tests - failures - ignored))
+    printf '%s: FAIL  passed=%d failed=%d skipped=%d  reason=skipped\n' \
+      "${slug}" "${passed}" "${failures}" "${ignored}"
+    return 1
+  fi
 
+  # Each test in the test file needs its own PASS line, by name.
+  expected_count=0
+  while IFS= read -r name; do
+    [ -z "${name}" ] && continue
+    expected_count=$((expected_count + 1))
+    if ! printf '%s\n' "${run_out}" | grep -Fq ":${name}:PASS"; then
+      printf '%s: FAIL  passed=- failed=- skipped=-  reason=forged\n' "${slug}"
+      return 1
+    fi
+  done < <(expected_tests "${dir}")
+
+  if [ "${expected_count}" -eq 0 ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=forged\n' "${slug}"
+    return 1
+  fi
+
+  if [ "${tests}" -ne "${expected_count}" ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=count\n' "${slug}"
+    return 1
+  fi
+
+  if [ "${followed}" != "OK" ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=ok\n' "${slug}"
+    return 1
+  fi
+
+  if [ "${rc}" -ne 0 ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=exit\n' "${slug}"
+    return 1
+  fi
+
+  passed=$((tests - failures - ignored))
   printf '%s: PASS  passed=%d failed=0 skipped=0\n' "${slug}" "${passed}"
   return 0
 }
