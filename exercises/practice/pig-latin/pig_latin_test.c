@@ -18,7 +18,7 @@ void test_word_beginning_with_a(void) {
 }
 
 void test_word_beginning_with_e(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "ear");
@@ -26,7 +26,7 @@ void test_word_beginning_with_e(void) {
 }
 
 void test_word_beginning_with_i(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "igloo");
@@ -34,7 +34,7 @@ void test_word_beginning_with_i(void) {
 }
 
 void test_word_beginning_with_o(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "object");
@@ -42,7 +42,7 @@ void test_word_beginning_with_o(void) {
 }
 
 void test_word_beginning_with_u(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "under");
@@ -50,7 +50,7 @@ void test_word_beginning_with_u(void) {
 }
 
 void test_word_beginning_with_a_vowel_and_followed_by_a_qu(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "equal");
@@ -58,7 +58,7 @@ void test_word_beginning_with_a_vowel_and_followed_by_a_qu(void) {
 }
 
 void test_word_beginning_with_p(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "pig");
@@ -66,7 +66,7 @@ void test_word_beginning_with_p(void) {
 }
 
 void test_word_beginning_with_k(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "koala");
@@ -74,7 +74,7 @@ void test_word_beginning_with_k(void) {
 }
 
 void test_word_beginning_with_x(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "xenon");
@@ -82,7 +82,7 @@ void test_word_beginning_with_x(void) {
 }
 
 void test_word_beginning_with_q_without_a_following_u(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "qat");
@@ -90,7 +90,7 @@ void test_word_beginning_with_q_without_a_following_u(void) {
 }
 
 void test_word_beginning_with_consonant_and_vowel_containing_qu(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "liquid");
@@ -98,7 +98,7 @@ void test_word_beginning_with_consonant_and_vowel_containing_qu(void) {
 }
 
 void test_word_beginning_with_ch(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "chair");
@@ -106,7 +106,7 @@ void test_word_beginning_with_ch(void) {
 }
 
 void test_word_beginning_with_qu(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "queen");
@@ -114,7 +114,7 @@ void test_word_beginning_with_qu(void) {
 }
 
 void test_word_beginning_with_qu_and_a_preceding_consonant(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "square");
@@ -122,7 +122,7 @@ void test_word_beginning_with_qu_and_a_preceding_consonant(void) {
 }
 
 void test_word_beginning_with_th(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "therapy");
@@ -130,7 +130,7 @@ void test_word_beginning_with_th(void) {
 }
 
 void test_word_beginning_with_thr(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "thrush");
@@ -138,7 +138,7 @@ void test_word_beginning_with_thr(void) {
 }
 
 void test_word_beginning_with_sch(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "school");
@@ -146,7 +146,7 @@ void test_word_beginning_with_sch(void) {
 }
 
 void test_word_beginning_with_yt(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "yttria");
@@ -154,7 +154,7 @@ void test_word_beginning_with_yt(void) {
 }
 
 void test_word_beginning_with_xr(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "xray");
@@ -162,7 +162,7 @@ void test_word_beginning_with_xr(void) {
 }
 
 void test_y_is_treated_like_a_consonant_at_the_beginning_of_a_word(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "yellow");
@@ -170,7 +170,7 @@ void test_y_is_treated_like_a_consonant_at_the_beginning_of_a_word(void) {
 }
 
 void test_y_is_treated_like_a_vowel_at_the_end_of_a_consonant_cluster(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "rhythm");
@@ -178,7 +178,7 @@ void test_y_is_treated_like_a_vowel_at_the_end_of_a_consonant_cluster(void) {
 }
 
 void test_y_as_second_letter_in_two_letter_word(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "my");
@@ -186,7 +186,7 @@ void test_y_as_second_letter_in_two_letter_word(void) {
 }
 
 void test_a_whole_phrase(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     translate(buffer, "quick fast run");

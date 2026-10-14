@@ -18,73 +18,73 @@ void test_empty_input__empty_output(void) {
 }
 
 void test_singleton_input__singleton_output(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x11};
     TEST_ASSERT_TRUE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_singleton_that_cant_be_chained(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x12};
     TEST_ASSERT_FALSE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_three_elements(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x12, 0x31, 0x23};
     TEST_ASSERT_TRUE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_can_reverse_dominoes(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x12, 0x13, 0x23};
     TEST_ASSERT_TRUE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_cant_be_chained(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x12, 0x41, 0x23};
     TEST_ASSERT_FALSE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_disconnected__simple(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x11, 0x22};
     TEST_ASSERT_FALSE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_disconnected__double_loop(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x12, 0x21, 0x34, 0x43};
     TEST_ASSERT_FALSE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_disconnected__single_isolated(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x12, 0x23, 0x31, 0x44};
     TEST_ASSERT_FALSE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_need_backtrack(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x12, 0x23, 0x31, 0x24, 0x24};
     TEST_ASSERT_TRUE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_separate_loops(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x12, 0x23, 0x31, 0x11, 0x22, 0x33};
     TEST_ASSERT_TRUE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_nine_elements(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x12, 0x53, 0x31, 0x12, 0x24, 0x16, 0x23, 0x34, 0x56};
     TEST_ASSERT_TRUE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }
 
 void test_separate_threedomino_loops(void) {
-    TEST_IGNORE();
+
     const uint8_t dominoes[] = {0x12, 0x23, 0x31, 0x45, 0x56, 0x64};
     TEST_ASSERT_FALSE(can_chain(ARRAY_SIZE(dominoes), dominoes));
 }

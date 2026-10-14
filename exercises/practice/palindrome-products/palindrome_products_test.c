@@ -36,7 +36,7 @@ void test_find_the_smallest_palindrome_from_single_digit_factors(void) {
 }
 
 void test_find_the_largest_palindrome_from_single_digit_factors(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     const int32_t result = largest(&factors, 1, 9);
@@ -51,7 +51,7 @@ void test_find_the_largest_palindrome_from_single_digit_factors(void) {
 }
 
 void test_find_the_smallest_palindrome_from_double_digit_factors(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     const int32_t result = smallest(&factors, 10, 99);
@@ -66,7 +66,7 @@ void test_find_the_smallest_palindrome_from_double_digit_factors(void) {
 }
 
 void test_find_the_largest_palindrome_from_double_digit_factors(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     const int32_t result = largest(&factors, 10, 99);
@@ -81,7 +81,7 @@ void test_find_the_largest_palindrome_from_double_digit_factors(void) {
 }
 
 void test_find_the_smallest_palindrome_from_triple_digit_factors(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     const int32_t result = smallest(&factors, 100, 999);
@@ -96,7 +96,7 @@ void test_find_the_smallest_palindrome_from_triple_digit_factors(void) {
 }
 
 void test_find_the_largest_palindrome_from_triple_digit_factors(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     const int32_t result = largest(&factors, 100, 999);
@@ -111,7 +111,7 @@ void test_find_the_largest_palindrome_from_triple_digit_factors(void) {
 }
 
 void test_find_the_smallest_palindrome_from_four_digit_factors(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     const int32_t result = smallest(&factors, 1000, 9999);
@@ -126,7 +126,7 @@ void test_find_the_smallest_palindrome_from_four_digit_factors(void) {
 }
 
 void test_find_the_largest_palindrome_from_four_digit_factors(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     const int32_t result = largest(&factors, 1000, 9999);
@@ -141,35 +141,35 @@ void test_find_the_largest_palindrome_from_four_digit_factors(void) {
 }
 
 void test_empty_result_for_smallest_if_no_palindrome_in_the_range(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     TEST_ASSERT_EQUAL(EMPTY_RESULT, smallest(&factors, 1002, 1003));
 }
 
 void test_empty_result_for_largest_if_no_palindrome_in_the_range(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     TEST_ASSERT_EQUAL(EMPTY_RESULT, largest(&factors, 15, 15));
 }
 
 void test_error_result_for_smallest_if_min_is_more_than_max(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     TEST_ASSERT_EQUAL(INVALID_INPUT, smallest(&factors, 10000, 1));
 }
 
 void test_error_result_for_largest_if_min_is_more_than_max(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     TEST_ASSERT_EQUAL(INVALID_INPUT, largest(&factors, 2, 1));
 }
 
 void test_smallest_product_does_not_use_the_smallest_factor(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     const int32_t result = smallest(&factors, 3215, 4000);
@@ -184,7 +184,7 @@ void test_smallest_product_does_not_use_the_smallest_factor(void) {
 }
 
 void test_find_the_smallest_palindrome_from_five_digit_factors(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     const int32_t result = smallest(&factors, 54773, 63245);
@@ -199,7 +199,7 @@ void test_find_the_smallest_palindrome_from_five_digit_factors(void) {
 }
 
 void test_find_the_largest_palindrome_from_five_digit_factors(void) {
-    TEST_IGNORE();
+
 
     factor_t factors = {0};
     const int32_t result = largest(&factors, 54773, 63245);

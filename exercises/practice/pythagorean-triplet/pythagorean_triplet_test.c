@@ -29,7 +29,7 @@ void test_triplets_whose_sum_is_12(void) {
 }
 
 void test_triplets_whose_sum_is_108(void) {
-    TEST_IGNORE();
+
     const uint32_t expected_a[] = {27};
     const uint32_t expected_b[] = {36};
     const uint32_t expected_c[] = {45};
@@ -44,7 +44,7 @@ void test_triplets_whose_sum_is_108(void) {
 }
 
 void test_triplets_whose_sum_is_1000(void) {
-    TEST_IGNORE();
+
     const uint32_t expected_a[] = {200};
     const uint32_t expected_b[] = {375};
     const uint32_t expected_c[] = {425};
@@ -59,7 +59,7 @@ void test_triplets_whose_sum_is_1000(void) {
 }
 
 void test_no_matching_triplets_for_1001(void) {
-    TEST_IGNORE();
+
     uint32_t actual_a[MAX_ARRAY_SIZE];
     uint32_t actual_b[MAX_ARRAY_SIZE];
     uint32_t actual_c[MAX_ARRAY_SIZE];
@@ -68,7 +68,7 @@ void test_no_matching_triplets_for_1001(void) {
 }
 
 void test_returns_all_matching_triplets(void) {
-    TEST_IGNORE();
+
     const uint32_t expected_a[] = {9, 15};
     const uint32_t expected_b[] = {40, 36};
     const uint32_t expected_c[] = {41, 39};
@@ -83,7 +83,7 @@ void test_returns_all_matching_triplets(void) {
 }
 
 void test_several_matching_triplets(void) {
-    TEST_IGNORE();
+
     const uint32_t expected_a[] = {40, 56, 105, 120, 140, 168, 210, 240};
     const uint32_t expected_b[] = {399, 390, 360, 350, 336, 315, 280, 252};
     const uint32_t expected_c[] = {401, 394, 375, 370, 364, 357, 350, 348};
@@ -98,7 +98,7 @@ void test_several_matching_triplets(void) {
 }
 
 void test_triplets_for_large_number(void) {
-    TEST_IGNORE();
+
     const uint32_t expected_a[] = {1200, 1875, 5000, 6000, 7500};
     const uint32_t expected_b[] = {14375, 14000, 12000, 11250, 10000};
     const uint32_t expected_c[] = {14425, 14125, 13000, 12750, 12500};
@@ -113,7 +113,7 @@ void test_triplets_for_large_number(void) {
 }
 
 void test_triplets_for_very_large_number(void) {
-    TEST_IGNORE();
+
     const uint32_t expected_a[] = {68145};
     const uint32_t expected_b[] = {71672};
     const uint32_t expected_c[] = {98897};

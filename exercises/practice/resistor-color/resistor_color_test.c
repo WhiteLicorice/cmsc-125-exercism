@@ -13,12 +13,12 @@ void test_black(void) {
 }
 
 void test_white(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(9, color_code("white"));
 }
 
 void test_orange(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(3, color_code("orange"));
 }
 

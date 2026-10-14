@@ -25,7 +25,7 @@ void test_zero(void) {
 }
 
 void test_arbitrary_single_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {64};
     const uint8_t expected[] = {64};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -35,7 +35,7 @@ void test_arbitrary_single_byte(void) {
 }
 
 void test_asymmetric_single_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {83};
     const uint8_t expected[] = {83};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -45,7 +45,7 @@ void test_asymmetric_single_byte(void) {
 }
 
 void test_largest_single_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {127};
     const uint8_t expected[] = {127};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -55,7 +55,7 @@ void test_largest_single_byte(void) {
 }
 
 void test_smallest_double_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {128};
     const uint8_t expected[] = {129, 0};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -65,7 +65,7 @@ void test_smallest_double_byte(void) {
 }
 
 void test_arbitrary_double_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {8192};
     const uint8_t expected[] = {192, 0};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -75,7 +75,7 @@ void test_arbitrary_double_byte(void) {
 }
 
 void test_asymmetric_double_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {173};
     const uint8_t expected[] = {129, 45};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -85,7 +85,7 @@ void test_asymmetric_double_byte(void) {
 }
 
 void test_largest_double_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {16383};
     const uint8_t expected[] = {255, 127};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -95,7 +95,7 @@ void test_largest_double_byte(void) {
 }
 
 void test_smallest_triple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {16384};
     const uint8_t expected[] = {129, 128, 0};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -105,7 +105,7 @@ void test_smallest_triple_byte(void) {
 }
 
 void test_arbitrary_triple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {1048576};
     const uint8_t expected[] = {192, 128, 0};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -115,7 +115,7 @@ void test_arbitrary_triple_byte(void) {
 }
 
 void test_asymmetric_triple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {120220};
     const uint8_t expected[] = {135, 171, 28};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -125,7 +125,7 @@ void test_asymmetric_triple_byte(void) {
 }
 
 void test_largest_triple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {2097151};
     const uint8_t expected[] = {255, 255, 127};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -135,7 +135,7 @@ void test_largest_triple_byte(void) {
 }
 
 void test_smallest_quadruple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {2097152};
     const uint8_t expected[] = {129, 128, 128, 0};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -145,7 +145,7 @@ void test_smallest_quadruple_byte(void) {
 }
 
 void test_arbitrary_quadruple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {134217728};
     const uint8_t expected[] = {192, 128, 128, 0};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -155,7 +155,7 @@ void test_arbitrary_quadruple_byte(void) {
 }
 
 void test_asymmetric_quadruple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {3503876};
     const uint8_t expected[] = {129, 213, 238, 4};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -165,7 +165,7 @@ void test_asymmetric_quadruple_byte(void) {
 }
 
 void test_largest_quadruple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {268435455};
     const uint8_t expected[] = {255, 255, 255, 127};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -175,7 +175,7 @@ void test_largest_quadruple_byte(void) {
 }
 
 void test_smallest_quintuple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {268435456};
     const uint8_t expected[] = {129, 128, 128, 128, 0};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -185,7 +185,7 @@ void test_smallest_quintuple_byte(void) {
 }
 
 void test_arbitrary_quintuple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {4278190080};
     const uint8_t expected[] = {143, 248, 128, 128, 0};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -195,7 +195,7 @@ void test_arbitrary_quintuple_byte(void) {
 }
 
 void test_asymmetric_quintuple_byte(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {2254790917};
     const uint8_t expected[] = {136, 179, 149, 194, 5};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -205,7 +205,7 @@ void test_asymmetric_quintuple_byte(void) {
 }
 
 void test_maximum_32bit_integer_input(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {4294967295};
     const uint8_t expected[] = {143, 255, 255, 255, 127};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -215,7 +215,7 @@ void test_maximum_32bit_integer_input(void) {
 }
 
 void test_two_singlebyte_values(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {64, 127};
     const uint8_t expected[] = {64, 127};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -225,7 +225,7 @@ void test_two_singlebyte_values(void) {
 }
 
 void test_two_multibyte_values(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {16384, 1193046};
     const uint8_t expected[] = {129, 128, 0, 200, 232, 86};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -235,7 +235,7 @@ void test_two_multibyte_values(void) {
 }
 
 void test_many_multibyte_values(void) {
-    TEST_IGNORE();
+
     const uint32_t integers[] = {8192, 1193046, 268435455, 0, 16383, 16384};
     const uint8_t expected[] = {192, 0, 200, 232, 86, 255, 255, 255, 127, 0, 255, 127, 129, 128, 0};
     uint8_t actual[MAX_ARRAY_SIZE];
@@ -245,7 +245,7 @@ void test_many_multibyte_values(void) {
 }
 
 void test_one_byte(void) {
-    TEST_IGNORE();
+
     const uint8_t integers[] = {127};
     const uint32_t expected[] = {127};
     uint32_t actual[MAX_ARRAY_SIZE];
@@ -255,7 +255,7 @@ void test_one_byte(void) {
 }
 
 void test_two_bytes(void) {
-    TEST_IGNORE();
+
     const uint8_t integers[] = {192, 0};
     const uint32_t expected[] = {8192};
     uint32_t actual[MAX_ARRAY_SIZE];
@@ -265,7 +265,7 @@ void test_two_bytes(void) {
 }
 
 void test_three_bytes(void) {
-    TEST_IGNORE();
+
     const uint8_t integers[] = {255, 255, 127};
     const uint32_t expected[] = {2097151};
     uint32_t actual[MAX_ARRAY_SIZE];
@@ -275,7 +275,7 @@ void test_three_bytes(void) {
 }
 
 void test_four_bytes(void) {
-    TEST_IGNORE();
+
     const uint8_t integers[] = {129, 128, 128, 0};
     const uint32_t expected[] = {2097152};
     uint32_t actual[MAX_ARRAY_SIZE];
@@ -285,7 +285,7 @@ void test_four_bytes(void) {
 }
 
 void test_maximum_32bit_integer(void) {
-    TEST_IGNORE();
+
     const uint8_t integers[] = {143, 255, 255, 255, 127};
     const uint32_t expected[] = {4294967295};
     uint32_t actual[MAX_ARRAY_SIZE];
@@ -295,7 +295,7 @@ void test_maximum_32bit_integer(void) {
 }
 
 void test_multiple_values(void) {
-    TEST_IGNORE();
+
     const uint8_t integers[] = {192, 0, 200, 232, 86, 255, 255, 255, 127, 0, 255, 127, 129, 128, 0};
     const uint32_t expected[] = {8192, 1193046, 268435455, 0, 16383, 16384};
     uint32_t actual[MAX_ARRAY_SIZE];

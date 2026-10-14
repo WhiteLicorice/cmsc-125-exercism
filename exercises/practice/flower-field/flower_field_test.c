@@ -22,7 +22,7 @@ void test_no_rows(void) {
 }
 
 void test_no_columns(void) {
-    TEST_IGNORE();
+
     const char *garden = "\n";
     const char *expected = "\n";
     char buffer[BUFFER_SIZE];
@@ -32,7 +32,7 @@ void test_no_columns(void) {
 }
 
 void test_no_flowers(void) {
-    TEST_IGNORE();
+
     const char *garden =
         "   \n"
         "   \n"
@@ -48,7 +48,7 @@ void test_no_flowers(void) {
 }
 
 void test_garden_full_of_flowers(void) {
-    TEST_IGNORE();
+
     const char *garden =
         "***\n"
         "***\n"
@@ -64,7 +64,7 @@ void test_garden_full_of_flowers(void) {
 }
 
 void test_flower_surrounded_by_spaces(void) {
-    TEST_IGNORE();
+
     const char *garden =
         "   \n"
         " * \n"
@@ -80,7 +80,7 @@ void test_flower_surrounded_by_spaces(void) {
 }
 
 void test_space_surrounded_by_flowers(void) {
-    TEST_IGNORE();
+
     const char *garden =
         "***\n"
         "* *\n"
@@ -96,7 +96,7 @@ void test_space_surrounded_by_flowers(void) {
 }
 
 void test_horizontal_line(void) {
-    TEST_IGNORE();
+
     const char *garden = " * * \n";
     const char *expected = "1*2*1\n";
     char buffer[BUFFER_SIZE];
@@ -106,7 +106,7 @@ void test_horizontal_line(void) {
 }
 
 void test_horizontal_line_flowers_at_edges(void) {
-    TEST_IGNORE();
+
     const char *garden = "*   *\n";
     const char *expected = "*1 1*\n";
     char buffer[BUFFER_SIZE];
@@ -116,7 +116,7 @@ void test_horizontal_line_flowers_at_edges(void) {
 }
 
 void test_vertical_line(void) {
-    TEST_IGNORE();
+
     const char *garden =
         " \n"
         "*\n"
@@ -136,7 +136,7 @@ void test_vertical_line(void) {
 }
 
 void test_vertical_line_flowers_at_edges(void) {
-    TEST_IGNORE();
+
     const char *garden =
         "*\n"
         " \n"
@@ -156,7 +156,7 @@ void test_vertical_line_flowers_at_edges(void) {
 }
 
 void test_cross(void) {
-    TEST_IGNORE();
+
     const char *garden =
         "  *  \n"
         "  *  \n"
@@ -176,7 +176,7 @@ void test_cross(void) {
 }
 
 void test_large_garden(void) {
-    TEST_IGNORE();
+
     const char *garden =
         " *  * \n"
         "  *   \n"
@@ -198,7 +198,7 @@ void test_large_garden(void) {
 }
 
 void test_multiple_adjacent_flowers(void) {
-    TEST_IGNORE();
+
     const char *garden = " ** \n";
     const char *expected = "1**1\n";
     char buffer[BUFFER_SIZE];

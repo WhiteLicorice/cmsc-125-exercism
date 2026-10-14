@@ -32,7 +32,7 @@ void test_live_cells_with_zero_live_neighbors_die(void) {
 }
 
 void test_live_cells_with_only_one_live_neighbor_die(void) {
-    TEST_IGNORE();
+
     uint32_t actual[3];
     const uint32_t matrix[] = {
         // clang-format off
@@ -53,7 +53,7 @@ void test_live_cells_with_only_one_live_neighbor_die(void) {
 }
 
 void test_live_cells_with_two_live_neighbors_stay_alive(void) {
-    TEST_IGNORE();
+
     uint32_t actual[3];
     const uint32_t matrix[] = {
         // clang-format off
@@ -74,7 +74,7 @@ void test_live_cells_with_two_live_neighbors_stay_alive(void) {
 }
 
 void test_live_cells_with_three_live_neighbors_stay_alive(void) {
-    TEST_IGNORE();
+
     uint32_t actual[3];
     const uint32_t matrix[] = {
         // clang-format off
@@ -95,7 +95,7 @@ void test_live_cells_with_three_live_neighbors_stay_alive(void) {
 }
 
 void test_dead_cells_with_three_live_neighbors_become_alive(void) {
-    TEST_IGNORE();
+
     uint32_t actual[3];
     const uint32_t matrix[] = {
         // clang-format off
@@ -116,7 +116,7 @@ void test_dead_cells_with_three_live_neighbors_become_alive(void) {
 }
 
 void test_live_cells_with_four_or_more_neighbors_die(void) {
-    TEST_IGNORE();
+
     uint32_t actual[3];
     const uint32_t matrix[] = {
         // clang-format off
@@ -137,7 +137,7 @@ void test_live_cells_with_four_or_more_neighbors_die(void) {
 }
 
 void test_bigger_matrix(void) {
-    TEST_IGNORE();
+
     uint32_t actual[8];
     const uint32_t matrix[] = {
         // clang-format off
@@ -168,7 +168,7 @@ void test_bigger_matrix(void) {
 }
 
 void test_matrix_with_0_columns(void) {
-    TEST_IGNORE();
+
     uint32_t actual[5];
     const uint32_t matrix[] = {
         // clang-format off
@@ -193,7 +193,7 @@ void test_matrix_with_0_columns(void) {
 }
 
 void test_matrix_with_32_columns(void) {
-    TEST_IGNORE();
+
     uint32_t actual[5];
     const uint32_t matrix[] = {
         // clang-format off

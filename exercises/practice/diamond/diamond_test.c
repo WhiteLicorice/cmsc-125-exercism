@@ -19,7 +19,7 @@ void test_degenerate_case_with_a_single_a_row(void) {
 }
 
 void test_degenerate_case_with_no_row_containing_3_distinct_groups_of_spaces(void) {
-    TEST_IGNORE();
+
     const char expected[] =
         " A \n"
         "B B\n"
@@ -31,7 +31,7 @@ void test_degenerate_case_with_no_row_containing_3_distinct_groups_of_spaces(voi
 }
 
 void test_smallest_nondegenerate_case_with_odd_diamond_side_length(void) {
-    TEST_IGNORE();
+
     const char expected[] =
         "  A  \n"
         " B B \n"
@@ -45,7 +45,7 @@ void test_smallest_nondegenerate_case_with_odd_diamond_side_length(void) {
 }
 
 void test_smallest_nondegenerate_case_with_even_diamond_side_length(void) {
-    TEST_IGNORE();
+
     const char expected[] =
         "   A   \n"
         "  B B  \n"
@@ -61,7 +61,7 @@ void test_smallest_nondegenerate_case_with_even_diamond_side_length(void) {
 }
 
 void test_largest_possible_diamond(void) {
-    TEST_IGNORE();
+
     const char expected[] =
         "                         A                         \n"
         "                        B B                        \n"
