@@ -15,32 +15,32 @@ void test_brown_and_black(void) {
 }
 
 void test_blue_and_grey(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(68, value("blue", "grey", NULL, NULL));
 }
 
 void test_yellow_and_violet(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(47, value("yellow", "violet", NULL, NULL));
 }
 
 void test_white_and_red(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(92, value("white", "red", NULL, NULL));
 }
 
 void test_orange_and_orange(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(33, value("orange", "orange", NULL, NULL));
 }
 
 void test_ignore_additional_colors(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(51, value("green", "brown", "orange", NULL));
 }
 
 void test_black_and_brown_onedigit(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(1, value("black", "brown", NULL, NULL));
 }
 

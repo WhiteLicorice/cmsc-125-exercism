@@ -18,7 +18,7 @@ void test_1_is_i(void) {
 }
 
 void test_2_is_ii(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 2);
@@ -26,7 +26,7 @@ void test_2_is_ii(void) {
 }
 
 void test_3_is_iii(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 3);
@@ -34,7 +34,7 @@ void test_3_is_iii(void) {
 }
 
 void test_4_is_iv(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 4);
@@ -42,7 +42,7 @@ void test_4_is_iv(void) {
 }
 
 void test_5_is_v(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 5);
@@ -50,7 +50,7 @@ void test_5_is_v(void) {
 }
 
 void test_6_is_vi(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 6);
@@ -58,7 +58,7 @@ void test_6_is_vi(void) {
 }
 
 void test_9_is_ix(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 9);
@@ -66,7 +66,7 @@ void test_9_is_ix(void) {
 }
 
 void test_16_is_xvi(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 16);
@@ -74,7 +74,7 @@ void test_16_is_xvi(void) {
 }
 
 void test_27_is_xxvii(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 27);
@@ -82,7 +82,7 @@ void test_27_is_xxvii(void) {
 }
 
 void test_48_is_xlviii(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 48);
@@ -90,7 +90,7 @@ void test_48_is_xlviii(void) {
 }
 
 void test_49_is_xlix(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 49);
@@ -98,7 +98,7 @@ void test_49_is_xlix(void) {
 }
 
 void test_59_is_lix(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 59);
@@ -106,7 +106,7 @@ void test_59_is_lix(void) {
 }
 
 void test_66_is_lxvi(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 66);
@@ -114,7 +114,7 @@ void test_66_is_lxvi(void) {
 }
 
 void test_93_is_xciii(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 93);
@@ -122,7 +122,7 @@ void test_93_is_xciii(void) {
 }
 
 void test_141_is_cxli(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 141);
@@ -130,7 +130,7 @@ void test_141_is_cxli(void) {
 }
 
 void test_163_is_clxiii(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 163);
@@ -138,7 +138,7 @@ void test_163_is_clxiii(void) {
 }
 
 void test_166_is_clxvi(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 166);
@@ -146,7 +146,7 @@ void test_166_is_clxvi(void) {
 }
 
 void test_402_is_cdii(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 402);
@@ -154,7 +154,7 @@ void test_402_is_cdii(void) {
 }
 
 void test_575_is_dlxxv(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 575);
@@ -162,7 +162,7 @@ void test_575_is_dlxxv(void) {
 }
 
 void test_666_is_dclxvi(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 666);
@@ -170,7 +170,7 @@ void test_666_is_dclxvi(void) {
 }
 
 void test_911_is_cmxi(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 911);
@@ -178,7 +178,7 @@ void test_911_is_cmxi(void) {
 }
 
 void test_1024_is_mxxiv(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 1024);
@@ -186,7 +186,7 @@ void test_1024_is_mxxiv(void) {
 }
 
 void test_1666_is_mdclxvi(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 1666);
@@ -194,7 +194,7 @@ void test_1666_is_mdclxvi(void) {
 }
 
 void test_3000_is_mmm(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 3000);
@@ -202,7 +202,7 @@ void test_3000_is_mmm(void) {
 }
 
 void test_3001_is_mmmi(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 3001);
@@ -210,7 +210,7 @@ void test_3001_is_mmmi(void) {
 }
 
 void test_3888_is_mmmdccclxxxviii(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 3888);
@@ -218,7 +218,7 @@ void test_3888_is_mmmdccclxxxviii(void) {
 }
 
 void test_3999_is_mmmcmxcix(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     roman(buffer, 3999);

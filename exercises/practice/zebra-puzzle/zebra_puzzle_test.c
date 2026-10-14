@@ -14,7 +14,7 @@ void test_resident_who_drinks_water(void) {
 }
 
 void test_resident_who_owns_zebra(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT('J', owns_zebra());
 }
 

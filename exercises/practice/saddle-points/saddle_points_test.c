@@ -40,7 +40,7 @@ void test_can_identify_single_saddle_point(void) {
 }
 
 void test_can_identify_lack_of_saddle_points_when_there_are_none(void) {
-    TEST_IGNORE();
+
     point_t points[BUFFER_SIZE];
     const int32_t matrix[] = {
         // clang-format off
@@ -54,7 +54,7 @@ void test_can_identify_lack_of_saddle_points_when_there_are_none(void) {
 }
 
 void test_can_identify_multiple_saddle_points_in_a_column(void) {
-    TEST_IGNORE();
+
     point_t points[BUFFER_SIZE];
     const int32_t matrix[] = {
         // clang-format off
@@ -75,7 +75,7 @@ void test_can_identify_multiple_saddle_points_in_a_column(void) {
 }
 
 void test_can_identify_multiple_saddle_points_in_a_row(void) {
-    TEST_IGNORE();
+
     point_t points[BUFFER_SIZE];
     const int32_t matrix[] = {
         // clang-format off
@@ -96,7 +96,7 @@ void test_can_identify_multiple_saddle_points_in_a_row(void) {
 }
 
 void test_can_identify_saddle_point_in_bottom_right_corner(void) {
-    TEST_IGNORE();
+
     point_t points[BUFFER_SIZE];
     const int32_t matrix[] = {
         // clang-format off
@@ -117,7 +117,7 @@ void test_can_identify_saddle_point_in_bottom_right_corner(void) {
 }
 
 void test_can_identify_saddle_points_in_a_non_square_matrix(void) {
-    TEST_IGNORE();
+
     point_t points[BUFFER_SIZE];
     const int32_t matrix[] = {
         // clang-format off
@@ -137,7 +137,7 @@ void test_can_identify_saddle_points_in_a_non_square_matrix(void) {
 }
 
 void test_can_identify_that_saddle_points_in_a_single_column_matrix_are_those_with_the_minimum_value(void) {
-    TEST_IGNORE();
+
     point_t points[BUFFER_SIZE];
     const int32_t matrix[] = {
         // clang-format off
@@ -159,7 +159,7 @@ void test_can_identify_that_saddle_points_in_a_single_column_matrix_are_those_wi
 }
 
 void test_can_identify_that_saddle_points_in_a_single_row_matrix_are_those_with_the_maximum_value(void) {
-    TEST_IGNORE();
+
     point_t points[BUFFER_SIZE];
     const int32_t matrix[] = {
         // clang-format off

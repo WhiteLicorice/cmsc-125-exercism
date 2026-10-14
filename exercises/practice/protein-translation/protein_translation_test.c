@@ -18,7 +18,7 @@ void test_empty_rna_sequence_results_in_no_proteins(void) {
 }
 
 void test_methionine_rna_sequence(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "AUG");
@@ -26,7 +26,7 @@ void test_methionine_rna_sequence(void) {
 }
 
 void test_phenylalanine_rna_sequence_1(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UUU");
@@ -34,7 +34,7 @@ void test_phenylalanine_rna_sequence_1(void) {
 }
 
 void test_phenylalanine_rna_sequence_2(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UUC");
@@ -42,7 +42,7 @@ void test_phenylalanine_rna_sequence_2(void) {
 }
 
 void test_leucine_rna_sequence_1(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UUA");
@@ -50,7 +50,7 @@ void test_leucine_rna_sequence_1(void) {
 }
 
 void test_leucine_rna_sequence_2(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UUG");
@@ -58,7 +58,7 @@ void test_leucine_rna_sequence_2(void) {
 }
 
 void test_serine_rna_sequence_1(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UCU");
@@ -66,7 +66,7 @@ void test_serine_rna_sequence_1(void) {
 }
 
 void test_serine_rna_sequence_2(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UCC");
@@ -74,7 +74,7 @@ void test_serine_rna_sequence_2(void) {
 }
 
 void test_serine_rna_sequence_3(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UCA");
@@ -82,7 +82,7 @@ void test_serine_rna_sequence_3(void) {
 }
 
 void test_serine_rna_sequence_4(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UCG");
@@ -90,7 +90,7 @@ void test_serine_rna_sequence_4(void) {
 }
 
 void test_tyrosine_rna_sequence_1(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UAU");
@@ -98,7 +98,7 @@ void test_tyrosine_rna_sequence_1(void) {
 }
 
 void test_tyrosine_rna_sequence_2(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UAC");
@@ -106,7 +106,7 @@ void test_tyrosine_rna_sequence_2(void) {
 }
 
 void test_cysteine_rna_sequence_1(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UGU");
@@ -114,7 +114,7 @@ void test_cysteine_rna_sequence_1(void) {
 }
 
 void test_cysteine_rna_sequence_2(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UGC");
@@ -122,7 +122,7 @@ void test_cysteine_rna_sequence_2(void) {
 }
 
 void test_tryptophan_rna_sequence(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UGG");
@@ -130,7 +130,7 @@ void test_tryptophan_rna_sequence(void) {
 }
 
 void test_stop_codon_rna_sequence_1(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UAA");
@@ -138,7 +138,7 @@ void test_stop_codon_rna_sequence_1(void) {
 }
 
 void test_stop_codon_rna_sequence_2(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UAG");
@@ -146,7 +146,7 @@ void test_stop_codon_rna_sequence_2(void) {
 }
 
 void test_stop_codon_rna_sequence_3(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UGA");
@@ -154,7 +154,7 @@ void test_stop_codon_rna_sequence_3(void) {
 }
 
 void test_sequence_of_two_protein_codons_translates_into_proteins(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UUUUUU");
@@ -162,7 +162,7 @@ void test_sequence_of_two_protein_codons_translates_into_proteins(void) {
 }
 
 void test_sequence_of_two_different_protein_codons_translates_into_proteins(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UUAUUG");
@@ -170,7 +170,7 @@ void test_sequence_of_two_different_protein_codons_translates_into_proteins(void
 }
 
 void test_translate_rna_strand_into_correct_protein_list(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "AUGUUUUGG");
@@ -178,7 +178,7 @@ void test_translate_rna_strand_into_correct_protein_list(void) {
 }
 
 void test_translation_stops_if_stop_codon_at_beginning_of_sequence(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UAGUGG");
@@ -186,7 +186,7 @@ void test_translation_stops_if_stop_codon_at_beginning_of_sequence(void) {
 }
 
 void test_translation_stops_if_stop_codon_at_end_of_twocodon_sequence(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UGGUAG");
@@ -194,7 +194,7 @@ void test_translation_stops_if_stop_codon_at_end_of_twocodon_sequence(void) {
 }
 
 void test_translation_stops_if_stop_codon_at_end_of_threecodon_sequence(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "AUGUUUUAA");
@@ -202,7 +202,7 @@ void test_translation_stops_if_stop_codon_at_end_of_threecodon_sequence(void) {
 }
 
 void test_translation_stops_if_stop_codon_in_middle_of_threecodon_sequence(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UGGUAGUGG");
@@ -210,7 +210,7 @@ void test_translation_stops_if_stop_codon_in_middle_of_threecodon_sequence(void)
 }
 
 void test_translation_stops_if_stop_codon_in_middle_of_sixcodon_sequence(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UGGUGUUAUUAAUGGUUU");
@@ -218,7 +218,7 @@ void test_translation_stops_if_stop_codon_in_middle_of_sixcodon_sequence(void) {
 }
 
 void test_sequence_of_two_nonstop_codons_does_not_translate_to_a_stop_codon(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "AUGAUG");
@@ -226,7 +226,7 @@ void test_sequence_of_two_nonstop_codons_does_not_translate_to_a_stop_codon(void
 }
 
 void test_unknown_amino_acids_not_part_of_a_codon_cant_translate(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "XYZ");
@@ -234,7 +234,7 @@ void test_unknown_amino_acids_not_part_of_a_codon_cant_translate(void) {
 }
 
 void test_incomplete_rna_sequence_cant_translate(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "AUGU");
@@ -242,7 +242,7 @@ void test_incomplete_rna_sequence_cant_translate(void) {
 }
 
 void test_incomplete_rna_sequence_can_translate_if_valid_until_a_stop_codon(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     proteins(buffer, "UUCUUCUAAUGGU");

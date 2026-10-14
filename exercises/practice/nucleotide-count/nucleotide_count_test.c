@@ -29,7 +29,7 @@ void test_empty_strand(void) {
 }
 
 void test_can_count_one_nucleotide_in_singlecharacter_input(void) {
-    TEST_IGNORE();
+
     int16_t counts[4];
     nucleotide_counts(counts, "G");
     TEST_ASSERT_EQUAL_INT(0, counts[ADENINE]);
@@ -39,7 +39,7 @@ void test_can_count_one_nucleotide_in_singlecharacter_input(void) {
 }
 
 void test_strand_with_repeated_nucleotide(void) {
-    TEST_IGNORE();
+
     int16_t counts[4];
     nucleotide_counts(counts, "GGGGGGG");
     TEST_ASSERT_EQUAL_INT(0, counts[ADENINE]);
@@ -49,7 +49,7 @@ void test_strand_with_repeated_nucleotide(void) {
 }
 
 void test_strand_with_multiple_nucleotides(void) {
-    TEST_IGNORE();
+
     int16_t counts[4];
     nucleotide_counts(counts, "AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC");
     TEST_ASSERT_EQUAL_INT(20, counts[ADENINE]);
@@ -59,7 +59,7 @@ void test_strand_with_multiple_nucleotides(void) {
 }
 
 void test_strand_with_invalid_nucleotides(void) {
-    TEST_IGNORE();
+
     int16_t counts[4];
     nucleotide_counts(counts, "AGXXACT");
     TEST_ASSERT_EQUAL_INT(INVALID, counts[ADENINE]);

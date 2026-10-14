@@ -19,7 +19,7 @@ void test_encode_with_two_rails(void) {
 }
 
 void test_encode_with_three_rails(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "WEAREDISCOVEREDFLEEATONCE", 3);
@@ -27,7 +27,7 @@ void test_encode_with_three_rails(void) {
 }
 
 void test_encode_with_ending_in_the_middle(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "EXERCISES", 4);
@@ -35,7 +35,7 @@ void test_encode_with_ending_in_the_middle(void) {
 }
 
 void test_decode_with_three_rails(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "TEITELHDVLSNHDTISEIIEA", 3);
@@ -43,7 +43,7 @@ void test_decode_with_three_rails(void) {
 }
 
 void test_decode_with_five_rails(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "EIEXMSMESAORIWSCE", 5);
@@ -51,7 +51,7 @@ void test_decode_with_five_rails(void) {
 }
 
 void test_decode_with_six_rails(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "133714114238148966225439541018335470986172518171757571896261", 6);
@@ -59,7 +59,7 @@ void test_decode_with_six_rails(void) {
 }
 
 void test_decode_with_seven_rails(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "AGGWRHNAEROTOESTRADWETHCTTRENAAVOTHEAOECTRESIRMKEINNNEWOOENESANO", 7);

@@ -23,7 +23,7 @@ void test_first_generic_verse(void) {
 }
 
 void test_last_generic_verse(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 3, 1);
@@ -36,7 +36,7 @@ void test_last_generic_verse(void) {
 }
 
 void test_verse_with_2_bottles(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 2, 1);
@@ -49,7 +49,7 @@ void test_verse_with_2_bottles(void) {
 }
 
 void test_verse_with_1_bottle(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 1, 1);
@@ -62,7 +62,7 @@ void test_verse_with_1_bottle(void) {
 }
 
 void test_first_two_verses(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 10, 2);
@@ -80,7 +80,7 @@ void test_first_two_verses(void) {
 }
 
 void test_last_three_verses(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 3, 3);
@@ -103,7 +103,7 @@ void test_last_three_verses(void) {
 }
 
 void test_all_verses(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 10, 10);

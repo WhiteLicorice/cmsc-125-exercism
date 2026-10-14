@@ -24,7 +24,7 @@ void test_finished_game_where_x_won_via_left_column_victory(void) {
 }
 
 void test_finished_game_where_x_won_via_middle_column_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "OXO\n"
         " X \n"
@@ -33,7 +33,7 @@ void test_finished_game_where_x_won_via_middle_column_victory(void) {
 }
 
 void test_finished_game_where_x_won_via_right_column_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "OOX\n"
         "  X\n"
@@ -42,7 +42,7 @@ void test_finished_game_where_x_won_via_right_column_victory(void) {
 }
 
 void test_finished_game_where_o_won_via_left_column_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "OXX\n"
         "OX \n"
@@ -51,7 +51,7 @@ void test_finished_game_where_o_won_via_left_column_victory(void) {
 }
 
 void test_finished_game_where_o_won_via_middle_column_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XOX\n"
         " OX\n"
@@ -60,7 +60,7 @@ void test_finished_game_where_o_won_via_middle_column_victory(void) {
 }
 
 void test_finished_game_where_o_won_via_right_column_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XXO\n"
         " XO\n"
@@ -69,7 +69,7 @@ void test_finished_game_where_o_won_via_right_column_victory(void) {
 }
 
 void test_finished_game_where_x_won_via_top_row_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XXX\n"
         "XOO\n"
@@ -78,7 +78,7 @@ void test_finished_game_where_x_won_via_top_row_victory(void) {
 }
 
 void test_finished_game_where_x_won_via_middle_row_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "O  \n"
         "XXX\n"
@@ -87,7 +87,7 @@ void test_finished_game_where_x_won_via_middle_row_victory(void) {
 }
 
 void test_finished_game_where_x_won_via_bottom_row_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         " OO\n"
         "O X\n"
@@ -96,7 +96,7 @@ void test_finished_game_where_x_won_via_bottom_row_victory(void) {
 }
 
 void test_finished_game_where_o_won_via_top_row_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "OOO\n"
         "XXO\n"
@@ -105,7 +105,7 @@ void test_finished_game_where_o_won_via_top_row_victory(void) {
 }
 
 void test_finished_game_where_o_won_via_middle_row_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XX \n"
         "OOO\n"
@@ -114,7 +114,7 @@ void test_finished_game_where_o_won_via_middle_row_victory(void) {
 }
 
 void test_finished_game_where_o_won_via_bottom_row_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XOX\n"
         " XX\n"
@@ -123,7 +123,7 @@ void test_finished_game_where_o_won_via_bottom_row_victory(void) {
 }
 
 void test_finished_game_where_x_won_via_falling_diagonal_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XOO\n"
         " X \n"
@@ -132,7 +132,7 @@ void test_finished_game_where_x_won_via_falling_diagonal_victory(void) {
 }
 
 void test_finished_game_where_x_won_via_rising_diagonal_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "O X\n"
         "OX \n"
@@ -141,7 +141,7 @@ void test_finished_game_where_x_won_via_rising_diagonal_victory(void) {
 }
 
 void test_finished_game_where_o_won_via_falling_diagonal_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "OXX\n"
         "OOX\n"
@@ -150,7 +150,7 @@ void test_finished_game_where_o_won_via_falling_diagonal_victory(void) {
 }
 
 void test_finished_game_where_o_won_via_rising_diagonal_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "  O\n"
         " OX\n"
@@ -159,7 +159,7 @@ void test_finished_game_where_o_won_via_rising_diagonal_victory(void) {
 }
 
 void test_finished_game_where_x_won_via_a_row_and_a_column_victory(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XXX\n"
         "XOO\n"
@@ -168,7 +168,7 @@ void test_finished_game_where_x_won_via_a_row_and_a_column_victory(void) {
 }
 
 void test_finished_game_where_x_won_via_two_diagonal_victories(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XOX\n"
         "OXO\n"
@@ -177,7 +177,7 @@ void test_finished_game_where_x_won_via_two_diagonal_victories(void) {
 }
 
 void test_draw(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XOX\n"
         "XXO\n"
@@ -186,7 +186,7 @@ void test_draw(void) {
 }
 
 void test_another_draw(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XXO\n"
         "OXX\n"
@@ -195,7 +195,7 @@ void test_another_draw(void) {
 }
 
 void test_ongoing_game_one_move_in(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "   \n"
         "X  \n"
@@ -204,7 +204,7 @@ void test_ongoing_game_one_move_in(void) {
 }
 
 void test_ongoing_game_two_moves_in(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "O  \n"
         " X \n"
@@ -213,7 +213,7 @@ void test_ongoing_game_two_moves_in(void) {
 }
 
 void test_ongoing_game_five_moves_in(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "X  \n"
         " XO\n"
@@ -222,7 +222,7 @@ void test_ongoing_game_five_moves_in(void) {
 }
 
 void test_invalid_board_x_went_twice(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XX \n"
         "   \n"
@@ -231,7 +231,7 @@ void test_invalid_board_x_went_twice(void) {
 }
 
 void test_invalid_board_o_started(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "OOX\n"
         "   \n"
@@ -240,7 +240,7 @@ void test_invalid_board_o_started(void) {
 }
 
 void test_invalid_board_x_won_and_o_kept_playing(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XXX\n"
         "OOO\n"
@@ -249,7 +249,7 @@ void test_invalid_board_x_won_and_o_kept_playing(void) {
 }
 
 void test_invalid_board_players_kept_playing_after_a_win(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XXX\n"
         "OOO\n"
@@ -258,7 +258,7 @@ void test_invalid_board_players_kept_playing_after_a_win(void) {
 }
 
 void test_invalid_board_o_kept_playing_after_x_wins(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "OO \n"
         "XXX\n"
@@ -267,7 +267,7 @@ void test_invalid_board_o_kept_playing_after_x_wins(void) {
 }
 
 void test_invalid_board_x_kept_playing_after_o_wins(void) {
-    TEST_IGNORE();
+
     const char board[] =
         "XX \n"
         "OOO\n"

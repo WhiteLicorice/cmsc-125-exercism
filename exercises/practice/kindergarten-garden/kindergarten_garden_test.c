@@ -18,7 +18,7 @@ void test_garden_with_single_student(void) {
 }
 
 void test_different_garden_with_single_student(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VC\nRC", "Alice");
@@ -26,7 +26,7 @@ void test_different_garden_with_single_student(void) {
 }
 
 void test_garden_with_two_students(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VVCG\nVVRC", "Bob");
@@ -34,7 +34,7 @@ void test_garden_with_two_students(void) {
 }
 
 void test_second_students_garden(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VVCCGG\nVVCCGG", "Bob");
@@ -42,7 +42,7 @@ void test_second_students_garden(void) {
 }
 
 void test_third_students_garden(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VVCCGG\nVVCCGG", "Charlie");
@@ -50,7 +50,7 @@ void test_third_students_garden(void) {
 }
 
 void test_for_alice_first_students_garden(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Alice");
@@ -58,7 +58,7 @@ void test_for_alice_first_students_garden(void) {
 }
 
 void test_for_bob_second_students_garden(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Bob");
@@ -66,7 +66,7 @@ void test_for_bob_second_students_garden(void) {
 }
 
 void test_for_charlie(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Charlie");
@@ -74,7 +74,7 @@ void test_for_charlie(void) {
 }
 
 void test_for_david(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "David");
@@ -82,7 +82,7 @@ void test_for_david(void) {
 }
 
 void test_for_eve(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Eve");
@@ -90,7 +90,7 @@ void test_for_eve(void) {
 }
 
 void test_for_fred(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Fred");
@@ -98,7 +98,7 @@ void test_for_fred(void) {
 }
 
 void test_for_ginny(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Ginny");
@@ -106,7 +106,7 @@ void test_for_ginny(void) {
 }
 
 void test_for_harriet(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Harriet");
@@ -114,7 +114,7 @@ void test_for_harriet(void) {
 }
 
 void test_for_ileana(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Ileana");
@@ -122,7 +122,7 @@ void test_for_ileana(void) {
 }
 
 void test_for_joseph(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Joseph");
@@ -130,7 +130,7 @@ void test_for_joseph(void) {
 }
 
 void test_for_kincaid_second_to_last_students_garden(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Kincaid");
@@ -138,7 +138,7 @@ void test_for_kincaid_second_to_last_students_garden(void) {
 }
 
 void test_for_larry_last_students_garden(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     plants(buffer, "VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV", "Larry");
