@@ -116,8 +116,8 @@ for path in "${tmp}"/fork/exercises/practice/*/*.S; do
   if awk '
       BEGIN { isx=1 }
       {
-        line=$0
-        if (line ~ /^[[:space:]]*\.(pushsection|popsection|previous|subsection)([^A-Za-z0-9_]|$)/) {
+        line=tolower($0)
+        if (line ~ /^[[:space:]]*\.(pushsection|popsection|previous|subsection|macro|irp|irpc|rept)([^A-Za-z0-9_]|$)/) {
           print "hit"; exit
         }
         if (line ~ /^[[:space:]]*\.text([[:space:]]|$)/) {
@@ -135,7 +135,7 @@ for path in "${tmp}"/fork/exercises/practice/*/*.S; do
           }
           isx=((name == ".text" || name ~ /^\.text\./) || flags ~ /x/)
         }
-        if (line ~ /(^|[^A-Za-z0-9_])ecall([^A-Za-z0-9_]|$)/) { print "hit"; exit }
+        if (line ~ /(^|[^A-Za-z0-9_])(ecall|scall)([^A-Za-z0-9_]|$)/) { print "hit"; exit }
         if (line ~ /\.insn([^A-Za-z0-9_]|$)/) { print "hit"; exit }
         if (line ~ /\.incbin([^A-Za-z0-9_]|$)/) { print "hit"; exit }
         if (isx && line ~ /\.(word|half|byte|short|long|int|2byte|4byte|8byte|quad|dword|fill|ascii|asciz|string|dc)([^A-Za-z0-9_]|$)/) { print "hit"; exit }
