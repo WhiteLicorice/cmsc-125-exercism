@@ -7,9 +7,13 @@
 # for each system-call or breakpoint encoding that starts at an even offset.
 #
 # Read the ELF32 little-endian header and the section header table with
-# struct. Select a section when its flag word holds SHF_EXECINSTR (0x4) and its
-# type is not SHT_NOBITS (8). Read its bytes at sh_offset for sh_size bytes.
-# Search every even offset. Do not select a section by name, and do not
+# struct. Read the section count from e_shnum. When e_shnum is 0, read the
+# real count from the sh_size field of section header 0. Section 0 is
+# metadata, so the scan starts at section 1. Select a section when its flag
+# word holds SHF_EXECINSTR (0x4) and its type is not SHT_NOBITS (8). A NOBITS
+# section holds no file bytes, so skip it before the file bound. Read the bytes
+# of each other selected section at sh_offset for sh_size bytes, after the file
+# bound. Search every even offset. Do not select a section by name, and do not
 # convert the object to a binary image, so a wildcard name and a section with
 # no alloc flag both work.
 #
@@ -68,18 +72,27 @@ def sections(data):
     (shnum,) = struct.unpack_from("<H", data, E_SHNUM)
     if shentsize < SHENT_MIN:
         return None
+    if shoff + shentsize > len(data):
+        return None
+    (sh0_size,) = struct.unpack_from("<I", data, shoff + SH_SIZE)
+    if shnum == 0:
+        shnum = sh0_size
+    if shnum == 0:
+        return None
     if shoff + shnum * shentsize > len(data):
         return None
     found = []
-    for index in range(shnum):
+    for index in range(1, shnum):
         base = shoff + index * shentsize
         (sh_type,) = struct.unpack_from("<I", data, base + SH_TYPE)
+        if sh_type == SHT_NOBITS:
+            continue
         (sh_flags,) = struct.unpack_from("<I", data, base + SH_FLAGS)
         (sh_offset,) = struct.unpack_from("<I", data, base + SH_OFFSET)
         (sh_size,) = struct.unpack_from("<I", data, base + SH_SIZE)
         if sh_offset + sh_size > len(data):
             return None
-        if sh_flags & SHF_EXECINSTR and sh_type != SHT_NOBITS:
+        if sh_flags & SHF_EXECINSTR:
             found.append((sh_offset, sh_size))
     return found
 
