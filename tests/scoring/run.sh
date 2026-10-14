@@ -887,6 +887,120 @@ case_review_fork_operand_name() {
   expect_rc 0 && expect_no_line "[WARNING]"
 }
 
+# A section name that holds a wildcard character. The scan must read the
+# section by its header, not select it by name, so the word warns.
+case_review_fork_wildcard_name() {
+  rf_repo wildcard-name
+  printf '.text\n.globl leap_year\nleap_year:\n ret\n.section "odd[1]","ax",@progbits\n.word 0x00000073\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  rf_expect_syscall
+}
+
+# An executable section named "*" is empty. The system-call word sits in the
+# non-executable .rodata. The scan must select by flag, not by name, so no
+# warning appears.
+case_review_fork_star_nonexec() {
+  rf_repo star-nonexec
+  printf '.text\n.globl leap_year\nleap_year:\n ret\n.section .rodata\n.word 0x00000073\n.section "*","ax",@progbits\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_rc 0 && expect_no_line "[WARNING]"
+}
+
+# A section name with two spaces in a row. A name split on spaces and rejoined
+# loses a space, so the scan must not rebuild the name.
+case_review_fork_double_space() {
+  rf_repo double-space
+  printf '.text\n.globl leap_year\nleap_year:\n ret\n.section "two  spaces","ax",@progbits\n.word 0x00000073\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  rf_expect_syscall
+}
+
+# An executable section with no alloc flag. A binary conversion drops it, so
+# the scan must read the bytes at the section offset in the file.
+case_review_fork_nonalloc_x() {
+  rf_repo nonalloc-x
+  printf '.text\n.globl leap_year\nleap_year:\n ret\n.section custom,"x",@progbits\n.word 0x00000073\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  rf_expect_syscall
+}
+
+# Two executable sections, one with a system call and one with a breakpoint.
+# Both warn. The scan reads the object itself, so it needs no external tool.
+case_review_fork_multi_ax() {
+  rf_repo multi-ax
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.text
+.globl leap_year
+leap_year:
+ ret
+.section first,"ax",@progbits
+.word 0x00000073
+.section second,"ax",@progbits
+.word 0x00100073
+ASM
+  rf_expect_syscall || return 1
+  local obj="${RF_WORK}/exercises/practice/leap/leap.o"
+  if ! make -C "${RF_WORK}/exercises/practice/leap" -s --no-print-directory leap.o \
+      >/dev/null 2>&1; then
+    echo "  cannot build the scan object"
+    return 1
+  fi
+  local pydir; pydir="$(mktemp -d "${WORK}/path-XXXXXX")"
+  ln -s "$(command -v python3)" "${pydir}/python3"
+  local out
+  if ! out="$(PATH="${pydir}" "${REPO}/bin/scan-object" "${obj}" 2>&1)"; then
+    echo "  scan-object needs a tool outside python3: ${out}"
+    return 1
+  fi
+  grep -qF "ecall" <<< "${out}" || { echo "  scan-object missed the system call: ${out}"; return 1; }
+  grep -qF "ebreak" <<< "${out}" || { echo "  scan-object missed the breakpoint: ${out}"; return 1; }
+}
+
+# A compressed breakpoint in an executable section. The scan covers the
+# compressed encoding, so the word warns.
+case_review_fork_compressed_data() {
+  rf_repo compressed-data
+  printf '.text\n.globl leap_year\nleap_year:\n ret\n.section custom,"ax",@progbits\n.half 0x9002\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  rf_expect_syscall
+}
+
+# A plain ebreak in .text. The assembler writes the compressed c.ebreak, so the
+# scan must cover the compressed encoding to warn.
+case_review_fork_ebreak() {
+  rf_repo ebreak
+  printf '.text\n.globl leap_year\nleap_year:\n li a0, 0\n ebreak\n ret\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  rf_expect_syscall
+}
+
+# A truncated object and a file that is not an ELF. The scan must stop with the
+# inspect note, never report a clean scan.
+case_scan_object_bad_object() {
+  local dir; dir="$(mktemp -d "${WORK}/bad-obj-XXXXXX")"
+  cp "${REPO}/exercises/practice/leap/Makefile" "${dir}/Makefile"
+  cp "${REPO}/exercises/practice/leap/.meta/example.S" "${dir}/leap.S"
+  if ! make -C "${dir}" -s --no-print-directory leap.o >/dev/null 2>&1; then
+    echo "  cannot build the scan object"
+    return 1
+  fi
+  head -c 40 "${dir}/leap.o" > "${dir}/truncated.o"
+  printf 'not an object\n' > "${dir}/notelf.o"
+  local out
+  if out="$("${REPO}/bin/scan-object" "${dir}/truncated.o" 2>&1)"; then
+    echo "  scanned a truncated object as clean: ${out}"
+    return 1
+  fi
+  grep -qF "could not inspect the object" <<< "${out}" || { echo "  truncated object note missing: ${out}"; return 1; }
+  if out="$("${REPO}/bin/scan-object" "${dir}/notelf.o" 2>&1)"; then
+    echo "  scanned a non-ELF file as clean: ${out}"
+    return 1
+  fi
+  grep -qF "could not inspect the object" <<< "${out}" || { echo "  non-ELF note missing: ${out}"; return 1; }
+}
+
 # Every example solution used as the student solution. None may warn. This
 # replaces the single .rodata control and includes secret-handshake.
 case_review_fork_examples() {
@@ -952,6 +1066,14 @@ run_case review-fork-large-ecall case_review_fork_large_ecall
 run_case review-fork-large-forge case_review_fork_large_forge
 run_case review-fork-overlap case_review_fork_overlap
 run_case review-fork-operand-name case_review_fork_operand_name
+run_case review-fork-wildcard-name case_review_fork_wildcard_name
+run_case review-fork-star-nonexec case_review_fork_star_nonexec
+run_case review-fork-double-space case_review_fork_double_space
+run_case review-fork-nonalloc-x case_review_fork_nonalloc_x
+run_case review-fork-multi-ax case_review_fork_multi_ax
+run_case review-fork-compressed-data case_review_fork_compressed_data
+run_case review-fork-ebreak case_review_fork_ebreak
+run_case scan-object-bad-object case_scan_object_bad_object
 run_case review-fork-examples case_review_fork_examples
 
 printf '\n=== SUMMARY: %d passed, %d failed ===\n' "${pass}" "${fail}"
