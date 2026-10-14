@@ -1,69 +1,120 @@
-# Exercism RISC-V Track
+# CMSC 125 Exercise Fork
 
-[![Configlet](https://github.com/exercism/risc-v/actions/workflows/configlet.yml/badge.svg)](https://github.com/exercism/risc-v/actions/workflows/configlet.yml) [![Test](https://github.com/exercism/risc-v/actions/workflows/test.yml/badge.svg)](https://github.com/exercism/risc-v/actions/workflows/test.yml)
+This repository holds the CMSC 125 RISC-V exercises.
+Each student forks this repository one time.
+The repository comes from the Exercism RISC-V track.
+The fork keeps the full upstream practice catalog of 77 exercises with the exact difficulty value that upstream assigns to each exercise.
+Read [UPSTREAM.md](UPSTREAM.md) for the original text and the attribution.
 
-Exercism exercises in RISC-V.
+## Your identity
 
-## Testing
+Fill in this table before you submit your work.
 
-To test all exercises, run `./bin/verify-exercises`.
-This command will iterate over all exercises and check to see if their exemplar/example implementation passes all the tests.
+| Field | Value |
+|:--|:--|
+| Full name | <your full name> |
+| Student number | <your student number> |
+| GitHub account | <your GitHub username> |
 
-To test a single exercise, run `./bin/verify-exercises <exercise-slug>`.
+## What you do
 
-### Using Docker
+1. Pick exercises until the total reaches 100 points.
+2. Write each solution in the solution file of the exercise.
+3. Claim each finished exercise in `completed.txt`.
+4. Explain each solution in `EXPLANATIONS.md`.
+5. Push your work.
+6. Submit the repository URL, the full commit hash, and the CI evidence from that commit.
 
-If your track has a working [test runner](https://exercism.org/docs/building/tooling/test-runners), the `./bin/verify-exercises-in-docker` script can also be used to test all exercises.
-This script pulls (_downloads_) the test runner's [Docker image](https://exercism.org/docs/building/tooling/test-runners/docker) and then uses Docker to run that image to test an exercise.
+## Points
 
-```exercism/note
-The main benefit of this approach is that it best mimics how exercises are tested in production (on the website).
-Another benefit is that you don't have to install track-specific dependencies (e.g. an SDK) locally, you just need Docker installed.
-```
+| Difficulty | Classification | Points |
+|--:|:--|--:|
+| 1 to 3 | easy | 10 |
+| 4 to 7 | medium | 15 |
+| 8 to 10 | hard | 20 |
 
-To test a single exercise, run `./bin/verify-exercises-in-docker <exercise-slug>`.
+The exercise marks are 0.3 times the points.
+The marks are uncapped.
+Ten easy exercises reach 100 points.
+`CATALOG.md` lists every exercise, its difficulty, its classification, and its points.
 
-### Linting
+## Run one exercise
 
-[`configlet`](https://exercism.org/docs/building/configlet) is an Exercism-wide tool for working with tracks. You can download it by running:
-
-```shell
-$ ./bin/fetch-configlet
-```
-
-Run its [`lint` command](https://exercism.org/docs/building/configlet/lint) to verify if exercises have the required files and if config files are correct:
-
-```shell
-$ ./bin/configlet lint
-
-The lint command is under development.
-Please re-run this command regularly to see if your track passes the latest linting rules.
-
-Basic linting finished successfully:
-- config.json exists and is valid JSON
-- config.json has these valid fields:
-    language, slug, active, blurb, version, status, online_editor, key_features, tags
-- Every concept has the required .md files
-- Every concept has a valid links.json file
-- Every concept has a valid .meta/config.json file
-- Every concept exercise has the required .md files
-- Every concept exercise has a valid .meta/config.json file
-- Every practice exercise has the required .md files
-- Every practice exercise has a valid .meta/config.json file
-- Required track docs are present
-- Required shared exercise docs are present
-```
-
-## Adding exercises
-
-New (practice) exercises can be added via:
+Run the public test suite of one exercise:
 
 ```shell
-bin/add-practice-exercise <exercise-slug>
+make test EXERCISE=hello-world
 ```
 
-Optionally, you can also specify the exercise's difficulty (via `-d`) and/or author's GitHub username (via `-a`):
+The command builds the solution and the test with Zig.
+It runs the test program with `qemu-riscv32` and prints the test result.
+An unknown slug stops with an error.
+
+## Score your claims
+
+Run the scorer:
 
 ```shell
-bin/add-practice-exercise -a foobar -d 3 <exercise-slug>
+make test-lab0
 ```
+
+The scorer reads `completed.txt`.
+It runs each claimed exercise with a 60 second limit.
+It prints the number of passed, failed, and skipped tests of each exercise.
+It prints the earned points and the marks.
+An exercise earns its points only when every test runs and passes.
+A skipped test, a compile failure, a crash, and a timeout each make the exercise incomplete.
+
+## Claim an exercise
+
+Put one slug on each line of `completed.txt`.
+The file ignores a blank line and a line that starts with `#`.
+
+```text
+hello-world
+leap
+```
+
+Write one entry for each claim in `EXPLANATIONS.md`.
+The instructor grades the explanations by review.
+CI prints a warning when an entry is missing. The points stay.
+
+## Files that you may change
+
+Change only these files:
+
+- `README.md`, the identity table
+- `completed.txt`
+- `EXPLANATIONS.md`
+- the solution file of an exercise, `exercises/practice/<slug>/<snake_slug>.S`
+
+Every other file is protected.
+The tests, `vendor/`, every `Makefile`, `.meta/`, `config.json`, the catalog,
+`bin/`, and `.github/` are protected.
+The instructor compares your fork with the course tag `v1.0`.
+
+Each exercise has an example solution in `.meta/example.S`.
+The exercise `Makefile` does not compile this file.
+The example is public. Do not copy it.
+
+## The toolchain
+
+The exercises use Zig, C, and Unity.
+The test program runs with `qemu-riscv32`.
+`qemu-riscv32` is QEMU user mode. It runs Linux binaries.
+It exists only on a Linux host.
+A Windows student uses WSL. Install `make`, `qemu-user`, and Zig 0.16.0 in WSL.
+No supported macOS path for QEMU user mode is known. Treat this as an open limitation.
+
+The course operating system later uses Clang and QEMU system mode, `qemu-system-riscv32`.
+That is a different runtime.
+
+## Continuous integration
+
+The workflow `.github/workflows/lab0.yml` scores the submitted commit.
+It prints the full commit hash before it scores.
+The score from the workflow is the exercise score.
+
+## Licence
+
+The track keeps the upstream MIT licence. See [LICENSE](LICENSE).
