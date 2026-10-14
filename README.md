@@ -67,10 +67,14 @@ A skipped test, a compile failure, a crash, and a timeout each make the exercise
 
 The scorer reads the points and the test names before any solution runs.
 It runs each claim in a private copy of the exercise.
-It checks the protected files after each claim.
-A change to a protected file stops the scorer.
+It hashes the scoring inputs before the claims run.
+The inputs are `catalog.tsv`, the root `Makefile`, `bin/`, and the exercise files other than the student solutions.
+It hashes those inputs again after each claim.
+A change stops the scorer.
 The scorer prints `reason=tamper` with the changed path.
 It then prints 0 points and 0 marks, and exits non-zero.
+The instructor review compares the other protected files with the course tag.
+Those files include `config.json` and `.github/`.
 A solution can still find and write a path outside its copy with enough effort.
 The instructor review aid flags a system call for that reason.
 
@@ -130,9 +134,10 @@ Run `bin/review-fork <fork-url> <commit>` to check one submission.
 The tool checks out the submitted commit first.
 It lists each changed protected path.
 The allowlist holds the solution files of the course tag.
+It also permits `README.md`, `completed.txt`, and `EXPLANATIONS.md`.
 Every other added, deleted, or changed path is protected.
 The tool warns about a solution file that can print a test result.
-It also warns about a system call, an `.insn`, or a raw `.word`, `.half`, or `.byte` in a text section.
+It also warns about a system call, an `.insn`, or a raw data directive in an executable section.
 No exercise needs a system call.
 It then runs `make test-lab0` at that commit.
 Set `LAB0_COURSE_URL` to change the course repository.
