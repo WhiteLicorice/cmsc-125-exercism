@@ -65,6 +65,15 @@ It prints the earned points and the marks.
 An exercise earns its points only when every test runs and passes.
 A skipped test, a compile failure, a crash, and a timeout each make the exercise incomplete.
 
+The scorer reads the points and the test names before any solution runs.
+It runs each claim in a private copy of the exercise.
+It checks the protected files after each claim.
+A change to a protected file stops the scorer.
+The scorer prints `reason=tamper` with the changed path.
+It then prints 0 points and 0 marks, and exits non-zero.
+A solution can still find and write a path outside its copy with enough effort.
+The instructor review aid flags a system call for that reason.
+
 ## Claim an exercise
 
 Put one slug on each line of `completed.txt`.
@@ -118,9 +127,16 @@ The score from the workflow is the exercise score.
 ## For the instructor
 
 Run `bin/review-fork <fork-url> <commit>` to check one submission.
-The tool lists each changed protected path.
-It warns about a solution file that can print a test result.
+The tool checks out the submitted commit first.
+It lists each changed protected path.
+The allowlist holds the solution files of the course tag.
+Every other added, deleted, or changed path is protected.
+The tool warns about a solution file that can print a test result.
+It also warns about a system call, an `.insn`, or a raw `.word`, `.half`, or `.byte` in a text section.
+No exercise needs a system call.
 It then runs `make test-lab0` at that commit.
+Set `LAB0_COURSE_URL` to change the course repository.
+Set `LAB0_COURSE_TAG` to change the baseline tag.
 A solution that prints every expected test result can still hide a failure, so read each flagged solution.
 
 ## Licence
