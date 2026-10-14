@@ -4,7 +4,7 @@
 # Each case builds a small temporary submission, runs `make test-lab0`, and
 # checks the printed totals and the exit code.
 # The review cases build a small local repository and run `bin/review-fork`.
-# Requires: bash, make, qemu-riscv32, zig, git, python3.
+# Requires: bash, make, qemu-riscv32, zig, git, llvm, python3.
 
 set -uo pipefail
 
@@ -491,7 +491,14 @@ rf_repo() {
   git -C "${RF_WORK}" config user.email review@example.com
   git -C "${RF_WORK}" config user.name review
   git -C "${RF_WORK}" config commit.gpgsign false
-  mkdir -p "${RF_WORK}/exercises/practice/leap" "${RF_WORK}/exercises/practice/two-fer"
+  local slug
+  for slug in leap two-fer; do
+    mkdir -p "${RF_WORK}/exercises/practice/${slug}/.meta"
+    cp "${REPO}/exercises/practice/${slug}/Makefile" \
+      "${RF_WORK}/exercises/practice/${slug}/Makefile"
+    cp "${REPO}/exercises/practice/${slug}/.meta/example.S" \
+      "${RF_WORK}/exercises/practice/${slug}/.meta/example.S"
+  done
   printf '.text\n.global leap_year\nleap_year:\n        li a0, 0\n        ret\n' \
     > "${RF_WORK}/exercises/practice/leap/leap.S"
   printf '.text\n.global two_fer\ntwo_fer:\n        ret\n' \
@@ -518,6 +525,43 @@ rf_run() {
   LAST_OUT="$(LAB0_COURSE_URL="${RF_BARE}" LAB0_COURSE_TAG=v1.0 \
     "${REPO}/bin/review-fork" "${RF_BARE}" "${commit}" 2>&1)"
   LAST_RC=$?
+}
+
+# A bare repository that holds every course exercise. The tag v1.0 holds the
+# course stub solutions. It is used for the example negative control.
+rf_all_repo() {
+  local name="$1"
+  RF_BARE="${WORK}/rf-${name}.git"
+  RF_WORK="${WORK}/rf-${name}-work"
+  git init --quiet --bare "${RF_BARE}" >/dev/null 2>&1
+  git init --quiet "${RF_WORK}" >/dev/null 2>&1
+  git -C "${RF_WORK}" checkout --quiet -b main >/dev/null 2>&1
+  git -C "${RF_WORK}" config user.email review@example.com
+  git -C "${RF_WORK}" config user.name review
+  git -C "${RF_WORK}" config commit.gpgsign false
+  local dir slug snake
+  while IFS= read -r dir; do
+    slug="$(basename "${dir}")"
+    snake="${slug//-/_}"
+    mkdir -p "${RF_WORK}/exercises/practice/${slug}/.meta"
+    cp "${dir}/Makefile" "${RF_WORK}/exercises/practice/${slug}/Makefile"
+    cp "${dir}/.meta/example.S" \
+      "${RF_WORK}/exercises/practice/${slug}/.meta/example.S"
+    printf '.text\n.global %s\n%s:\n        ret\n' "${snake}" "${snake}" \
+      > "${RF_WORK}/exercises/practice/${slug}/${snake}.S"
+  done < <(find "${REPO}/exercises/practice" -mindepth 1 -maxdepth 1 -type d | sort)
+  git -C "${RF_WORK}" add -A
+  git -C "${RF_WORK}" commit --quiet -m clean
+  git -C "${RF_WORK}" tag v1.0
+  git -C "${RF_WORK}" push --quiet "${RF_BARE}" refs/heads/main refs/tags/v1.0
+  git -C "${RF_BARE}" symbolic-ref HEAD refs/heads/main
+}
+
+# Submit the current work tree and check the system-call warning line.
+rf_expect_syscall() {
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a breakpoint"
 }
 
 # The default branch is clean. The submitted commit holds a forged solution.
@@ -553,15 +597,13 @@ case_review_fork_extra_solution() {
 }
 
 # A raw instruction in an executable text subsection. The section name is not
-# exactly .text, but the .text. prefix makes it executable. The aid must warn
-# about the raw directive.
+# exactly .text, but the .text. prefix makes it executable. The object scan
+# must warn.
 case_review_fork_raw_text_subsection() {
   rf_repo raw-text-subsection
   printf '.section .text.attack,"ax",@progbits\n.global leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        .word 0x00000073\n' \
     > "${RF_WORK}/exercises/practice/leap/leap.S"
-  local commit; commit="$(rf_submit)"
-  rf_run "${commit}"
-  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+  rf_expect_syscall
 }
 
 # The same, with a .4byte directive and an x flag on a section that is not
@@ -570,20 +612,7 @@ case_review_fork_flagged_data_subsection() {
   rf_repo flagged-data-subsection
   printf '.section .foo,"ax",@progbits\n.global leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        .4byte 0x00000073\n' \
     > "${RF_WORK}/exercises/practice/leap/leap.S"
-  local commit; commit="$(rf_submit)"
-  rf_run "${commit}"
-  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
-}
-
-# A solution that uses .pushsection. The aid warns, because tracking the
-# pushed section exactly is not worth the risk.
-case_review_fork_pushsection() {
-  rf_repo pushsection
-  printf '.text\n.global leap_year\nleap_year:\n        li a0, 0\n        ret\n.pushsection .foo,"ax",@progbits\n.popsection\n' \
-    > "${RF_WORK}/exercises/practice/leap/leap.S"
-  local commit; commit="$(rf_submit)"
-  rf_run "${commit}"
-  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+  rf_expect_syscall
 }
 
 # A correct solution with a .word lookup table in .rodata and no x flag. The
@@ -594,18 +623,16 @@ case_review_fork_data_table() {
     > "${RF_WORK}/exercises/practice/leap/leap.S"
   local commit; commit="$(rf_submit)"
   rf_run "${commit}"
-  expect_no_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+  expect_rc 0 && expect_no_line "[WARNING]"
 }
 
-# The assembler accepts directives and mnemonics in any case. A raw .WORD in
-# an upper-case .TEXT section must warn.
-case_review_fork_upper_text() {
-  rf_repo upper-text
-  printf '.TEXT\n.GLOBL leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        .WORD 0x00000073\n        ret\n' \
+# The assembler accepts an upper-case directive. An upper-case .WORD that
+# emits the exit system call must warn.
+case_review_fork_upper_word() {
+  rf_repo upper-word
+  printf '.text\n.globl leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        .WORD 0x00000073\n        ret\n' \
     > "${RF_WORK}/exercises/practice/leap/leap.S"
-  local commit; commit="$(rf_submit)"
-  rf_run "${commit}"
-  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+  rf_expect_syscall
 }
 
 # An upper-case ECALL must warn.
@@ -613,30 +640,222 @@ case_review_fork_upper_ecall() {
   rf_repo upper-ecall
   printf '.text\n.globl leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        ECALL\n        ret\n' \
     > "${RF_WORK}/exercises/practice/leap/leap.S"
-  local commit; commit="$(rf_submit)"
-  rf_run "${commit}"
-  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+  rf_expect_syscall
 }
 
-# scall is an old alias of ecall. It must warn.
+# scall is an old alias of ecall. It assembles to the same instruction, so the
+# object scan warns.
 case_review_fork_scall() {
   rf_repo scall
   printf '.text\n.globl leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        scall\n        ret\n' \
     > "${RF_WORK}/exercises/practice/leap/leap.S"
-  local commit; commit="$(rf_submit)"
-  rf_run "${commit}"
-  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+  rf_expect_syscall
 }
 
-# A .macro that wraps a raw directive in .rodata. Only the macro rule can fire,
-# so the case tests that branch.
+# A .macro that wraps .4byte and is expanded in .text. The expansion emits the
+# exit system call, so only the object scan can warn.
 case_review_fork_macro() {
   rf_repo macro
-  printf '.text\n.globl leap_year\nleap_year:\n        li a0, 0\n        ret\n.section .rodata\n.macro emit\n        .4byte 0x00000073\n.endm\n' \
-    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.text
+.globl leap_year
+.macro emit
+        .4byte 0x00000073
+.endm
+leap_year:
+        li a0, 0
+        emit
+        ret
+ASM
+  rf_expect_syscall
+}
+
+# .uleb128 emits the four bytes of the exit system call. The source holds no
+# mnemonic, byte directive, or section trick.
+case_review_fork_uleb128() {
+  rf_repo uleb128
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.text
+.globl leap_year
+leap_year:
+ li a0,0
+ li a7,93
+ .uleb128 115,0,0,0
+ASM
+  rf_expect_syscall
+}
+
+# .space emits the bytes.
+case_review_fork_space() {
+  rf_repo space
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.text
+.globl leap_year
+leap_year:
+ li a0,0
+ li a7,93
+ .space 1,115
+ .space 3,0
+ASM
+  rf_expect_syscall
+}
+
+# .zero emits the bytes.
+case_review_fork_zero() {
+  rf_repo zero
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.text
+.globl leap_year
+leap_year:
+ li a0,0
+ li a7,93
+ .zero 1,115
+ .zero 3,0
+ASM
+  rf_expect_syscall
+}
+
+# The C preprocessor builds the ecall mnemonic by token pasting.
+case_review_fork_cpp_paste() {
+  rf_repo cpp-paste
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+#define cat(a,b) a##b
+.text
+.globl leap_year
+leap_year:
+ li a0,0
+ li a7,93
+ cat(e,call)
+ASM
+  rf_expect_syscall
+}
+
+# A re-entered executable section keeps its x flag.
+case_review_fork_section_reentry() {
+  rf_repo section-reentry
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.section .payload,"ax",@progbits
+.text
+.section .payload
+.globl leap_year
+leap_year:
+ li a0,0
+ li a7,93
+ .word 0x73
+ASM
+  rf_expect_syscall
+}
+
+# A quoted section name with an x flag.
+case_review_fork_quoted_section() {
+  rf_repo quoted-section
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.section "payload","ax",@progbits
+.globl leap_year
+leap_year:
+ li a0,0
+ li a7,93
+ .word 0x73
+ASM
+  rf_expect_syscall
+}
+
+# A label before the .text directive.
+case_review_fork_label_section() {
+  rf_repo label-section
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.data
+marker: .text
+.globl leap_year
+leap_year:
+ li a0,0
+ li a7,93
+ .word 0x73
+ASM
+  rf_expect_syscall
+}
+
+# A .data directive inside a block comment does not leave the text section.
+case_review_fork_comment_section() {
+  rf_repo comment-section
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.text
+.globl leap_year
+leap_year:
+ li a0,0
+ li a7,93
+/*
+.data
+*/
+ .word 0x73
+ASM
+  rf_expect_syscall
+}
+
+# A libc call is an undefined symbol. The example object gives the allowed set,
+# so a call that the example does not make must warn.
+case_review_fork_libc_call() {
+  rf_repo libc-call
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.text
+.globl leap_year
+leap_year:
+        addi sp, sp, -16
+        sw ra, 12(sp)
+        la a0, msg
+        call write
+        lw ra, 12(sp)
+        addi sp, sp, 16
+        li a0, 0
+        ret
+.section .rodata
+msg:
+        .asciz "hi"
+ASM
   local commit; commit="$(rf_submit)"
   rf_run "${commit}"
-  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+  expect_line "[WARNING] exercises/practice/leap/leap.S calls an unexpected symbol: write"
+}
+
+# The preprocessor builds the forgery text. The source holds none of the words,
+# but the object strings do.
+case_review_fork_forge_text() {
+  rf_repo forge-text
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+#define str(x) #x
+#define xstr(x) str(x)
+#define cat(a,b) a##b
+#define T cat(T,ests)
+#define F cat(F,ailures)
+#define I cat(I,gnored)
+.section .rodata
+msg:
+        .asciz xstr(8 T 0 F 0 I)
+.text
+.globl leap_year
+leap_year:
+        li a0, 0
+        ret
+ASM
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S holds text that can forge a test result"
+}
+
+# Every example solution used as the student solution. None may warn. This
+# replaces the single .rodata control and includes secret-handshake.
+case_review_fork_examples() {
+  rf_all_repo examples
+  local dir slug snake
+  while IFS= read -r dir; do
+    slug="$(basename "${dir}")"
+    snake="${slug//-/_}"
+    cp "${dir}/.meta/example.S" \
+      "${RF_WORK}/exercises/practice/${slug}/${snake}.S"
+  done < <(find "${REPO}/exercises/practice" -mindepth 1 -maxdepth 1 -type d | sort)
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_rc 0 && expect_no_line "[WARNING]"
 }
 
 printf 'Scoring tests for make test-lab0 (default time limit %ss)\n' "${TIMEOUT}"
@@ -669,12 +888,22 @@ run_case review-fork-unknown-exercise case_review_fork_unknown_exercise
 run_case review-fork-extra-solution case_review_fork_extra_solution
 run_case review-fork-raw-text-subsection case_review_fork_raw_text_subsection
 run_case review-fork-flagged-data-subsection case_review_fork_flagged_data_subsection
-run_case review-fork-pushsection case_review_fork_pushsection
 run_case review-fork-data-table case_review_fork_data_table
-run_case review-fork-upper-text case_review_fork_upper_text
+run_case review-fork-upper-word case_review_fork_upper_word
 run_case review-fork-upper-ecall case_review_fork_upper_ecall
 run_case review-fork-scall case_review_fork_scall
 run_case review-fork-macro case_review_fork_macro
+run_case review-fork-uleb128 case_review_fork_uleb128
+run_case review-fork-space case_review_fork_space
+run_case review-fork-zero case_review_fork_zero
+run_case review-fork-cpp-paste case_review_fork_cpp_paste
+run_case review-fork-section-reentry case_review_fork_section_reentry
+run_case review-fork-quoted-section case_review_fork_quoted_section
+run_case review-fork-label-section case_review_fork_label_section
+run_case review-fork-comment-section case_review_fork_comment_section
+run_case review-fork-libc-call case_review_fork_libc_call
+run_case review-fork-forge-text case_review_fork_forge_text
+run_case review-fork-examples case_review_fork_examples
 
 printf '\n=== SUMMARY: %d passed, %d failed ===\n' "${pass}" "${fail}"
 if (( fail > 0 )); then
