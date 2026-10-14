@@ -4,9 +4,9 @@
 # Usage: bin/review-fork <fork-url> <commit>
 #
 # Clone the fork. Fetch the course tag. Check out the submitted commit. List
-# every changed path outside the permitted student files. Warn about a
-# solution file that can print a test result or run a system call. Run
-# make test-lab0 at that commit. Remove the temporary folder.
+# every changed path outside the permitted student files. Build each submitted
+# solution and read its object for a system call, a library call, or forgery
+# text. Run make test-lab0 at that commit. Remove the temporary folder.
 #
 # The environment variable LAB0_COURSE_URL sets the course repository.
 # The environment variable LAB0_COURSE_TAG sets the baseline tag.
@@ -15,7 +15,7 @@
 # Exit 0 when no protected path changed. Exit 1 when a protected path changed.
 # Exit 2 on a setup error.
 #
-# Requires: git, make, qemu-riscv32, zig, python3.
+# Requires: git, make, qemu-riscv32, zig, llvm, python3.
 
 set -uo pipefail
 
@@ -28,6 +28,15 @@ if [ $# -ne 2 ]; then
 fi
 fork_url="$1"
 commit="$2"
+
+# The object scan needs the LLVM tools. Stop before the clone when one is
+# missing, so the instructor sees the setup error, not a partial review.
+for tool in llvm-objdump llvm-nm llvm-strings; do
+  if ! command -v "${tool}" >/dev/null 2>&1; then
+    echo "error: ${tool} is required" >&2
+    exit 2
+  fi
+done
 
 tmp="$(mktemp -d -t lab0-review-XXXXXX)"
 trap 'rm -rf "${tmp}"' EXIT
@@ -101,51 +110,77 @@ for path in "${permitted_paths[@]-}"; do
   echo "    ${path}"
 done
 
-# A solution runs in the same process as the test runner, so it can print a
-# test result. It can also make a system call. Warn about each such file. No
-# exercise needs a system call.
-forge=0
+# A solution runs in the same process as the test runner. It can print a test
+# result, and it can make a system call. Build every submitted solution with
+# its exercise Makefile and read the assembled object. The object holds the
+# instructions that run, so a directive, a macro, a section trick, or a
+# preprocessor trick cannot hide a system call, a library call, or forgery
+# text. Warn about each such file. No exercise needs a system call or a
+# library call.
+assemble=0
 syscall=0
-for path in "${tmp}"/fork/exercises/practice/*/*.S; do
-  [ -f "${path}" ] || continue
-  rel="${path#"${tmp}"/fork/}"
-  if grep -Fq -e 'Tests' -e 'Failures' -e 'Ignored' -e ':PASS' -e 'OK\n' "${path}"; then
+symbol=0
+forge=0
+for rel in "${permitted_paths[@]-}"; do
+  case "${rel}" in
+    exercises/practice/*/*.S) ;;
+    *) continue ;;
+  esac
+  src="${tmp}/fork/${rel}"
+  [ -f "${src}" ] || continue
+  slug="${rel#exercises/practice/}"
+  slug="${slug%%/*}"
+  dir="${tmp}/fork/exercises/practice/${slug}"
+  base="$(basename "${rel}" .S)"
+
+  # Build the object with the exercise Makefile rule, not a copied command.
+  rm -f "${dir}/${base}.o"
+  if ! make -C "${dir}" -s --no-print-directory "${base}.o" >/dev/null 2>&1; then
+    echo "    [WARNING] ${rel} does not assemble"
+    assemble=$((assemble + 1))
+    continue
+  fi
+  obj="${dir}/${base}.o"
+
+  # The disassembly holds the real instructions, whatever produced the bytes.
+  if llvm-objdump -d "${obj}" | sed 's/#.*//' |
+      grep -E '^[[:space:]]*[0-9a-f]+:' |
+      grep -Eq '(^|[^A-Za-z0-9_])(ecall|ebreak)([^A-Za-z0-9_]|$)'; then
+    echo "    [WARNING] ${rel} holds a system call or a breakpoint"
+    syscall=$((syscall + 1))
+  fi
+
+  # A library call is an undefined symbol. The example object gives the
+  # allowed set for that exercise.
+  undefined="$(llvm-nm -u "${obj}" 2>/dev/null | awk '{print $NF}' | sort -u)"
+  if [ -n "${undefined}" ]; then
+    cp -f "${dir}/.meta/example.S" "${dir}/__review_example__.S"
+    rm -f "${dir}/__review_example__.o"
+    make -C "${dir}" -s --no-print-directory __review_example__.o \
+      >/dev/null 2>&1 || true
+    allowed="$(llvm-nm -u "${dir}/__review_example__.o" 2>/dev/null |
+      awk '{print $NF}' | sort -u)"
+    rm -f "${dir}/__review_example__.S" "${dir}/__review_example__.o"
+    while IFS= read -r name; do
+      [ -z "${name}" ] && continue
+      if ! printf '%s\n' "${allowed}" | grep -qxF "${name}"; then
+        echo "    [WARNING] ${rel} calls an unexpected symbol: ${name}"
+        symbol=$((symbol + 1))
+      fi
+    done <<< "${undefined}"
+  fi
+
+  # Forgery text is a string in the object, whatever built it.
+  if llvm-strings "${obj}" |
+      grep -Eq '[0-9]+ Tests [0-9]+ Failures [0-9]+ Ignored|:PASS'; then
     echo "    [WARNING] ${rel} holds text that can forge a test result"
     forge=$((forge + 1))
   fi
-  if awk '
-      BEGIN { isx=1 }
-      {
-        line=tolower($0)
-        if (line ~ /^[[:space:]]*\.(pushsection|popsection|previous|subsection|macro|irp|irpc|rept)([^A-Za-z0-9_]|$)/) {
-          print "hit"; exit
-        }
-        if (line ~ /^[[:space:]]*\.text([[:space:]]|$)/) {
-          isx=1
-        } else if (line ~ /^[[:space:]]*\.(data|rodata|bss)([[:space:]]|$)/) {
-          isx=0
-        } else if (line ~ /^[[:space:]]*\.section[[:space:]]/) {
-          rest=line
-          sub(/^[[:space:]]*\.section[[:space:]]+/, "", rest)
-          name=rest
-          sub(/[,[:space:]].*$/, "", name)
-          flags=""
-          if (match(rest, /"[^"]*"/)) {
-            flags=substr(rest, RSTART+1, RLENGTH-2)
-          }
-          isx=((name == ".text" || name ~ /^\.text\./) || flags ~ /x/)
-        }
-        if (line ~ /(^|[^A-Za-z0-9_])(ecall|scall)([^A-Za-z0-9_]|$)/) { print "hit"; exit }
-        if (line ~ /\.insn([^A-Za-z0-9_]|$)/) { print "hit"; exit }
-        if (line ~ /\.incbin([^A-Za-z0-9_]|$)/) { print "hit"; exit }
-        if (isx && line ~ /\.(word|half|byte|short|long|int|2byte|4byte|8byte|quad|dword|fill|ascii|asciz|string|dc)([^A-Za-z0-9_]|$)/) { print "hit"; exit }
-      }' "${path}" | grep -q .; then
-    echo "    [WARNING] ${rel} holds a system call or a raw directive"
-    syscall=$((syscall + 1))
-  fi
 done
+echo "-> solution files that do not assemble: ${assemble}"
+echo "-> solution files that hold a system call or a breakpoint: ${syscall}"
+echo "-> solution files that call an unexpected symbol: ${symbol}"
 echo "-> solution files that can forge a test result: ${forge}"
-echo "-> solution files that hold a system call or a raw directive: ${syscall}"
 
 echo "-> make test-lab0 at ${commit}"
 (cd "${tmp}/fork" && make test-lab0)
