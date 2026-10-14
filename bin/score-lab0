@@ -1,0 +1,143 @@
+#!/usr/bin/env bash
+# Score the exercises named in completed.txt.
+#
+# Read catalog.tsv for the slug, difficulty, classification, and points.
+# Run the public test suite of each valid claim with a time limit.
+# Print the earned points and the marks (0.3 x points).
+# Exit non-zero when a claim is invalid, duplicated, or incomplete.
+#
+# Requires: bash, make, qemu-riscv32, timeout.
+
+set -uo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CATALOG="${ROOT}/catalog.tsv"
+COMPLETED="${ROOT}/completed.txt"
+EXPLANATIONS="${ROOT}/EXPLANATIONS.md"
+TIME_LIMIT="${LAB0_TIMEOUT:-60}"
+
+if [ ! -f "${CATALOG}" ]; then
+  echo "error: ${CATALOG} is missing. Run bin/generate-catalog." >&2
+  exit 2
+fi
+if [ ! -f "${COMPLETED}" ]; then
+  echo "error: ${COMPLETED} is missing." >&2
+  exit 2
+fi
+
+# The points of a slug, or nothing when the slug is unknown.
+points_for() {
+  awk -F'\t' -v s="$1" '$1==s {print $5}' "${CATALOG}"
+}
+
+# Score one exercise. Print one result line. Return 0 when all tests pass.
+score_claim() {
+  local slug="$1" dir="$2"
+  local build_out run_out rc summary tests failures ignored passed
+
+  (cd "${dir}" && make -s clean) >/dev/null 2>&1 || true
+
+  if ! build_out="$(cd "${dir}" && make -s tests 2>&1)"; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=build\n' "${slug}"
+    return 1
+  fi
+
+  run_out="$(cd "${dir}" && timeout "${TIME_LIMIT}" qemu-riscv32 ./tests 2>&1)"
+  rc=$?
+  summary="$(printf '%s\n' "${run_out}" | grep -E '^[0-9]+ Tests [0-9]+ Failures [0-9]+ Ignored[[:space:]]*$' | tail -n 1)"
+
+  if [ -z "${summary}" ]; then
+    if [ "${rc}" -eq 124 ]; then
+      printf '%s: FAIL  passed=- failed=- skipped=-  reason=timeout\n' "${slug}"
+    else
+      printf '%s: FAIL  passed=- failed=- skipped=-  reason=crash\n' "${slug}"
+    fi
+    return 1
+  fi
+
+  read -r tests failures ignored < <(awk '{print $1, $3, $5}' <<< "${summary}")
+  passed=$((tests - failures - ignored))
+
+  if [ "${ignored}" -gt 0 ]; then
+    printf '%s: FAIL  passed=%d failed=%d skipped=%d  reason=skipped\n' \
+      "${slug}" "${passed}" "${failures}" "${ignored}"
+    return 1
+  fi
+  if [ "${failures}" -gt 0 ]; then
+    printf '%s: FAIL  passed=%d failed=%d skipped=%d  reason=failed\n' \
+      "${slug}" "${passed}" "${failures}" "${ignored}"
+    return 1
+  fi
+
+  printf '%s: PASS  passed=%d failed=0 skipped=0\n' "${slug}" "${passed}"
+  return 0
+}
+
+declare -a claims=()
+declare -A seen=()
+invalid=0
+duplicate=0
+
+# Read the claims. Skip a blank line and a line that starts with #. Trim spaces.
+while IFS= read -r raw || [ -n "${raw}" ]; do
+  line="${raw%$'\r'}"
+  line="${line#"${line%%[![:space:]]*}"}"
+  line="${line%"${line##*[![:space:]]}"}"
+  [ -z "${line}" ] && continue
+  case "${line}" in \#*) continue ;; esac
+  if [ -n "${seen["${line}"]:-}" ]; then
+    echo "duplicate slug: ${line}"
+    duplicate=1
+    continue
+  fi
+  seen["${line}"]=1
+  claims+=("${line}")
+done < "${COMPLETED}"
+
+# Report each unknown slug.
+declare -a valid_claims=()
+for slug in "${claims[@]}"; do
+  if [ -z "$(points_for "${slug}")" ]; then
+    echo "invalid slug: ${slug}"
+    invalid=1
+  else
+    valid_claims+=("${slug}")
+  fi
+done
+
+echo "-> scored ${#claims[@]} claimed exercises"
+total_points=0
+incomplete=0
+for slug in "${valid_claims[@]}"; do
+  points="$(points_for "${slug}")"
+  if score_claim "${slug}" "${ROOT}/exercises/practice/${slug}"; then
+    total_points=$((total_points + points))
+  else
+    incomplete=1
+  fi
+done
+
+# Warn about each claim with no explanation. Keep its points.
+for slug in "${valid_claims[@]}"; do
+  if [ -f "${EXPLANATIONS}" ] &&
+     grep -Eq "(^|[^A-Za-z0-9-])${slug}([^A-Za-z0-9-]|$)" "${EXPLANATIONS}"; then
+    continue
+  fi
+  echo "warning: no explanation for ${slug}"
+done
+
+# The marks are 0.3 x points. Compute the tenths without floating point.
+tenths=$((total_points * 3))
+if [ $((tenths % 10)) -eq 0 ]; then
+  marks=$((tenths / 10))
+else
+  marks="$((tenths / 10)).$((tenths % 10))"
+fi
+
+echo "TOTAL POINTS: ${total_points}"
+echo "TOTAL MARKS: ${marks}"
+
+if [ "${invalid}" -ne 0 ] || [ "${duplicate}" -ne 0 ] || [ "${incomplete}" -ne 0 ]; then
+  exit 1
+fi
+exit 0

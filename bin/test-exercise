@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Run the complete public test suite of one exercise.
+# Usage: make test EXERCISE=<slug>
+#
+# Requires: bash, make, qemu-riscv32.
+
+set -uo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+slug="${1:-}"
+
+if [ -z "${slug}" ]; then
+  echo "error: name an exercise, for example: make test EXERCISE=hello-world" >&2
+  exit 2
+fi
+
+dir="${ROOT}/exercises/practice/${slug}"
+if [ ! -d "${dir}" ]; then
+  echo "error: no exercise named '${slug}'" >&2
+  exit 1
+fi
+
+cd "${dir}" || exit 2
+make -s clean >/dev/null 2>&1 || true
+make -s tests || exit 1
+exec qemu-riscv32 ./tests
