@@ -842,6 +842,51 @@ ASM
   expect_line "[WARNING] exercises/practice/leap/leap.S holds text that can forge a test result"
 }
 
+# A literal ecall and then 20,000 nop instructions. The disassembly is large,
+# so an early matcher exit must not hide the system call.
+case_review_fork_large_ecall() {
+  rf_repo large-ecall
+  {
+    printf '.text\n.globl leap_year\nleap_year:\n li a0,0\n li a7,93\n ecall\n'
+    printf '.rept 20000\n nop\n.endr\n'
+  } > "${RF_WORK}/exercises/practice/leap/leap.S"
+  rf_expect_syscall
+}
+
+# Forgery text and then 20,000 padding strings. The string table is large, so
+# an early matcher exit must not hide the forgery warning.
+case_review_fork_large_forge() {
+  rf_repo large-forge
+  {
+    printf '.text\n.globl leap_year\nleap_year:\n ret\n'
+    printf '.section .rodata\n.asciz ":PASS"\n'
+    printf '.rept 20000\n.asciz "padding"\n.endr\n'
+  } > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S holds text that can forge a test result"
+}
+
+# A jump into the middle of a word. The word holds the ecall encoding at
+# offset 2. A linear disassembly shows no ecall; the byte scan must warn.
+case_review_fork_overlap() {
+  rf_repo overlap
+  printf '.text\n.globl leap_year\nleap_year:\n li a0,0\n li a7,93\n j payload+2\n.balign 4\npayload:\n .word 0x00730013\n .half 0\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  rf_expect_syscall
+}
+
+# A label named ecall with no system call. The byte scan must not read a
+# symbol name as an instruction.
+case_review_fork_operand_name() {
+  rf_repo operand-name
+  printf '.text\n.globl leap_year\nleap_year:\n j ecall\necall:\n ret\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_rc 0 && expect_no_line "[WARNING]"
+}
+
 # Every example solution used as the student solution. None may warn. This
 # replaces the single .rodata control and includes secret-handshake.
 case_review_fork_examples() {
@@ -903,6 +948,10 @@ run_case review-fork-label-section case_review_fork_label_section
 run_case review-fork-comment-section case_review_fork_comment_section
 run_case review-fork-libc-call case_review_fork_libc_call
 run_case review-fork-forge-text case_review_fork_forge_text
+run_case review-fork-large-ecall case_review_fork_large_ecall
+run_case review-fork-large-forge case_review_fork_large_forge
+run_case review-fork-overlap case_review_fork_overlap
+run_case review-fork-operand-name case_review_fork_operand_name
 run_case review-fork-examples case_review_fork_examples
 
 printf '\n=== SUMMARY: %d passed, %d failed ===\n' "${pass}" "${fail}"
