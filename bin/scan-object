@@ -3,100 +3,119 @@
 #
 # Usage: scan-object <object>
 #
-# Read each executable section of the object with llvm-readelf. Dump the bytes
-# of each such section with llvm-objcopy. Print one line for each system-call
-# or breakpoint encoding that starts at an even offset.
+# Read the executable section bytes straight from the ELF file. Print one line
+# for each system-call or breakpoint encoding that starts at an even offset.
 #
-# The system-call encoding is 73 00 00 00. The breakpoint encoding is
-# 73 00 10 00. A plain ebreak assembles to the compressed form c.ebreak,
-# 02 90, so the scan covers that encoding too.
+# Read the ELF32 little-endian header and the section header table with
+# struct. Select a section when its flag word holds SHF_EXECINSTR (0x4) and its
+# type is not SHT_NOBITS (8). Read its bytes at sh_offset for sh_size bytes.
+# Search every even offset. Do not select a section by name, and do not
+# convert the object to a binary image, so a wildcard name and a section with
+# no alloc flag both work.
 #
-# Exit 0 when the scan completes. Exit 3 when a tool fails.
+# The rule covers three encodings at an even offset of an executable section:
+# the system call ecall (73 00 00 00), the breakpoint ebreak (73 00 10 00), and
+# the compressed breakpoint c.ebreak (02 90). The assembler writes a plain
+# ebreak as c.ebreak, so a rule with only the 32-bit form misses the ordinary
+# breakpoint. ecall has no compressed form.
+#
+# Exit 0 on a completed scan. Exit 2 on a usage error. Exit 3 on a file that
+# the scan cannot parse. Any 3 exit prints the inspect note. A parse failure
+# is never a clean scan.
 
-import os
-import re
-import subprocess
+import struct
 import sys
-import tempfile
 
+# 73 00 00 00 ecall, 73 00 10 00 ebreak, 02 90 c.ebreak. The two 32-bit forms
+# are the little-endian encodings of the two instructions. A plain ebreak
+# assembles to c.ebreak (02 90), so the compressed form is needed to catch it.
 ECALL = b"\x73\x00\x00\x00"
 EBREAK = b"\x73\x00\x10\x00"
 C_EBREAK = b"\x02\x90"
 STEP = 2
-SECTION_LINE = re.compile(r"^\[\s*\d+\]\s+(.*)$")
+
+EM_RISCV = 243
+SHT_NOBITS = 8
+SHF_EXECINSTR = 0x4
+
+# ELF32 header field offsets.
+E_MACHINE = 18
+E_SHOFF = 32
+E_SHENTSIZE = 46
+E_SHNUM = 48
+
+# ELF32 section header field offsets, from the section header start.
+SH_TYPE = 4
+SH_FLAGS = 8
+SH_OFFSET = 16
+SH_SIZE = 20
+
+SHENT_MIN = 40
 
 
-def executable_sections(obj):
-    # A tool failure is not a clean scan. The caller reads exit 3 as an error.
-    result = subprocess.run(
-        ["llvm-readelf", "-S", "-W", obj],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    if result.returncode != 0:
+def sections(data):
+    # Return a list of (offset, size) for every executable, non-NOBITS
+    # section. Return None when the file is not an object this scan can read.
+    if len(data) < 52:
         return None
-    sections = []
-    for line in result.stdout.decode("utf-8", "replace").splitlines():
-        match = SECTION_LINE.match(line.strip())
-        if not match:
-            continue
-        fields = match.group(1).split()
-        # The last nine fields are Type, Address, Off, Size, ES, Flg, Lk,
-        # Inf, Al. The name is everything before them.
-        if len(fields) < 10:
-            continue
-        name = " ".join(fields[:-9])
-        flag = fields[-4]
-        if "X" in flag:
-            sections.append(name)
-    return sections
-
-
-def section_bytes(obj, name):
-    handle, path = tempfile.mkstemp(prefix="scan-object-", suffix=".bin")
-    os.close(handle)
-    try:
-        result = subprocess.run(
-            ["llvm-objcopy", "-O", "binary", "--only-section=" + name, obj, path],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        if result.returncode != 0:
+    if data[:4] != b"\x7fELF" or data[4] != 1 or data[5] != 1:
+        return None
+    (machine,) = struct.unpack_from("<H", data, E_MACHINE)
+    if machine != EM_RISCV:
+        return None
+    (shoff,) = struct.unpack_from("<I", data, E_SHOFF)
+    (shentsize,) = struct.unpack_from("<H", data, E_SHENTSIZE)
+    (shnum,) = struct.unpack_from("<H", data, E_SHNUM)
+    if shentsize < SHENT_MIN:
+        return None
+    if shoff + shnum * shentsize > len(data):
+        return None
+    found = []
+    for index in range(shnum):
+        base = shoff + index * shentsize
+        (sh_type,) = struct.unpack_from("<I", data, base + SH_TYPE)
+        (sh_flags,) = struct.unpack_from("<I", data, base + SH_FLAGS)
+        (sh_offset,) = struct.unpack_from("<I", data, base + SH_OFFSET)
+        (sh_size,) = struct.unpack_from("<I", data, base + SH_SIZE)
+        if sh_offset + sh_size > len(data):
             return None
-        with open(path, "rb") as stream:
-            return stream.read()
-    finally:
-        os.remove(path)
+        if sh_flags & SHF_EXECINSTR and sh_type != SHT_NOBITS:
+            found.append((sh_offset, sh_size))
+    return found
 
 
-def scan(data):
-    for offset in range(0, len(data) - 3, STEP):
-        word = data[offset:offset + 4]
+def scan(data, offset, size):
+    # Yield (file offset, encoding) for each match at an even offset. The
+    # section bytes live between offset and offset + size in the file.
+    end = offset + size
+    for start in range(offset, end - 3, STEP):
+        word = data[start:start + 4]
         if word == ECALL:
-            yield offset, "ecall"
+            yield start, "ecall"
         elif word == EBREAK:
-            yield offset, "ebreak"
-    for offset in range(0, len(data) - 1, STEP):
-        if data[offset:offset + 2] == C_EBREAK:
-            yield offset, "ebreak"
+            yield start, "ebreak"
+    for start in range(offset, end - 1, STEP):
+        if data[start:start + 2] == C_EBREAK:
+            yield start, "ebreak"
 
 
 def main():
     if len(sys.argv) != 2:
         print("usage: scan-object <object>", file=sys.stderr)
         return 2
-    obj = sys.argv[1]
-    sections = executable_sections(obj)
-    if sections is None:
-        print("scan-object: llvm-readelf failed", file=sys.stderr)
+    try:
+        with open(sys.argv[1], "rb") as stream:
+            data = stream.read()
+    except OSError:
+        print("scan-object: could not inspect the object", file=sys.stderr)
         return 3
-    for name in sections:
-        data = section_bytes(obj, name)
-        if data is None:
-            print("scan-object: llvm-objcopy failed", file=sys.stderr)
-            return 3
-        for offset, encoding in scan(data):
-            print("{0} 0x{1:x} {2}".format(name, offset, encoding))
+    found = sections(data)
+    if found is None:
+        print("scan-object: could not inspect the object", file=sys.stderr)
+        return 3
+    for offset, size in found:
+        for start, encoding in scan(data, offset, size):
+            print("0x{0:x} {1}".format(start, encoding))
     return 0
 
 
