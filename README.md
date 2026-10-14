@@ -138,7 +138,10 @@ It also permits `README.md`, `completed.txt`, and `EXPLANATIONS.md`.
 Every other added, deleted, or changed path is protected.
 The tool builds each solution with the exercise Makefile.
 It reads the section bytes of the object with Python 3. It needs no object reader.
-It selects each section with the executable flag and a size that fits the file.
+The section count comes from the object header, or from section zero when that count is zero.
+The scan selects each executable section that holds file bytes.
+A NOBITS section holds no file bytes, so the scan skips it.
+The scan checks that every other section fits in the file.
 It searches the section bytes at every 2-byte offset for three encodings.
 The encodings are `ecall` (73 00 00 00), `ebreak` (73 00 10 00), and the compressed `c.ebreak` (02 90).
 The assembler writes a plain `ebreak` as `c.ebreak`, so the scan covers that form.
