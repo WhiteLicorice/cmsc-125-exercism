@@ -137,12 +137,17 @@ The allowlist holds the solution files of the course tag.
 It also permits `README.md`, `completed.txt`, and `EXPLANATIONS.md`.
 Every other added, deleted, or changed path is protected.
 The tool builds each solution with the exercise Makefile.
-It searches the executable object bytes at every 2-byte offset for the system-call and breakpoint encodings.
+It reads the section bytes of the object with Python 3. It needs no object reader.
+It selects each section with the executable flag and a size that fits the file.
+It searches the section bytes at every 2-byte offset for three encodings.
+The encodings are `ecall` (73 00 00 00), `ebreak` (73 00 10 00), and the compressed `c.ebreak` (02 90).
+The assembler writes a plain `ebreak` as `c.ebreak`, so the scan covers that form.
 It reads the object undefined symbols and the object strings.
-It warns about a system call, a breakpoint, an unexpected symbol, and forgery text.
+It warns about a system call or a breakpoint, an unexpected symbol, and forgery text.
 A solution file that does not assemble also warns.
+A file that the scan cannot parse also warns.
 No exercise needs a system call or a library call.
-The tool needs `llvm-readelf`, `llvm-objcopy`, `llvm-nm`, and `llvm-strings`.
+The tool needs `llvm-nm`, `llvm-strings`, and Python 3.
 The tool stops with an error when one is missing.
 It then runs `make test-lab0` at that commit.
 Set `LAB0_COURSE_URL` to change the course repository.
