@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+# Review a student fork for the instructor.
+#
+# Usage: bin/review-fork <fork-url> <commit>
+#
+# Clone the fork. Fetch the course tag. List each changed path outside the
+# permitted student files. Run make test-lab0 at that commit. Remove the
+# temporary folder.
+#
+# Exit 0 when no protected path changed. Exit 1 when a protected path changed.
+# Exit 2 on a setup error.
+#
+# Requires: git, make, qemu-riscv32, zig, python3.
+
+set -uo pipefail
+
+COURSE_URL="${LAB0_COURSE_URL:-https://github.com/WhiteLicorice/cmsc-125-exercism.git}"
+COURSE_TAG="${LAB0_COURSE_TAG:-v1.0}"
+
+if [ $# -ne 2 ]; then
+  echo "usage: bin/review-fork <fork-url> <commit>" >&2
+  exit 2
+fi
+fork_url="$1"
+commit="$2"
+
+# A path that a student may change.
+is_permitted() {
+  case "$1" in
+    README.md|completed.txt|EXPLANATIONS.md) return 0 ;;
+  esac
+  if [[ "$1" =~ ^exercises/practice/([^/]+)/([^/]+)\.S$ ]]; then
+    local dir="${BASH_REMATCH[1]}" file="${BASH_REMATCH[2]}"
+    [ "${file}" = "${dir//-/_}" ] && return 0
+  fi
+  return 1
+}
+
+tmp="$(mktemp -d -t lab0-review-XXXXXX)"
+trap 'rm -rf "${tmp}"' EXIT
+
+echo "-> clone ${fork_url}"
+if ! git clone --quiet "${fork_url}" "${tmp}/fork"; then
+  echo "error: cannot clone ${fork_url}" >&2
+  exit 2
+fi
+
+# The clone holds every branch. Try the commit again in case it is not reachable.
+git -C "${tmp}/fork" fetch --quiet origin "${commit}" 2>/dev/null || true
+if ! git -C "${tmp}/fork" cat-file -e "${commit}^{commit}" 2>/dev/null; then
+  echo "error: commit ${commit} is not in the fork" >&2
+  exit 2
+fi
+
+echo "-> fetch ${COURSE_TAG} from ${COURSE_URL}"
+if ! git -C "${tmp}/fork" fetch --quiet "${COURSE_URL}" \
+    "refs/tags/${COURSE_TAG}:refs/tags/${COURSE_TAG}"; then
+  echo "error: cannot fetch tag ${COURSE_TAG}" >&2
+  exit 2
+fi
+
+declare -a protected_paths=()
+declare -a permitted_paths=()
+while IFS= read -r path; do
+  [ -z "${path}" ] && continue
+  if is_permitted "${path}"; then
+    permitted_paths+=("${path}")
+  else
+    protected_paths+=("${path}")
+  fi
+done < <(git -C "${tmp}/fork" diff --name-only "${COURSE_TAG}" "${commit}")
+
+echo "-> changed paths outside the permitted student files: ${#protected_paths[@]}"
+for path in "${protected_paths[@]-}"; do
+  echo "    ${path}"
+done
+echo "-> permitted student file changes: ${#permitted_paths[@]}"
+for path in "${permitted_paths[@]-}"; do
+  echo "    ${path}"
+done
+
+echo "-> make test-lab0 at ${commit}"
+if ! git -C "${tmp}/fork" checkout --quiet "${commit}"; then
+  echo "error: cannot check out ${commit}" >&2
+  exit 2
+fi
+(cd "${tmp}/fork" && make test-lab0)
+score_rc=$?
+echo "-> make test-lab0 exit code: ${score_rc}"
+
+if [ "${#protected_paths[@]}" -gt 0 ]; then
+  echo "-> ${#protected_paths[@]} protected path(s) changed"
+  exit 1
+fi
+echo "-> no protected path changed"
+exit 0
