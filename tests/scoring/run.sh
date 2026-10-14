@@ -96,6 +96,12 @@ expect_line() {
   grep -qF -- "$1" <<< "${LAST_OUT}" || { echo "  missing line: $1"; return 1; }
 }
 
+expect_no_line() {
+  if grep -qF -- "$1" <<< "${LAST_OUT}"; then
+    echo "  unexpected line: $1"; return 1
+  fi
+}
+
 run_case() {
   local name="$1"; shift
   printf '\n=== CASE %s ===\n' "${name}"
@@ -546,6 +552,51 @@ case_review_fork_extra_solution() {
   expect_rc_nonzero && expect_line "exercises/practice/leap/leap_extra.S"
 }
 
+# A raw instruction in an executable text subsection. The section name is not
+# exactly .text, but the .text. prefix makes it executable. The aid must warn
+# about the raw directive.
+case_review_fork_raw_text_subsection() {
+  rf_repo raw-text-subsection
+  printf '.section .text.attack,"ax",@progbits\n.global leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        .word 0x00000073\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+}
+
+# The same, with a .4byte directive and an x flag on a section that is not
+# named .text.
+case_review_fork_flagged_data_subsection() {
+  rf_repo flagged-data-subsection
+  printf '.section .foo,"ax",@progbits\n.global leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        .4byte 0x00000073\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+}
+
+# A solution that uses .pushsection. The aid warns, because tracking the
+# pushed section exactly is not worth the risk.
+case_review_fork_pushsection() {
+  rf_repo pushsection
+  printf '.text\n.global leap_year\nleap_year:\n        li a0, 0\n        ret\n.pushsection .foo,"ax",@progbits\n.popsection\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+}
+
+# A correct solution with a .word lookup table in .rodata and no x flag. The
+# aid must not warn.
+case_review_fork_data_table() {
+  rf_repo data-table
+  printf '.text\n.global leap_year\nleap_year:\n        li a0, 0\n        ret\n.section .rodata\ntable:\n        .word 1\n        .word 2\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_no_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+}
+
 printf 'Scoring tests for make test-lab0 (default time limit %ss)\n' "${TIMEOUT}"
 
 run_case zero case_zero
@@ -574,6 +625,10 @@ run_case missing-explanation case_missing_explanation
 run_case review-fork-submitted-commit case_review_fork_submitted_commit
 run_case review-fork-unknown-exercise case_review_fork_unknown_exercise
 run_case review-fork-extra-solution case_review_fork_extra_solution
+run_case review-fork-raw-text-subsection case_review_fork_raw_text_subsection
+run_case review-fork-flagged-data-subsection case_review_fork_flagged_data_subsection
+run_case review-fork-pushsection case_review_fork_pushsection
+run_case review-fork-data-table case_review_fork_data_table
 
 printf '\n=== SUMMARY: %d passed, %d failed ===\n' "${pass}" "${fail}"
 if (( fail > 0 )); then
