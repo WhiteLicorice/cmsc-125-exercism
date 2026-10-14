@@ -29,9 +29,10 @@ fi
 fork_url="$1"
 commit="$2"
 
-# The object scan needs the LLVM tools. Stop before the clone when one is
-# missing, so the instructor sees the setup error, not a partial review.
-for tool in llvm-readelf llvm-objcopy llvm-nm llvm-strings; do
+# The object scan needs llvm-nm, llvm-strings, and Python 3. Stop before the
+# clone when one is missing, so the instructor sees the setup error, not a
+# partial review.
+for tool in llvm-nm llvm-strings python3; do
   if ! command -v "${tool}" >/dev/null 2>&1; then
     echo "error: ${tool} is required" >&2
     exit 2
@@ -143,9 +144,10 @@ for rel in "${permitted_paths[@]-}"; do
   obj="${dir}/${base}.o"
 
   # A system call or a breakpoint is a byte pattern in an executable section.
-  # Read the full output and the exit status of each tool. A tool failure is a
-  # warning, never a clean scan. Scan every 2-byte offset, so an overlapping
-  # instruction cannot hide a call.
+  # scan-object reads the section bytes from the object itself and exits
+  # non-zero on a file it cannot parse. A failure is a warning, never a clean
+  # scan. The scan reads every 2-byte offset, so an overlapping instruction
+  # cannot hide a call.
   if ! hits="$("${self_dir}/scan-object" "${obj}" 2>/dev/null)"; then
     echo "    [WARNING] ${rel} could not inspect the object"
     inspect=$((inspect + 1))
