@@ -114,23 +114,31 @@ for path in "${tmp}"/fork/exercises/practice/*/*.S; do
     forge=$((forge + 1))
   fi
   if awk '
-      BEGIN { intext=1 }
+      BEGIN { isx=1 }
       {
         line=$0
-        if (line ~ /^[[:space:]]*\.text([[:space:]]|$)/ ||
-            line ~ /^[[:space:]]*\.section[[:space:]]+\.text([,[:space:]]|$)/) {
-          intext=1
-        } else if (line ~ /^[[:space:]]*\.section[[:space:]]+\./) {
-          section=$0
-          sub(/^[[:space:]]*\.section[[:space:]]+/, "", section)
-          sub(/[,[:space:]].*$/, "", section)
-          intext = (section == ".text")
+        if (line ~ /^[[:space:]]*\.(pushsection|popsection|previous|subsection)([^A-Za-z0-9_]|$)/) {
+          print "hit"; exit
+        }
+        if (line ~ /^[[:space:]]*\.text([[:space:]]|$)/) {
+          isx=1
         } else if (line ~ /^[[:space:]]*\.(data|rodata|bss)([[:space:]]|$)/) {
-          intext=0
+          isx=0
+        } else if (line ~ /^[[:space:]]*\.section[[:space:]]/) {
+          rest=line
+          sub(/^[[:space:]]*\.section[[:space:]]+/, "", rest)
+          name=rest
+          sub(/[,[:space:]].*$/, "", name)
+          flags=""
+          if (match(rest, /"[^"]*"/)) {
+            flags=substr(rest, RSTART+1, RLENGTH-2)
+          }
+          isx=((name == ".text" || name ~ /^\.text\./) || flags ~ /x/)
         }
         if (line ~ /(^|[^A-Za-z0-9_])ecall([^A-Za-z0-9_]|$)/) { print "hit"; exit }
         if (line ~ /\.insn([^A-Za-z0-9_]|$)/) { print "hit"; exit }
-        if (intext && line ~ /\.(word|half|byte)([^A-Za-z0-9_]|$)/) { print "hit"; exit }
+        if (line ~ /\.incbin([^A-Za-z0-9_]|$)/) { print "hit"; exit }
+        if (isx && line ~ /\.(word|half|byte|short|long|int|2byte|4byte|8byte|quad|dword|fill|ascii|asciz|string|dc)([^A-Za-z0-9_]|$)/) { print "hit"; exit }
       }' "${path}" | grep -q .; then
     echo "    [WARNING] ${rel} holds a system call or a raw directive"
     syscall=$((syscall + 1))
