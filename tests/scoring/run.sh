@@ -205,6 +205,33 @@ case_timeout() {
   expect_rc_nonzero && expect_line "hello-world: FAIL" && expect_line "reason=timeout" && expect_line "TOTAL POINTS: 0"
 }
 
+# A solution that prints its own Unity summary and exits 0. The scorer must
+# not accept it, because no test line is real.
+case_forged_summary() {
+  local dir; dir="$(new_submission forged leap)"
+  cat > "${dir}/exercises/practice/leap/leap.S" <<'ASM'
+.section .rodata
+msg:
+    .ascii "\n8 Tests 0 Failures 0 Ignored\nOK\n"
+
+.text
+.global leap_year
+leap_year:
+    li a0, 1
+    la a1, msg
+    li a2, 33
+    li a7, 64
+    ecall
+    li a0, 0
+    li a7, 93
+    ecall
+ASM
+  claim "${dir}" leap
+  run_lab0 "${dir}"
+  expect_rc_nonzero && expect_line "leap: FAIL" && expect_line "reason=forged" \
+    && expect_line "TOTAL POINTS: 0" && expect_line "TOTAL MARKS: 0"
+}
+
 catalog_is_fresh() {
   local tmp; tmp="$(mktemp -d "${WORK}/fresh-XXXXXX")"
   (cd "${REPO}" && bin/generate-catalog "${tmp}") >/dev/null 2>&1 || return 2
@@ -248,6 +275,7 @@ run_case skipped-test case_skipped_test
 run_case compile-failure case_compile_failure
 run_case crash case_crash
 run_case timeout case_timeout
+run_case forged-summary case_forged_summary
 run_case catalog-freshness case_catalog_freshness
 run_case missing-explanation case_missing_explanation
 

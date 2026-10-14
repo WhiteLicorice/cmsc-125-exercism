@@ -115,6 +115,14 @@ The workflow `.github/workflows/lab0.yml` scores the submitted commit.
 It prints the full commit hash before it scores.
 The score from the workflow is the exercise score.
 
+## For the instructor
+
+Run `bin/review-fork <fork-url> <commit>` to check one submission.
+The tool lists each changed protected path.
+It warns about a solution file that can print a test result.
+It then runs `make test-lab0` at that commit.
+A solution that prints every expected test result can still hide a failure, so read each flagged solution.
+
 ## Licence
 
 The track keeps the upstream MIT licence. See [LICENSE](LICENSE).
