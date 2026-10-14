@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Scoring tests for `make test-lab0`.
+# Scoring tests for `make test-lab0` and for `bin/review-fork`.
 #
 # Each case builds a small temporary submission, runs `make test-lab0`, and
 # checks the printed totals and the exit code.
-# Requires: bash, make, qemu-riscv32, zig, python3.
+# The review cases build a small local repository and run `bin/review-fork`.
+# Requires: bash, make, qemu-riscv32, zig, git, python3.
 
 set -uo pipefail
 
@@ -50,6 +51,28 @@ use_example() {
   local dir="$1" slug="$2"
   cp "${dir}/exercises/practice/${slug}/.meta/example.S" \
      "${dir}/exercises/practice/${slug}/${slug//-/_}.S"
+}
+
+# Copy the leap example and print a diagnostic on each call. The diagnostic
+# holds ":FAIL:" or ":IGNORE:" text. It is not a Unity result record.
+add_diagnostic_solution() {
+  local dir="$1" message="$2"
+  local ex="${dir}/exercises/practice/leap/.meta/example.S"
+  local out="${dir}/exercises/practice/leap/leap.S"
+  awk '
+    { print }
+    $0 == "leap_year:" {
+      print "        addi    sp, sp, -16"
+      print "        sw      ra, 12(sp)"
+      print "        sw      a0, 8(sp)"
+      print "        la      a0, diagnostic"
+      print "        call    puts"
+      print "        lw      a0, 8(sp)"
+      print "        lw      ra, 12(sp)"
+      print "        addi    sp, sp, 16"
+    }
+  ' "${ex}" > "${out}"
+  printf '\n.section .rodata\ndiagnostic:\n        .asciz "%s"\n' "${message}" >> "${out}"
 }
 
 # Run the scorer. Set LAST_OUT and LAST_RC. The optional second argument sets
@@ -199,7 +222,7 @@ case_crash() {
 case_timeout() {
   local dir; dir="$(new_submission timeout hello-world)"
   printf '.text\n.global hello\nhello:\n    j hello\n' \
-  > "${dir}/exercises/practice/hello-world/hello_world.S"
+    > "${dir}/exercises/practice/hello-world/hello_world.S"
   claim "${dir}" hello-world
   run_lab0 "${dir}" 2
   expect_rc_nonzero && expect_line "hello-world: FAIL" && expect_line "reason=timeout" && expect_line "TOTAL POINTS: 0"
@@ -232,6 +255,192 @@ ASM
     && expect_line "TOTAL POINTS: 0" && expect_line "TOTAL MARKS: 0"
 }
 
+# A passing solution. It prints ":FAIL:" in a diagnostic. The scorer must not
+# read that text as a test result.
+case_diagnostic_fail() {
+  local dir; dir="$(new_submission diagnostic-fail leap)"
+  add_diagnostic_solution "${dir}" "passing solution message:FAIL: harmless"
+  claim "${dir}" leap
+  run_lab0 "${dir}"
+  expect_rc 0 && expect_line "leap: PASS" && expect_line "TOTAL POINTS: 10" && expect_line "TOTAL MARKS: 3"
+}
+
+# The same, with ":IGNORE:" in the diagnostic.
+case_diagnostic_ignore() {
+  local dir; dir="$(new_submission diagnostic-ignore leap)"
+  add_diagnostic_solution "${dir}" "passing solution message:IGNORE: harmless"
+  claim "${dir}" leap
+  run_lab0 "${dir}"
+  expect_rc 0 && expect_line "leap: PASS" && expect_line "TOTAL POINTS: 10" && expect_line "TOTAL MARKS: 3"
+}
+
+# The reviewer's catalog rewrite. The leap solution rewrites
+# "../../../catalog.tsv" and gives two-fer 1000 points. It then computes the
+# correct leap result. The scorer must award at most 20 points and must stop
+# with reason=tamper.
+case_catalog_write() {
+  local dir; dir="$(new_submission catalog-write leap two-fer)"
+  use_example "${dir}" two-fer
+  cat > "${dir}/exercises/practice/leap/leap.S" <<'ASM'
+.text
+.global leap_year
+leap_year:
+        addi    sp, sp, -16
+        sw      ra, 12(sp)
+        sw      a0, 8(sp)
+        li      a0, -100
+        la      a1, catalog_path
+        li      a2, 577
+        li      a3, 0
+        li      a7, 56
+        ecall
+        sw      a0, 4(sp)
+        la      a1, catalog_data
+        li      a2, catalog_end - catalog_data
+        li      a7, 64
+        ecall
+        lw      a0, 4(sp)
+        li      a7, 57
+        ecall
+        lw      a0, 8(sp)
+        lw      ra, 12(sp)
+        addi    sp, sp, 16
+
+        li      t0, 100
+        rem     t1, a0, t0
+        bnez    t1, .test
+        div     a0, a0, t0
+.test:
+        andi    a0, a0, 3
+        slti    a0, a0, 1
+        ret
+
+.section .rodata
+catalog_path:
+        .asciz "../../../catalog.tsv"
+catalog_data:
+        .ascii "slug\tname\tdifficulty\tclassification\tpoints\nleap\tLeap\t1\teasy\t10\ntwo-fer\tTwo Fer\t1\teasy\t1000\n"
+catalog_end:
+ASM
+  claim "${dir}" leap two-fer
+  run_lab0 "${dir}"
+  expect_rc_nonzero && expect_line "reason=tamper" \
+    && expect_line "TOTAL POINTS: 0" && expect_line "TOTAL MARKS: 0"
+}
+
+# A solution that rewrites the next claim's test file through a relative path.
+# The leap solution truncates "../two-fer/two_fer_test.c". The next claim uses
+# the correct example. The write must not change the next claim's result.
+case_relative_test_write() {
+  local dir; dir="$(new_submission relative-test-write leap two-fer)"
+  use_example "${dir}" two-fer
+  cat > "${dir}/exercises/practice/leap/leap.S" <<'ASM'
+.text
+.global leap_year
+leap_year:
+        addi    sp, sp, -16
+        sw      ra, 12(sp)
+        sw      a0, 8(sp)
+        li      a0, -100
+        la      a1, next_test
+        li      a2, 577
+        li      a3, 0
+        li      a7, 56
+        ecall
+        bltz    a0, 1f
+        li      a7, 57
+        ecall
+1:
+        lw      a0, 8(sp)
+        lw      ra, 12(sp)
+        addi    sp, sp, 16
+
+        li      t0, 100
+        rem     t1, a0, t0
+        bnez    t1, .test
+        div     a0, a0, t0
+.test:
+        andi    a0, a0, 3
+        slti    a0, a0, 1
+        ret
+
+.section .rodata
+next_test:
+        .asciz "../two-fer/two_fer_test.c"
+ASM
+  claim "${dir}" leap two-fer
+  run_lab0 "${dir}"
+  expect_rc 0 && expect_line "leap: PASS" && expect_line "two-fer: PASS" \
+    && expect_line "TOTAL POINTS: 20" && expect_line "TOTAL MARKS: 6"
+}
+
+# A solution that rewrites a protected file through an absolute repository
+# path. The scorer must stop with reason=tamper.
+case_absolute_path_write() {
+  local dir; dir="$(new_submission absolute-path leap)"
+  cat > "${dir}/exercises/practice/leap/leap.S" <<ASM
+.text
+.global leap_year
+leap_year:
+        addi    sp, sp, -16
+        sw      ra, 12(sp)
+        sw      a0, 8(sp)
+        li      a0, -100
+        la      a1, target
+        li      a2, 577
+        li      a3, 0
+        li      a7, 56
+        ecall
+        sw      a0, 4(sp)
+        la      a1, payload
+        li      a2, payload_end - payload
+        li      a7, 64
+        ecall
+        lw      a0, 4(sp)
+        li      a7, 57
+        ecall
+        lw      a0, 8(sp)
+        lw      ra, 12(sp)
+        addi    sp, sp, 16
+
+        li      t0, 100
+        rem     t1, a0, t0
+        bnez    t1, .test
+        div     a0, a0, t0
+.test:
+        andi    a0, a0, 3
+        slti    a0, a0, 1
+        ret
+
+.section .rodata
+target:
+        .asciz "${dir}/catalog.tsv"
+payload:
+        .ascii "tampered\n"
+payload_end:
+ASM
+  claim "${dir}" leap
+  run_lab0 "${dir}"
+  expect_rc_nonzero && expect_line "reason=tamper" \
+    && expect_line "TOTAL POINTS: 0" && expect_line "TOTAL MARKS: 0"
+}
+
+# A missing completed.txt must still print the aggregate lines.
+case_missing_completed() {
+  local dir; dir="$(new_submission missing-completed leap)"
+  rm -f "${dir}/completed.txt"
+  run_lab0 "${dir}"
+  expect_rc_nonzero && expect_line "TOTAL POINTS: 0" && expect_line "TOTAL MARKS: 0"
+}
+
+# A missing catalog.tsv must still print the aggregate lines.
+case_missing_catalog() {
+  local dir; dir="$(new_submission missing-catalog leap)"
+  rm -f "${dir}/catalog.tsv"
+  run_lab0 "${dir}"
+  expect_rc_nonzero && expect_line "TOTAL POINTS: 0" && expect_line "TOTAL MARKS: 0"
+}
+
 catalog_is_fresh() {
   local tmp; tmp="$(mktemp -d "${WORK}/fresh-XXXXXX")"
   (cd "${REPO}" && bin/generate-catalog "${tmp}") >/dev/null 2>&1 || return 2
@@ -260,6 +469,83 @@ case_missing_explanation() {
   expect_rc 0 && expect_line "TOTAL POINTS: 100" && expect_line "warning: no explanation for hello-world"
 }
 
+# ---- review-fork cases ----------------------------------------------------
+
+RF_BARE=""
+RF_WORK=""
+
+# A bare repository with a clean default branch and the course tag v1.0.
+rf_repo() {
+  local name="$1"
+  RF_BARE="${WORK}/rf-${name}.git"
+  RF_WORK="${WORK}/rf-${name}-work"
+  git init --quiet --bare "${RF_BARE}" >/dev/null 2>&1
+  git init --quiet "${RF_WORK}" >/dev/null 2>&1
+  git -C "${RF_WORK}" checkout --quiet -b main >/dev/null 2>&1
+  git -C "${RF_WORK}" config user.email review@example.com
+  git -C "${RF_WORK}" config user.name review
+  git -C "${RF_WORK}" config commit.gpgsign false
+  mkdir -p "${RF_WORK}/exercises/practice/leap" "${RF_WORK}/exercises/practice/two-fer"
+  printf '.text\n.global leap_year\nleap_year:\n        li a0, 0\n        ret\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  printf '.text\n.global two_fer\ntwo_fer:\n        ret\n' \
+    > "${RF_WORK}/exercises/practice/two-fer/two_fer.S"
+  git -C "${RF_WORK}" add -A
+  git -C "${RF_WORK}" commit --quiet -m clean
+  git -C "${RF_WORK}" tag v1.0
+  git -C "${RF_WORK}" push --quiet "${RF_BARE}" refs/heads/main refs/tags/v1.0
+  git -C "${RF_BARE}" symbolic-ref HEAD refs/heads/main
+}
+
+# Commit the working tree as branch "submitted". Print the commit hash.
+rf_submit() {
+  git -C "${RF_WORK}" checkout --quiet -b submitted
+  git -C "${RF_WORK}" add -A
+  git -C "${RF_WORK}" commit --quiet -m submitted
+  git -C "${RF_WORK}" push --quiet "${RF_BARE}" refs/heads/submitted
+  git -C "${RF_WORK}" rev-parse HEAD
+}
+
+# Run the review aid against the bare repository. Set LAST_OUT and LAST_RC.
+rf_run() {
+  local commit="$1"
+  LAST_OUT="$(LAB0_COURSE_URL="${RF_BARE}" LAB0_COURSE_TAG=v1.0 \
+    "${REPO}/bin/review-fork" "${RF_BARE}" "${commit}" 2>&1)"
+  LAST_RC=$?
+}
+
+# The default branch is clean. The submitted commit holds a forged solution.
+# The aid must scan the submitted commit and warn.
+case_review_fork_submitted_commit() {
+  rf_repo submitted-commit
+  printf '.text\n.global leap_year\nleap_year:\n        li a0, 1\n        ecall\n        .word 0x00000073\n        ret\n.section .rodata\nmsg:\n        .ascii "Tests"\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S"
+}
+
+# A solution path that is not a course exercise is protected.
+case_review_fork_unknown_exercise() {
+  rf_repo unknown-exercise
+  mkdir -p "${RF_WORK}/exercises/practice/not-an-exercise"
+  printf '.text\n.global not_an_exercise\nnot_an_exercise:\n        ret\n' \
+    > "${RF_WORK}/exercises/practice/not-an-exercise/not_an_exercise.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_rc_nonzero && expect_line "exercises/practice/not-an-exercise/not_an_exercise.S"
+}
+
+# An extra .S file in a real exercise folder is protected.
+case_review_fork_extra_solution() {
+  rf_repo extra-solution
+  printf '.text\n.global extra\nextra:\n        ret\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap_extra.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_rc_nonzero && expect_line "exercises/practice/leap/leap_extra.S"
+}
+
 printf 'Scoring tests for make test-lab0 (default time limit %ss)\n' "${TIMEOUT}"
 
 run_case zero case_zero
@@ -276,8 +562,18 @@ run_case compile-failure case_compile_failure
 run_case crash case_crash
 run_case timeout case_timeout
 run_case forged-summary case_forged_summary
+run_case diagnostic-fail case_diagnostic_fail
+run_case diagnostic-ignore case_diagnostic_ignore
+run_case catalog-write case_catalog_write
+run_case relative-test-write case_relative_test_write
+run_case absolute-path-write case_absolute_path_write
+run_case missing-completed case_missing_completed
+run_case missing-catalog case_missing_catalog
 run_case catalog-freshness case_catalog_freshness
 run_case missing-explanation case_missing_explanation
+run_case review-fork-submitted-commit case_review_fork_submitted_commit
+run_case review-fork-unknown-exercise case_review_fork_unknown_exercise
+run_case review-fork-extra-solution case_review_fork_extra_solution
 
 printf '\n=== SUMMARY: %d passed, %d failed ===\n' "${pass}" "${fail}"
 if (( fail > 0 )); then
