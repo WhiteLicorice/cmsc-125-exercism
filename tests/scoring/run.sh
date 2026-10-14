@@ -597,6 +597,48 @@ case_review_fork_data_table() {
   expect_no_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
 }
 
+# The assembler accepts directives and mnemonics in any case. A raw .WORD in
+# an upper-case .TEXT section must warn.
+case_review_fork_upper_text() {
+  rf_repo upper-text
+  printf '.TEXT\n.GLOBL leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        .WORD 0x00000073\n        ret\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+}
+
+# An upper-case ECALL must warn.
+case_review_fork_upper_ecall() {
+  rf_repo upper-ecall
+  printf '.text\n.globl leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        ECALL\n        ret\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+}
+
+# scall is an old alias of ecall. It must warn.
+case_review_fork_scall() {
+  rf_repo scall
+  printf '.text\n.globl leap_year\nleap_year:\n        li a0, 0\n        li a7, 93\n        scall\n        ret\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+}
+
+# A .macro that wraps a raw directive in .rodata. Only the macro rule can fire,
+# so the case tests that branch.
+case_review_fork_macro() {
+  rf_repo macro
+  printf '.text\n.globl leap_year\nleap_year:\n        li a0, 0\n        ret\n.section .rodata\n.macro emit\n        .4byte 0x00000073\n.endm\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_line "[WARNING] exercises/practice/leap/leap.S holds a system call or a raw directive"
+}
+
 printf 'Scoring tests for make test-lab0 (default time limit %ss)\n' "${TIMEOUT}"
 
 run_case zero case_zero
@@ -629,6 +671,10 @@ run_case review-fork-raw-text-subsection case_review_fork_raw_text_subsection
 run_case review-fork-flagged-data-subsection case_review_fork_flagged_data_subsection
 run_case review-fork-pushsection case_review_fork_pushsection
 run_case review-fork-data-table case_review_fork_data_table
+run_case review-fork-upper-text case_review_fork_upper_text
+run_case review-fork-upper-ecall case_review_fork_upper_ecall
+run_case review-fork-scall case_review_fork_scall
+run_case review-fork-macro case_review_fork_macro
 
 printf '\n=== SUMMARY: %d passed, %d failed ===\n' "${pass}" "${fail}"
 if (( fail > 0 )); then
