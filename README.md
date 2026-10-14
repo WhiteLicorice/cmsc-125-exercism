@@ -137,16 +137,18 @@ The allowlist holds the solution files of the course tag.
 It also permits `README.md`, `completed.txt`, and `EXPLANATIONS.md`.
 Every other added, deleted, or changed path is protected.
 The tool builds each solution with the exercise Makefile.
-It reads the assembled object, so a macro or a directive cannot hide a system call.
-It warns about a system call, an unexpected library call, and forgery text.
+It searches the executable object bytes at every 2-byte offset for the system-call and breakpoint encodings.
+It reads the object undefined symbols and the object strings.
+It warns about a system call, a breakpoint, an unexpected symbol, and forgery text.
 A solution file that does not assemble also warns.
 No exercise needs a system call or a library call.
-The tool needs `llvm-objdump`, `llvm-nm`, and `llvm-strings`.
+The tool needs `llvm-readelf`, `llvm-objcopy`, `llvm-nm`, and `llvm-strings`.
 The tool stops with an error when one is missing.
 It then runs `make test-lab0` at that commit.
 Set `LAB0_COURSE_URL` to change the course repository.
 Set `LAB0_COURSE_TAG` to change the baseline tag.
-A solution can write and then jump to instruction bytes at run time.
+A solution can build instructions at run time and jump to them.
+A solution can write outside its private copy.
 A determined author can hide a system call in other ways.
 That is the accepted residual risk. Read each flagged solution.
 
