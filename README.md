@@ -136,13 +136,19 @@ It lists each changed protected path.
 The allowlist holds the solution files of the course tag.
 It also permits `README.md`, `completed.txt`, and `EXPLANATIONS.md`.
 Every other added, deleted, or changed path is protected.
-The tool warns about a solution file that can print a test result.
-It also warns about a system call, an `.insn`, a raw data directive in an executable section, or a macro directive.
-No exercise needs a system call or a macro.
+The tool builds each solution with the exercise Makefile.
+It reads the assembled object, so a macro or a directive cannot hide a system call.
+It warns about a system call, an unexpected library call, and forgery text.
+A solution file that does not assemble also warns.
+No exercise needs a system call or a library call.
+The tool needs `llvm-objdump`, `llvm-nm`, and `llvm-strings`.
+The tool stops with an error when one is missing.
 It then runs `make test-lab0` at that commit.
 Set `LAB0_COURSE_URL` to change the course repository.
 Set `LAB0_COURSE_TAG` to change the baseline tag.
-A solution that prints every expected test result can still hide a failure, so read each flagged solution.
+A solution can write and then jump to instruction bytes at run time.
+A determined author can hide a system call in other ways.
+That is the accepted residual risk. Read each flagged solution.
 
 ## Licence
 
