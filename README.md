@@ -65,6 +65,14 @@ It prints the earned points and the marks.
 An exercise earns its points only when every test runs and passes.
 A skipped test, a compile failure, a crash, and a timeout each make the exercise incomplete.
 
+The scorer reads the points and the test names before any solution runs.
+It runs each claim in a private copy of the exercise.
+It checks the protected files after each claim.
+A change to a protected file stops the scorer.
+The scorer prints `reason=tamper` with the changed path.
+It then prints 0 points and 0 marks, and exits non-zero.
+The instructor review aid flags a system call for that reason.
+
 ## Claim an exercise
 
 Put one slug on each line of `completed.txt`.
