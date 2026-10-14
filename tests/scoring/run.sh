@@ -1001,6 +1001,82 @@ case_scan_object_bad_object() {
   grep -qF "could not inspect the object" <<< "${out}" || { echo "  non-ELF note missing: ${out}"; return 1; }
 }
 
+# An object with an extended section count. `e_shnum` is zero, and section
+# zero holds the real count. The scan must read that count, so the system-call
+# word in `.text` warns.
+case_review_fork_extended_shnum() {
+  rf_repo extended-shnum
+  cat > "${RF_WORK}/exercises/practice/leap/leap.S" <<'ASM'
+.text
+.globl leap_year
+leap_year:
+ ecall
+ ret
+.altmacro
+.macro section n
+.section s\n,"x",@progbits
+.endm
+.set n,0
+.rept 65280
+ section %n
+ .set n,n+1
+.endr
+ASM
+  rf_expect_syscall
+}
+
+# An inconsistent section table. `e_shnum` is zero and section zero's `sh_size`
+# is zero too, so the table holds no count. The scan must give the inspect
+# note, never a clean result.
+case_scan_object_zero_shnum() {
+  local dir; dir="$(mktemp -d "${WORK}/zero-shnum-XXXXXX")"
+  cp "${REPO}/exercises/practice/leap/Makefile" "${dir}/Makefile"
+  cp "${REPO}/exercises/practice/leap/.meta/example.S" "${dir}/leap.S"
+  if ! make -C "${dir}" -s --no-print-directory leap.o >/dev/null 2>&1; then
+    echo "  cannot build the scan object"
+    return 1
+  fi
+  python3 - "${dir}/leap.o" <<'PY'
+import struct, sys
+path = sys.argv[1]
+data = bytearray(open(path, "rb").read())
+struct.pack_into("<H", data, 48, 0)
+shoff = struct.unpack_from("<I", data, 32)[0]
+struct.pack_into("<I", data, shoff + 20, 0)
+open(path, "wb").write(data)
+PY
+  local out
+  if out="$("${REPO}/bin/scan-object" "${dir}/leap.o" 2>&1)"; then
+    echo "  scanned an inconsistent table as clean: ${out}"
+    return 1
+  fi
+  grep -qF "could not inspect the object" <<< "${out}" || { echo "  inconsistent table note missing: ${out}"; return 1; }
+}
+
+# An executable section of type NOBITS holds no file bytes. The scan must skip
+# it before the file bound, so the object gives no warning.
+case_review_fork_nobits_stub() {
+  rf_repo nobits-stub
+  printf '.text\n.globl leap_year\nleap_year:\n ret\n.section scratch,"ax",@nobits\n.space 4096\n' \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_rc 0 && expect_no_line "[WARNING]"
+}
+
+# The leap reference plus an unused NOBITS section. The scan must skip the
+# NOBITS section and read the reference without a warning.
+case_review_fork_nobits_reference() {
+  rf_repo nobits-reference
+  cat "${REPO}/exercises/practice/leap/.meta/example.S" \
+    > "${RF_WORK}/exercises/practice/leap/leap.S"
+  printf '\n.section scratch,"ax",@nobits\n.space 4096\n' \
+    >> "${RF_WORK}/exercises/practice/leap/leap.S"
+  local commit; commit="$(rf_submit)"
+  rf_run "${commit}"
+  expect_rc 0 && expect_no_line "[WARNING]"
+}
+
 # Every example solution used as the student solution. None may warn. This
 # replaces the single .rodata control and includes secret-handshake.
 case_review_fork_examples() {
@@ -1074,6 +1150,10 @@ run_case review-fork-multi-ax case_review_fork_multi_ax
 run_case review-fork-compressed-data case_review_fork_compressed_data
 run_case review-fork-ebreak case_review_fork_ebreak
 run_case scan-object-bad-object case_scan_object_bad_object
+run_case review-fork-extended-shnum case_review_fork_extended_shnum
+run_case scan-object-zero-shnum case_scan_object_zero_shnum
+run_case review-fork-nobits-stub case_review_fork_nobits_stub
+run_case review-fork-nobits-reference case_review_fork_nobits_reference
 run_case review-fork-examples case_review_fork_examples
 
 printf '\n=== SUMMARY: %d passed, %d failed ===\n' "${pass}" "${fail}"
