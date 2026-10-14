@@ -137,8 +137,8 @@ The allowlist holds the solution files of the course tag.
 It also permits `README.md`, `completed.txt`, and `EXPLANATIONS.md`.
 Every other added, deleted, or changed path is protected.
 The tool warns about a solution file that can print a test result.
-It also warns about a system call, an `.insn`, or a raw data directive in an executable section.
-No exercise needs a system call.
+It also warns about a system call, an `.insn`, a raw data directive in an executable section, or a macro directive.
+No exercise needs a system call or a macro.
 It then runs `make test-lab0` at that commit.
 Set `LAB0_COURSE_URL` to change the course repository.
 Set `LAB0_COURSE_TAG` to change the baseline tag.
