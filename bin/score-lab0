@@ -1,0 +1,332 @@
+#!/usr/bin/env bash
+# Score the exercises named in completed.txt.
+#
+# Read catalog.tsv for the slug, difficulty, classification, and points.
+# Read the points and the test names of every claim before a solution runs.
+# Copy every claim into a private folder before a solution runs.
+# Run the public test suite of each claim in its copy with a time limit.
+# Accept a claim only when the output matches the test file.
+# Check the protected files after each claim. Stop on a change.
+# Print the earned points and the marks (0.3 x points).
+# Exit non-zero when a claim is invalid, duplicated, or incomplete, and when a
+# protected file changes.
+#
+# Requires: bash, make, qemu-riscv32, timeout, sha256sum.
+
+set -uo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CATALOG="${ROOT}/catalog.tsv"
+COMPLETED="${ROOT}/completed.txt"
+EXPLANATIONS="${ROOT}/EXPLANATIONS.md"
+TIME_LIMIT="${LAB0_TIMEOUT:-60}"
+
+declare -a tmp_dirs=()
+cleanup() {
+  if [ "${#tmp_dirs[@]}" -gt 0 ]; then
+    rm -rf "${tmp_dirs[@]}"
+  fi
+}
+trap cleanup EXIT
+
+print_zero_totals() {
+  echo "TOTAL POINTS: 0"
+  echo "TOTAL MARKS: 0"
+}
+
+# A missing setup file must not hide the aggregate lines.
+if [ ! -f "${CATALOG}" ]; then
+  echo "error: ${CATALOG} is missing. Run bin/generate-catalog." >&2
+  print_zero_totals
+  exit 2
+fi
+if [ ! -f "${COMPLETED}" ]; then
+  echo "error: ${COMPLETED} is missing." >&2
+  print_zero_totals
+  exit 2
+fi
+
+# The test names that the exercise test file registers with RUN_TEST(...).
+expected_tests() {
+  local dir="$1" test_file
+  test_file="$(ls "${dir}"/*_test.c 2>/dev/null | head -n 1)"
+  [ -n "${test_file}" ] || return 1
+  grep -oE 'RUN_TEST[[:space:]]*\([[:space:]]*[A-Za-z0-9_]+[[:space:]]*\)' "${test_file}" |
+    sed -E 's/^RUN_TEST[[:space:]]*\([[:space:]]*([A-Za-z0-9_]+)[[:space:]]*\)$/\1/'
+}
+
+# A path for a report. Strip the repository root and each copy root.
+report_path() {
+  local p="$1" r
+  if [[ "${p}" = "${ROOT}/"* ]]; then
+    printf '%s' "${p#"${ROOT}/"}"
+    return
+  fi
+  for r in "${tmp_dirs[@]}"; do
+    if [[ "${p}" = "${r}/"* ]]; then
+      printf 'copy/%s' "${p#"${r}/"}"
+      return
+    fi
+  done
+  printf '%s' "${p}"
+}
+
+# Score one exercise in its private copy. Print one result line. Return 0 when
+# all tests pass.
+#
+# A claim passes only when the program exits 0, when the output holds one
+# ":<name>:PASS" record for each RUN_TEST in the test file, when no ":FAIL" or
+# ":IGNORE" record is present, when the summary Tests count matches the
+# RUN_TEST count, and when the summary is followed by OK. A solution that
+# prints its own summary fails one of these checks.
+score_claim() {
+  local slug="$1" dir="$2" expected="$3"
+  local build_out run_out rc summary summary_line followed
+  local tests failures ignored passed expected_count name records
+  local record name_of rec_status expected_name
+  local failed_record=0 skipped_record=0
+
+  (cd "${dir}" && make -s clean) >/dev/null 2>&1 || true
+
+  if ! build_out="$(cd "${dir}" && make -s tests 2>&1)"; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=build\n' "${slug}"
+    return 1
+  fi
+
+  run_out="$(cd "${dir}" && timeout "${TIME_LIMIT}" qemu-riscv32 ./tests 2>&1)"
+  rc=$?
+  run_out="${run_out//$'\r'/}"
+
+  if [ "${rc}" -eq 124 ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=timeout\n' "${slug}"
+    return 1
+  fi
+  if [ "${rc}" -ge 128 ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=crash\n' "${slug}"
+    return 1
+  fi
+
+  summary="$(printf '%s\n' "${run_out}" | grep -E '^[0-9]+ Tests [0-9]+ Failures [0-9]+ Ignored[[:space:]]*$' | tail -n 1)"
+  if [ -z "${summary}" ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=crash\n' "${slug}"
+    return 1
+  fi
+
+  summary_line="$(printf '%s' "${summary}" | sed -E 's/[[:space:]]+$//')"
+  read -r tests failures ignored <<< "$(printf '%s' "${summary_line}" | awk '{print $1, $3, $5}')"
+
+  followed="$(printf '%s\n' "${run_out}" | awk -v s="${summary_line}" '
+    { line=$0; sub(/[[:space:]]+$/, "", line) }
+    line==s { if ((getline nx) > 0) { sub(/[[:space:]]+$/, "", nx); print nx } exit }')"
+
+  # Unity result records only: <file>.c:<line>:<name>:<STATUS>[:message].
+  # Any other text, such as a diagnostic that holds ":FAIL:", is not a record.
+  records="$(printf '%s\n' "${run_out}" |
+    grep -E '^[^:]+\.c:[0-9]+:[A-Za-z0-9_]+:(PASS|FAIL|IGNORE)(:.*)?[[:space:]]*$' || true)"
+
+  # A record counts only when its name is a registered test.
+  while IFS= read -r record; do
+    [ -z "${record}" ] && continue
+    name_of="$(printf '%s' "${record}" | cut -d: -f3)"
+    rec_status="$(printf '%s' "${record}" | cut -d: -f4)"
+    expected_name=0
+    while IFS= read -r name; do
+      [ "${name}" = "${name_of}" ] && expected_name=1
+    done <<< "${expected}"
+    [ "${expected_name}" -eq 1 ] || continue
+    case "${rec_status}" in
+      FAIL) failed_record=1 ;;
+      IGNORE) skipped_record=1 ;;
+    esac
+  done <<< "${records}"
+
+  if [ "${failed_record}" -eq 1 ] || [ "${failures}" -gt 0 ]; then
+    passed=$((tests - failures - ignored))
+    printf '%s: FAIL  passed=%d failed=%d skipped=%d  reason=failed\n' \
+      "${slug}" "${passed}" "${failures}" "${ignored}"
+    return 1
+  fi
+  if [ "${skipped_record}" -eq 1 ] || [ "${ignored}" -gt 0 ]; then
+    passed=$((tests - failures - ignored))
+    printf '%s: FAIL  passed=%d failed=%d skipped=%d  reason=skipped\n' \
+      "${slug}" "${passed}" "${failures}" "${ignored}"
+    return 1
+  fi
+
+  # Each expected test needs its own PASS record, by name.
+  expected_count=0
+  while IFS= read -r name; do
+    [ -z "${name}" ] && continue
+    expected_count=$((expected_count + 1))
+    if ! printf '%s\n' "${records}" |
+        grep -Eq "^[^:]+\.c:[0-9]+:${name}:PASS(:|$)"; then
+      printf '%s: FAIL  passed=- failed=- skipped=-  reason=forged\n' "${slug}"
+      return 1
+    fi
+  done <<< "${expected}"
+
+  if [ "${expected_count}" -eq 0 ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=forged\n' "${slug}"
+    return 1
+  fi
+
+  if [ "${tests}" -ne "${expected_count}" ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=count\n' "${slug}"
+    return 1
+  fi
+
+  if [ "${followed}" != "OK" ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=ok\n' "${slug}"
+    return 1
+  fi
+
+  if [ "${rc}" -ne 0 ]; then
+    printf '%s: FAIL  passed=- failed=- skipped=-  reason=exit\n' "${slug}"
+    return 1
+  fi
+
+  passed=$((tests - failures - ignored))
+  printf '%s: PASS  passed=%d failed=0 skipped=0\n' "${slug}" "${passed}"
+  return 0
+}
+
+# The hash of every protected file, one line for each file.
+hash_protected() {
+  if [ "${#protected_files[@]}" -eq 0 ]; then
+    return 0
+  fi
+  printf '%s\0' "${protected_files[@]}" | xargs -0 sha256sum
+}
+
+declare -a claims=()
+declare -A seen=()
+invalid=0
+duplicate=0
+
+# The points of every catalog row.
+declare -A points_by_slug=()
+while IFS=$'\t' read -r slug _name _difficulty _classification points; do
+  [ "${slug}" = "slug" ] && continue
+  [ -z "${slug}" ] && continue
+  points_by_slug["${slug}"]="${points}"
+done < "${CATALOG}"
+
+# Read the claims. Skip a blank line and a line that starts with #. Trim spaces.
+while IFS= read -r raw || [ -n "${raw}" ]; do
+  line="${raw%$'\r'}"
+  line="${line#"${line%%[![:space:]]*}"}"
+  line="${line%"${line##*[![:space:]]}"}"
+  [ -z "${line}" ] && continue
+  case "${line}" in \#*) continue ;; esac
+  if [ -n "${seen["${line}"]:-}" ]; then
+    echo "duplicate slug: ${line}"
+    duplicate=1
+    continue
+  fi
+  seen["${line}"]=1
+  claims+=("${line}")
+done < "${COMPLETED}"
+
+# Report each unknown slug.
+declare -a valid_claims=()
+for slug in "${claims[@]}"; do
+  if [ -z "${points_by_slug["${slug}"]:-}" ]; then
+    echo "invalid slug: ${slug}"
+    invalid=1
+  else
+    valid_claims+=("${slug}")
+  fi
+done
+
+# Snapshot the expected test names. A solution cannot change this snapshot.
+declare -A expected_by_slug=()
+for slug in "${valid_claims[@]}"; do
+  expected_by_slug["${slug}"]="$(expected_tests "${ROOT}/exercises/practice/${slug}" || true)"
+done
+
+# Copy each claim into its own private folder before a solution runs. A
+# relative path from the exercise points into the copy, not the repository.
+declare -A claim_root=()
+declare -A claim_dir=()
+for slug in "${valid_claims[@]}"; do
+  dir="$(mktemp -d -t lab0-claim-XXXXXX)"
+  tmp_dirs+=("${dir}")
+  mkdir -p "${dir}/exercises/practice"
+  cp -f "${CATALOG}" "${dir}/catalog.tsv"
+  cp -f "${ROOT}/Makefile" "${dir}/Makefile"
+  cp -R "${ROOT}/bin" "${dir}/bin"
+  cp -R "${ROOT}/exercises/practice/${slug}" "${dir}/exercises/practice/${slug}"
+  ( cd "${dir}/exercises/practice/${slug}" && make -s clean ) >/dev/null 2>&1 || true
+  claim_root["${slug}"]="${dir}"
+  claim_dir["${slug}"]="${dir}/exercises/practice/${slug}"
+done
+
+# List every protected file: catalog.tsv, Makefile, everything under bin/, and
+# every file under exercises/practice/ that is not a student solution. A
+# student solution file is not protected.
+declare -A solution_path=()
+for slug in "${!points_by_slug[@]}"; do
+  solution_path["${ROOT}/exercises/practice/${slug}/${slug//-/_}.S"]=1
+done
+declare -a protected_files=()
+while IFS= read -r -d '' f; do
+  [ -n "${solution_path["${f}"]:-}" ] && continue
+  protected_files+=("${f}")
+done < <(printf '%s\0' "${ROOT}/catalog.tsv" "${ROOT}/Makefile"
+         find "${ROOT}/bin" -type f -print0 2>/dev/null
+         find "${ROOT}/exercises/practice" -type f -print0 2>/dev/null)
+for slug in "${valid_claims[@]}"; do
+  own="${claim_dir["${slug}"]}/${slug//-/_}.S"
+  while IFS= read -r -d '' f; do
+    [ "${f}" = "${own}" ] && continue
+    protected_files+=("${f}")
+  done < <(find "${claim_root["${slug}"]}" -type f -print0 2>/dev/null)
+done
+
+hashes_before="$(hash_protected)"
+
+echo "-> scored ${#claims[@]} claimed exercises"
+total_points=0
+incomplete=0
+for slug in "${valid_claims[@]}"; do
+  if score_claim "${slug}" "${claim_dir["${slug}"]}" "${expected_by_slug["${slug}"]}"; then
+    total_points=$((total_points + ${points_by_slug["${slug}"]}))
+  else
+    incomplete=1
+  fi
+
+  # A solution can change a protected file. Check the hashes after each claim.
+  hashes_now="$(hash_protected)"
+  if [ "${hashes_now}" != "${hashes_before}" ]; then
+    changed="$(diff <(printf '%s\n' "${hashes_before}") \
+                    <(printf '%s\n' "${hashes_now}") | awk '/^[<>]/ { print $3; exit }')"
+    printf 'tamper: %s  reason=tamper\n' "$(report_path "${changed}")" >&2
+    print_zero_totals
+    exit 1
+  fi
+done
+
+# Warn about each claim with no explanation. Keep its points.
+for slug in "${valid_claims[@]}"; do
+  if [ -f "${EXPLANATIONS}" ] &&
+     grep -Eq "(^|[^A-Za-z0-9-])${slug}([^A-Za-z0-9-]|$)" "${EXPLANATIONS}"; then
+    continue
+  fi
+  echo "warning: no explanation for ${slug}"
+done
+
+# The marks are 0.3 x points. Compute the tenths without floating point.
+tenths=$((total_points * 3))
+if [ $((tenths % 10)) -eq 0 ]; then
+  marks=$((tenths / 10))
+else
+  marks="$((tenths / 10)).$((tenths % 10))"
+fi
+
+echo "TOTAL POINTS: ${total_points}"
+echo "TOTAL MARKS: ${marks}"
+
+if [ "${invalid}" -ne 0 ] || [ "${duplicate}" -ne 0 ] || [ "${incomplete}" -ne 0 ]; then
+  exit 1
+fi
+exit 0

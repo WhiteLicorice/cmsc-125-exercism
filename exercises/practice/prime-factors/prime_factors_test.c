@@ -21,7 +21,7 @@ void test_no_factors(void) {
 }
 
 void test_prime_number(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {2};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = factors(actual, 2);
@@ -30,7 +30,7 @@ void test_prime_number(void) {
 }
 
 void test_another_prime_number(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {3};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = factors(actual, 3);
@@ -39,7 +39,7 @@ void test_another_prime_number(void) {
 }
 
 void test_square_of_a_prime(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {3, 3};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = factors(actual, 9);
@@ -48,7 +48,7 @@ void test_square_of_a_prime(void) {
 }
 
 void test_product_of_first_prime(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {2, 2};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = factors(actual, 4);
@@ -57,7 +57,7 @@ void test_product_of_first_prime(void) {
 }
 
 void test_cube_of_a_prime(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {2, 2, 2};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = factors(actual, 8);
@@ -66,7 +66,7 @@ void test_cube_of_a_prime(void) {
 }
 
 void test_product_of_second_prime(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {3, 3, 3};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = factors(actual, 27);
@@ -75,7 +75,7 @@ void test_product_of_second_prime(void) {
 }
 
 void test_product_of_third_prime(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {5, 5, 5, 5};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = factors(actual, 625);
@@ -84,7 +84,7 @@ void test_product_of_third_prime(void) {
 }
 
 void test_product_of_first_and_second_prime(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {2, 3};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = factors(actual, 6);
@@ -93,7 +93,7 @@ void test_product_of_first_and_second_prime(void) {
 }
 
 void test_product_of_primes_and_nonprimes(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {2, 2, 3};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = factors(actual, 12);
@@ -102,7 +102,7 @@ void test_product_of_primes_and_nonprimes(void) {
 }
 
 void test_product_of_primes(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {5, 17, 23, 461};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = factors(actual, 901255);

@@ -21,7 +21,7 @@ void test_zero_rows(void) {
 }
 
 void test_single_row(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {
         // clang-format off
         1,
@@ -34,7 +34,7 @@ void test_single_row(void) {
 }
 
 void test_two_rows(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {
         // clang-format off
         1,
@@ -48,7 +48,7 @@ void test_two_rows(void) {
 }
 
 void test_three_rows(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {
         // clang-format off
         1,
@@ -63,7 +63,7 @@ void test_three_rows(void) {
 }
 
 void test_four_rows(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {
         // clang-format off
         1,
@@ -79,7 +79,7 @@ void test_four_rows(void) {
 }
 
 void test_five_rows(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {
         // clang-format off
         1,
@@ -96,7 +96,7 @@ void test_five_rows(void) {
 }
 
 void test_six_rows(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {
         // clang-format off
         1,
@@ -114,7 +114,7 @@ void test_six_rows(void) {
 }
 
 void test_ten_rows(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {
         // clang-format off
         1,

@@ -19,7 +19,7 @@ void test_encode_empty_string(void) {
 }
 
 void test_encode_single_characters_only_are_encoded_without_count(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "XYZ");
@@ -27,7 +27,7 @@ void test_encode_single_characters_only_are_encoded_without_count(void) {
 }
 
 void test_encode_string_with_no_single_characters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "AABBBCCCC");
@@ -35,7 +35,7 @@ void test_encode_string_with_no_single_characters(void) {
 }
 
 void test_encode_single_characters_mixed_with_repeated_characters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB");
@@ -43,7 +43,7 @@ void test_encode_single_characters_mixed_with_repeated_characters(void) {
 }
 
 void test_encode_multiple_whitespace_mixed_in_string(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "  hsqq qww  ");
@@ -51,7 +51,7 @@ void test_encode_multiple_whitespace_mixed_in_string(void) {
 }
 
 void test_encode_lowercase_characters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "aabbbcccc");
@@ -59,7 +59,7 @@ void test_encode_lowercase_characters(void) {
 }
 
 void test_decode_empty_string(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "");
@@ -67,7 +67,7 @@ void test_decode_empty_string(void) {
 }
 
 void test_decode_single_characters_only(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "XYZ");
@@ -75,7 +75,7 @@ void test_decode_single_characters_only(void) {
 }
 
 void test_decode_string_with_no_single_characters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "2A3B4C");
@@ -83,7 +83,7 @@ void test_decode_string_with_no_single_characters(void) {
 }
 
 void test_decode_single_characters_with_repeated_characters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "12WB12W3B24WB");
@@ -91,7 +91,7 @@ void test_decode_single_characters_with_repeated_characters(void) {
 }
 
 void test_decode_multiple_whitespace_mixed_in_string(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "2 hs2q q2w2 ");
@@ -99,7 +99,7 @@ void test_decode_multiple_whitespace_mixed_in_string(void) {
 }
 
 void test_decode_lowercase_string(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "2a3b4c");
@@ -107,7 +107,7 @@ void test_decode_lowercase_string(void) {
 }
 
 void test_consistency_encode_followed_by_decode_gives_original_string(void) {
-    TEST_IGNORE();
+
     char buffer1[BUFFER_SIZE];
     char buffer2[BUFFER_SIZE];
 
@@ -117,7 +117,7 @@ void test_consistency_encode_followed_by_decode_gives_original_string(void) {
 }
 
 void test_encode_long_run(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer,
@@ -126,7 +126,7 @@ void test_encode_long_run(void) {
 }
 
 void test_decode_long_run(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "123z");

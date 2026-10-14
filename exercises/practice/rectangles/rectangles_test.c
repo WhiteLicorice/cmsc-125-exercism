@@ -20,7 +20,7 @@ void test_no_rows(void) {
 }
 
 void test_no_columns(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "",
@@ -31,7 +31,7 @@ void test_no_columns(void) {
 }
 
 void test_no_rectangles(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         " ",
@@ -42,7 +42,7 @@ void test_no_rectangles(void) {
 }
 
 void test_one_rectangle(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "+-+",
@@ -55,7 +55,7 @@ void test_one_rectangle(void) {
 }
 
 void test_two_rectangles_without_shared_parts(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "  +-+",
@@ -70,7 +70,7 @@ void test_two_rectangles_without_shared_parts(void) {
 }
 
 void test_five_rectangles_with_shared_parts(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "  +-+",
@@ -85,7 +85,7 @@ void test_five_rectangles_with_shared_parts(void) {
 }
 
 void test_rectangle_of_height_1_is_counted(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "+--+",
@@ -97,7 +97,7 @@ void test_rectangle_of_height_1_is_counted(void) {
 }
 
 void test_rectangle_of_width_1_is_counted(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "++",
@@ -110,7 +110,7 @@ void test_rectangle_of_width_1_is_counted(void) {
 }
 
 void test_1x1_square_is_counted(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "++",
@@ -122,7 +122,7 @@ void test_1x1_square_is_counted(void) {
 }
 
 void test_only_complete_rectangles_are_counted(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "  +-+",
@@ -137,7 +137,7 @@ void test_only_complete_rectangles_are_counted(void) {
 }
 
 void test_rectangles_can_be_of_different_sizes(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "+------+----+",
@@ -152,7 +152,7 @@ void test_rectangles_can_be_of_different_sizes(void) {
 }
 
 void test_corner_is_required_for_a_rectangle_to_be_complete(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "+------+----+",
@@ -167,7 +167,7 @@ void test_corner_is_required_for_a_rectangle_to_be_complete(void) {
 }
 
 void test_large_input_with_many_rectangles(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "+---+--+----+",
@@ -185,7 +185,7 @@ void test_large_input_with_many_rectangles(void) {
 }
 
 void test_rectangles_must_have_four_sides(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "+-+ +-+",
@@ -202,7 +202,7 @@ void test_rectangles_must_have_four_sides(void) {
 }
 
 void test_very_large_input(void) {
-    TEST_IGNORE();
+
     const char *strings[] = {
         // clang-format off
         "      +-----+--------+    +-----+ ",

@@ -19,7 +19,7 @@ void test_encode_yes(void) {
 }
 
 void test_encode_no(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "no", 15, 18);
@@ -27,7 +27,7 @@ void test_encode_no(void) {
 }
 
 void test_encode_omg(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "OMG", 21, 3);
@@ -35,7 +35,7 @@ void test_encode_omg(void) {
 }
 
 void test_encode_o_m_g(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "O M G", 25, 47);
@@ -43,7 +43,7 @@ void test_encode_o_m_g(void) {
 }
 
 void test_encode_mindblowingly(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "mindblowingly", 11, 15);
@@ -51,7 +51,7 @@ void test_encode_mindblowingly(void) {
 }
 
 void test_encode_numbers(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "Testing,1 2 3, testing.", 3, 4);
@@ -59,7 +59,7 @@ void test_encode_numbers(void) {
 }
 
 void test_encode_deep_thought(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "Truth is fiction.", 5, 17);
@@ -67,7 +67,7 @@ void test_encode_deep_thought(void) {
 }
 
 void test_encode_all_the_letters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "The quick brown fox jumps over the lazy dog.", 17, 33);
@@ -75,7 +75,7 @@ void test_encode_all_the_letters(void) {
 }
 
 void test_encode_with_a_not_coprime_to_m(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "This is a test.", 6, 17);
@@ -83,7 +83,7 @@ void test_encode_with_a_not_coprime_to_m(void) {
 }
 
 void test_decode_exercism(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "tytgn fjr", 3, 7);
@@ -91,7 +91,7 @@ void test_decode_exercism(void) {
 }
 
 void test_decode_a_sentence(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "qdwju nqcro muwhn odqun oppmd aunwd o", 19, 16);
@@ -99,7 +99,7 @@ void test_decode_a_sentence(void) {
 }
 
 void test_decode_numbers(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "odpoz ub123 odpoz ub", 25, 7);
@@ -107,7 +107,7 @@ void test_decode_numbers(void) {
 }
 
 void test_decode_all_the_letters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "swxtj npvyk lruol iejdc blaxk swxmh qzglf", 17, 33);
@@ -115,7 +115,7 @@ void test_decode_all_the_letters(void) {
 }
 
 void test_decode_with_no_spaces_in_input(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "swxtjnpvyklruoliejdcblaxkswxmhqzglf", 17, 33);
@@ -123,7 +123,7 @@ void test_decode_with_no_spaces_in_input(void) {
 }
 
 void test_decode_with_too_many_spaces(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "vszzm    cly   yd cg    qdp", 15, 16);
@@ -131,7 +131,7 @@ void test_decode_with_too_many_spaces(void) {
 }
 
 void test_decode_with_a_not_coprime_to_m(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "Test", 13, 5);
@@ -139,7 +139,7 @@ void test_decode_with_a_not_coprime_to_m(void) {
 }
 
 void test_encode_boundary_characters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "/09:@AMNZ[`amnz{", 25, 12);

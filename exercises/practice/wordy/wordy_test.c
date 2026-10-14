@@ -19,7 +19,7 @@ void test_just_a_number(void) {
 }
 
 void test_just_a_zero(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 0?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -27,7 +27,7 @@ void test_just_a_zero(void) {
 }
 
 void test_just_a_negative_number(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is -123?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -35,7 +35,7 @@ void test_just_a_negative_number(void) {
 }
 
 void test_addition(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 1 plus 1?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -43,7 +43,7 @@ void test_addition(void) {
 }
 
 void test_addition_with_a_left_hand_zero(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 0 plus 2?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -51,7 +51,7 @@ void test_addition_with_a_left_hand_zero(void) {
 }
 
 void test_addition_with_a_right_hand_zero(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 3 plus 0?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -59,7 +59,7 @@ void test_addition_with_a_right_hand_zero(void) {
 }
 
 void test_more_addition(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 53 plus 2?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -67,7 +67,7 @@ void test_more_addition(void) {
 }
 
 void test_addition_with_negative_numbers(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is -1 plus -10?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -75,7 +75,7 @@ void test_addition_with_negative_numbers(void) {
 }
 
 void test_large_addition(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 123 plus 45678?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -83,7 +83,7 @@ void test_large_addition(void) {
 }
 
 void test_subtraction(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 4 minus -12?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -91,7 +91,7 @@ void test_subtraction(void) {
 }
 
 void test_multiplication(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is -3 multiplied by 25?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -99,7 +99,7 @@ void test_multiplication(void) {
 }
 
 void test_division(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 33 divided by -3?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -107,7 +107,7 @@ void test_division(void) {
 }
 
 void test_multiple_additions(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 1 plus 1 plus 1?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -115,7 +115,7 @@ void test_multiple_additions(void) {
 }
 
 void test_addition_and_subtraction(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 1 plus 5 minus -2?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -123,7 +123,7 @@ void test_addition_and_subtraction(void) {
 }
 
 void test_multiple_subtraction(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 20 minus 4 minus 13?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -131,7 +131,7 @@ void test_multiple_subtraction(void) {
 }
 
 void test_subtraction_then_addition(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 17 minus 6 plus 3?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -139,7 +139,7 @@ void test_subtraction_then_addition(void) {
 }
 
 void test_multiple_multiplication(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 2 multiplied by -2 multiplied by 3?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -147,7 +147,7 @@ void test_multiple_multiplication(void) {
 }
 
 void test_addition_and_multiplication(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is -3 plus 7 multiplied by -2?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -155,7 +155,7 @@ void test_addition_and_multiplication(void) {
 }
 
 void test_multiple_division(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is -12 divided by 2 divided by -3?";
     TEST_ASSERT_TRUE(answer(&result, question));
@@ -163,56 +163,56 @@ void test_multiple_division(void) {
 }
 
 void test_unknown_operation(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 52 cubed?";
     TEST_ASSERT_FALSE(answer(&result, question));
 }
 
 void test_non_math_question(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "Who is the President of the United States?";
     TEST_ASSERT_FALSE(answer(&result, question));
 }
 
 void test_reject_problem_missing_an_operand(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 1 plus?";
     TEST_ASSERT_FALSE(answer(&result, question));
 }
 
 void test_reject_problem_with_no_operands_or_operators(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is?";
     TEST_ASSERT_FALSE(answer(&result, question));
 }
 
 void test_reject_two_operations_in_a_row(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 1 plus plus 2?";
     TEST_ASSERT_FALSE(answer(&result, question));
 }
 
 void test_reject_two_numbers_in_a_row(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 1 plus 2 1?";
     TEST_ASSERT_FALSE(answer(&result, question));
 }
 
 void test_reject_postfix_notation(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is 1 2 plus?";
     TEST_ASSERT_FALSE(answer(&result, question));
 }
 
 void test_reject_prefix_notation(void) {
-    TEST_IGNORE();
+
     int32_t result;
     const char *question = "What is plus 1 2?";
     TEST_ASSERT_FALSE(answer(&result, question));

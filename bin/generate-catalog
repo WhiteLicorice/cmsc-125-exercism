@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+"""Write the course catalog from config.json.
+
+CATALOG.md serves a reader. catalog.tsv serves the scorer.
+This script stops with a non-zero exit code when the exercise counts
+differ from the expected counts.
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+EXPECTED_TOTAL = 77
+EXPECTED_CLASSIFICATION = {"easy": 24, "medium": 47, "hard": 6}
+POINTS = {"easy": 10, "medium": 15, "hard": 20}
+
+
+def classify(difficulty: int) -> str:
+    if difficulty <= 3:
+        return "easy"
+    if difficulty <= 7:
+        return "medium"
+    return "hard"
+
+
+def read_exercises(root: Path) -> list[tuple[str, str, int, str, int]]:
+    config = json.loads((root / "config.json").read_text(encoding="utf-8"))
+    rows = []
+    for exercise in config["exercises"]["practice"]:
+        difficulty = exercise["difficulty"]
+        classification = classify(difficulty)
+        rows.append(
+            (
+                exercise["slug"],
+                exercise["name"],
+                difficulty,
+                classification,
+                POINTS[classification],
+            )
+        )
+    return rows
+
+
+def check_counts(rows: list[tuple[str, str, int, str, int]]) -> list[str]:
+    counts = {"easy": 0, "medium": 0, "hard": 0}
+    for row in rows:
+        counts[row[3]] += 1
+
+    errors = []
+    if len(rows) != EXPECTED_TOTAL:
+        errors.append(f"total exercises: expected {EXPECTED_TOTAL}, computed {len(rows)}")
+    for name, expected in EXPECTED_CLASSIFICATION.items():
+        if counts[name] != expected:
+            errors.append(f"{name} exercises: expected {expected}, computed {counts[name]}")
+    return errors
+
+
+def write_catalog_tsv(path: Path, rows: list[tuple[str, str, int, str, int]]) -> None:
+    lines = ["slug\tname\tdifficulty\tclassification\tpoints"]
+    for slug, name, difficulty, classification, points in rows:
+        lines.append(f"{slug}\t{name}\t{difficulty}\t{classification}\t{points}")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_catalog_md(path: Path, rows: list[tuple[str, str, int, str, int]]) -> None:
+    counts = {"easy": 0, "medium": 0, "hard": 0}
+    for row in rows:
+        counts[row[3]] += 1
+
+    lines = [
+        "# Exercise Catalog",
+        "",
+        "This catalog lists every practice exercise in the course fork.",
+        "The file comes from `config.json`.",
+        "Run `bin/generate-catalog` to write the file again.",
+        "",
+        "A difficulty of 1 to 3 is easy. It earns 10 points.",
+        "A difficulty of 4 to 7 is medium. It earns 15 points.",
+        "A difficulty of 8 to 10 is hard. It earns 20 points.",
+        "",
+        "| Name | Slug | Difficulty | Classification | Points |",
+        "|:--|:--|--:|:--|--:|",
+    ]
+    for slug, name, difficulty, classification, points in rows:
+        lines.append(f"| {name} | {slug} | {difficulty} | {classification} | {points} |")
+    lines.append("")
+    lines.append(
+        f"Total: {len(rows)} exercises "
+        f"(easy {counts['easy']}, medium {counts['medium']}, hard {counts['hard']})."
+    )
+    lines.append("")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def main() -> int:
+    root = Path(__file__).resolve().parent.parent
+    out_dir = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else root
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    rows = read_exercises(root)
+    errors = check_counts(rows)
+    if errors:
+        for error in errors:
+            print(f"catalog error: {error}", file=sys.stderr)
+        return 1
+
+    write_catalog_tsv(out_dir / "catalog.tsv", rows)
+    write_catalog_md(out_dir / "CATALOG.md", rows)
+
+    counts = {"easy": 0, "medium": 0, "hard": 0}
+    for row in rows:
+        counts[row[3]] += 1
+    print(f"wrote {out_dir / 'CATALOG.md'}")
+    print(f"wrote {out_dir / 'catalog.tsv'}")
+    print(
+        f"total: {len(rows)} "
+        f"(easy {counts['easy']}, medium {counts['medium']}, hard {counts['hard']})"
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

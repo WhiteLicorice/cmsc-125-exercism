@@ -19,7 +19,7 @@ void test_slices_of_one_from_one(void) {
 }
 
 void test_slices_of_one_from_two(void) {
-    TEST_IGNORE();
+
     const char expected[] =
         "1, "
         "2";
@@ -30,7 +30,7 @@ void test_slices_of_one_from_two(void) {
 }
 
 void test_slices_of_two(void) {
-    TEST_IGNORE();
+
     const char expected[] = "35";
     char buffer[BUFFER_SIZE];
 
@@ -39,7 +39,7 @@ void test_slices_of_two(void) {
 }
 
 void test_slices_of_two_overlap(void) {
-    TEST_IGNORE();
+
     const char expected[] =
         "91, "
         "14, "
@@ -51,7 +51,7 @@ void test_slices_of_two_overlap(void) {
 }
 
 void test_slices_can_include_duplicates(void) {
-    TEST_IGNORE();
+
     const char expected[] =
         "777, "
         "777, "
@@ -64,7 +64,7 @@ void test_slices_can_include_duplicates(void) {
 }
 
 void test_slices_of_a_long_series(void) {
-    TEST_IGNORE();
+
     const char expected[] =
         "91849, "
         "18493, "
@@ -81,7 +81,7 @@ void test_slices_of_a_long_series(void) {
 }
 
 void test_slice_length_is_too_large(void) {
-    TEST_IGNORE();
+
     const char expected[] = "";
     char buffer[BUFFER_SIZE];
 
@@ -90,7 +90,7 @@ void test_slice_length_is_too_large(void) {
 }
 
 void test_slice_length_is_way_too_large(void) {
-    TEST_IGNORE();
+
     const char expected[] = "";
     char buffer[BUFFER_SIZE];
 
@@ -99,7 +99,7 @@ void test_slice_length_is_way_too_large(void) {
 }
 
 void test_slice_length_cannot_be_zero(void) {
-    TEST_IGNORE();
+
     const char expected[] = "";
     char buffer[BUFFER_SIZE];
 
@@ -108,7 +108,7 @@ void test_slice_length_cannot_be_zero(void) {
 }
 
 void test_slice_length_cannot_be_negative(void) {
-    TEST_IGNORE();
+
     const char expected[] = "";
     char buffer[BUFFER_SIZE];
 
@@ -117,7 +117,7 @@ void test_slice_length_cannot_be_negative(void) {
 }
 
 void test_empty_series_is_invalid(void) {
-    TEST_IGNORE();
+
     const char expected[] = "";
     char buffer[BUFFER_SIZE];
 

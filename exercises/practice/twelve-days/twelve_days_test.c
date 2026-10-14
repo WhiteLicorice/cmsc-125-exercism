@@ -19,7 +19,7 @@ void test_first_day_a_partridge_in_a_pear_tree(void) {
 }
 
 void test_second_day_two_turtle_doves(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 2, 2);
@@ -28,7 +28,7 @@ void test_second_day_two_turtle_doves(void) {
 }
 
 void test_third_day_three_french_hens(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 3, 3);
@@ -38,7 +38,7 @@ void test_third_day_three_french_hens(void) {
 }
 
 void test_fourth_day_four_calling_birds(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 4, 4);
@@ -49,7 +49,7 @@ void test_fourth_day_four_calling_birds(void) {
 }
 
 void test_fifth_day_five_gold_rings(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 5, 5);
@@ -60,7 +60,7 @@ void test_fifth_day_five_gold_rings(void) {
 }
 
 void test_sixth_day_six_geesealaying(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 6, 6);
@@ -71,7 +71,7 @@ void test_sixth_day_six_geesealaying(void) {
 }
 
 void test_seventh_day_seven_swansaswimming(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 7, 7);
@@ -82,7 +82,7 @@ void test_seventh_day_seven_swansaswimming(void) {
 }
 
 void test_eighth_day_eight_maidsamilking(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 8, 8);
@@ -93,7 +93,7 @@ void test_eighth_day_eight_maidsamilking(void) {
 }
 
 void test_ninth_day_nine_ladies_dancing(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 9, 9);
@@ -104,7 +104,7 @@ void test_ninth_day_nine_ladies_dancing(void) {
 }
 
 void test_tenth_day_ten_lordsaleaping(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 10, 10);
@@ -116,7 +116,7 @@ void test_tenth_day_ten_lordsaleaping(void) {
 }
 
 void test_eleventh_day_eleven_pipers_piping(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 11, 11);
@@ -128,7 +128,7 @@ void test_eleventh_day_eleven_pipers_piping(void) {
 }
 
 void test_twelfth_day_twelve_drummers_drumming(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 12, 12);
@@ -140,7 +140,7 @@ void test_twelfth_day_twelve_drummers_drumming(void) {
 }
 
 void test_recites_first_three_verses_of_the_song(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 1, 3);
@@ -152,7 +152,7 @@ void test_recites_first_three_verses_of_the_song(void) {
 }
 
 void test_recites_three_verses_from_the_middle_of_the_song(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 4, 6);
@@ -167,7 +167,7 @@ void test_recites_three_verses_from_the_middle_of_the_song(void) {
 }
 
 void test_recites_the_whole_song(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 1, 12);

@@ -19,90 +19,90 @@ void test_no_multiples_within_limit(void) {
 }
 
 void test_one_factor_has_multiples_within_limit(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {3, 5};
     TEST_ASSERT_EQUAL_UINT32(3, sum(4, factors, ARRAY_SIZE(factors)));
 }
 
 void test_more_than_one_multiple_within_limit(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {3};
     TEST_ASSERT_EQUAL_UINT32(9, sum(7, factors, ARRAY_SIZE(factors)));
 }
 
 void test_more_than_one_factor_with_multiples_within_limit(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {3, 5};
     TEST_ASSERT_EQUAL_UINT32(23, sum(10, factors, ARRAY_SIZE(factors)));
 }
 
 void test_each_multiple_is_only_counted_once(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {3, 5};
     TEST_ASSERT_EQUAL_UINT32(2318, sum(100, factors, ARRAY_SIZE(factors)));
 }
 
 void test_a_much_larger_limit(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {3, 5};
     TEST_ASSERT_EQUAL_UINT32(233168, sum(1000, factors, ARRAY_SIZE(factors)));
 }
 
 void test_three_factors(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {7, 13, 17};
     TEST_ASSERT_EQUAL_UINT32(51, sum(20, factors, ARRAY_SIZE(factors)));
 }
 
 void test_factors_not_relatively_prime(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {4, 6};
     TEST_ASSERT_EQUAL_UINT32(30, sum(15, factors, ARRAY_SIZE(factors)));
 }
 
 void test_some_pairs_of_factors_relatively_prime_and_some_not(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {5, 6, 8};
     TEST_ASSERT_EQUAL_UINT32(4419, sum(150, factors, ARRAY_SIZE(factors)));
 }
 
 void test_one_factor_is_a_multiple_of_another(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {5, 25};
     TEST_ASSERT_EQUAL_UINT32(275, sum(51, factors, ARRAY_SIZE(factors)));
 }
 
 void test_much_larger_factors(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {43, 47};
     TEST_ASSERT_EQUAL_UINT32(2203160, sum(10000, factors, ARRAY_SIZE(factors)));
 }
 
 void test_all_numbers_are_multiples_of_1(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {1};
     TEST_ASSERT_EQUAL_UINT32(4950, sum(100, factors, ARRAY_SIZE(factors)));
 }
 
 void test_no_factors_means_an_empty_sum(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_UINT32(0, sum(10000, NULL, 0));
 }
 
 void test_the_only_multiple_of_0_is_0(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {0};
     TEST_ASSERT_EQUAL_UINT32(0, sum(1, factors, ARRAY_SIZE(factors)));
 }
 
 void test_the_factor_0_does_not_affect_the_sum_of_multiples_of_other_factors(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {3, 0};
     TEST_ASSERT_EQUAL_UINT32(3, sum(4, factors, ARRAY_SIZE(factors)));
 }
 
 void test_solutions_using_includeexclude_must_extend_to_cardinality_greater_than_3(void) {
-    TEST_IGNORE();
+
     const uint32_t factors[] = {2, 3, 5, 7, 11};
     TEST_ASSERT_EQUAL_UINT32(39614537, sum(10000, factors, ARRAY_SIZE(factors)));
 }

@@ -1,0 +1,78 @@
+slug	name	difficulty	classification	points
+hello-world	Hello World	1	easy	10
+leap	Leap	2	easy	10
+reverse-string	Reverse String	2	easy	10
+two-fer	Two-Fer	2	easy	10
+acronym	Acronym	3	easy	10
+armstrong-numbers	Armstrong Numbers	3	easy	10
+collatz-conjecture	Collatz Conjecture	3	easy	10
+difference-of-squares	Difference of Squares	3	easy	10
+eliuds-eggs	Eliud's Eggs	3	easy	10
+hamming	Hamming	3	easy	10
+isogram	Isogram	3	easy	10
+line-up	Line Up	3	easy	10
+micro-blog	Micro Blog	3	easy	10
+nucleotide-count	Nucleotide Count	3	easy	10
+pangram	Pangram	3	easy	10
+raindrops	Raindrops	3	easy	10
+resistor-color	Resistor Color	3	easy	10
+resistor-color-duo	Resistor Color Duo	3	easy	10
+resistor-color-trio	Resistor Color Trio	3	easy	10
+rna-transcription	RNA Transcription	3	easy	10
+scrabble-score	Scrabble Score	3	easy	10
+square-root	Square Root	3	easy	10
+sum-of-multiples	Sum of Multiples	3	easy	10
+triangle	Triangle	3	easy	10
+bob	Bob	4	medium	15
+house	House	4	medium	15
+isbn-verifier	ISBN Verifier	4	medium	15
+kindergarten-garden	Kindergarten Garden	4	medium	15
+matrix	Matrix	4	medium	15
+perfect-numbers	Perfect Numbers	4	medium	15
+phone-number	Phone Number	4	medium	15
+prime-factors	Prime Factors	4	medium	15
+rotational-cipher	Rotational Cipher	4	medium	15
+secret-handshake	Secret Handshake	4	medium	15
+series	Series	4	medium	15
+sublist	Sublist	4	medium	15
+twelve-days	Twelve Days	4	medium	15
+affine-cipher	Affine Cipher	5	medium	15
+atbash-cipher	Atbash Cipher	5	medium	15
+binary-search	Binary Search	5	medium	15
+bottle-song	Bottle Song	5	medium	15
+diamond	Diamond	5	medium	15
+largest-series-product	Largest Series Product	5	medium	15
+luhn	Luhn	5	medium	15
+pig-latin	Pig Latin	5	medium	15
+protein-translation	Protein Translation	5	medium	15
+proverb	Proverb	5	medium	15
+roman-numerals	Roman Numerals	5	medium	15
+run-length-encoding	Run-Length Encoding	5	medium	15
+sieve	Sieve	5	medium	15
+state-of-tic-tac-toe	State of Tic-Tac-Toe	5	medium	15
+all-your-base	All Your Base	6	medium	15
+change	Change	6	medium	15
+crypto-square	Crypto Square	6	medium	15
+food-chain	Food Chain	6	medium	15
+knapsack	Knapsack	6	medium	15
+matching-brackets	Matching Brackets	6	medium	15
+nth-prime	Nth Prime	6	medium	15
+ocr-numbers	OCR Numbers	6	medium	15
+pascals-triangle	Pascal's Triangle	6	medium	15
+saddle-points	Saddle Points	6	medium	15
+variable-length-quantity	Variable Length Quantity	6	medium	15
+yacht	Yacht	6	medium	15
+game-of-life	Conway's Game of Life	7	medium	15
+flower-field	Flower Field	7	medium	15
+intergalactic-transmission	Intergalactic Transmission	7	medium	15
+killer-sudoku-helper	Killer Sudoku Helper	7	medium	15
+meetup	Meetup	7	medium	15
+rail-fence-cipher	Rail Fence Cipher	7	medium	15
+rectangles	Rectangles	7	medium	15
+wordy	Wordy	7	medium	15
+book-store	Book Store	8	hard	20
+dominoes	Dominoes	8	hard	20
+palindrome-products	Palindrome Products	8	hard	20
+pythagorean-triplet	Pythagorean Triplet	8	hard	20
+zebra-puzzle	Zebra Puzzle	9	hard	20
+connect	Connect	10	hard	20

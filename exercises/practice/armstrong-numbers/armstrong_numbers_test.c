@@ -13,42 +13,42 @@ void test_zero_is_an_armstrong_number(void) {
 }
 
 void test_singledigit_numbers_are_armstrong_numbers(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_TRUE(is_armstrong_number(5));
 }
 
 void test_there_are_no_twodigit_armstrong_numbers(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_FALSE(is_armstrong_number(10));
 }
 
 void test_threedigit_number_that_is_an_armstrong_number(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_TRUE(is_armstrong_number(153));
 }
 
 void test_threedigit_number_that_is_not_an_armstrong_number(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_FALSE(is_armstrong_number(100));
 }
 
 void test_fourdigit_number_that_is_an_armstrong_number(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_TRUE(is_armstrong_number(9474));
 }
 
 void test_fourdigit_number_that_is_not_an_armstrong_number(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_FALSE(is_armstrong_number(9475));
 }
 
 void test_sevendigit_number_that_is_an_armstrong_number(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_TRUE(is_armstrong_number(9926315));
 }
 
 void test_sevendigit_number_that_is_not_an_armstrong_number(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_FALSE(is_armstrong_number(9926314));
 }
 

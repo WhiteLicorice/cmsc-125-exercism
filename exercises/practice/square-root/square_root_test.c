@@ -15,27 +15,27 @@ void test_root_of_1(void) {
 }
 
 void test_root_of_4(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_UINT(2, square_root(4));
 }
 
 void test_root_of_25(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_UINT(5, square_root(25));
 }
 
 void test_root_of_81(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_UINT(9, square_root(81));
 }
 
 void test_root_of_196(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_UINT(14, square_root(196));
 }
 
 void test_root_of_65025(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_UINT(255, square_root(65025));
 }
 
