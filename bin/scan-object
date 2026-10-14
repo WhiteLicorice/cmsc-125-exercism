@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+# Find a system call or a breakpoint in an object.
+#
+# Usage: scan-object <object>
+#
+# Read the executable section bytes straight from the ELF file. Print one line
+# for each system-call or breakpoint encoding that starts at an even offset.
+#
+# Read the ELF32 little-endian header and the section header table with
+# struct. Read the section count from e_shnum. When e_shnum is 0, read the
+# real count from the sh_size field of section header 0. Section 0 is
+# metadata, so the scan starts at section 1. Select a section when its flag
+# word holds SHF_EXECINSTR (0x4) and its type is not SHT_NOBITS (8). A NOBITS
+# section holds no file bytes, so skip it before the file bound. Read the bytes
+# of each other selected section at sh_offset for sh_size bytes, after the file
+# bound. Search every even offset. Do not select a section by name, and do not
+# convert the object to a binary image, so a wildcard name and a section with
+# no alloc flag both work.
+#
+# The rule covers three encodings at an even offset of an executable section:
+# the system call ecall (73 00 00 00), the breakpoint ebreak (73 00 10 00), and
+# the compressed breakpoint c.ebreak (02 90). The assembler writes a plain
+# ebreak as c.ebreak, so a rule with only the 32-bit form misses the ordinary
+# breakpoint. ecall has no compressed form.
+#
+# Exit 0 on a completed scan. Exit 2 on a usage error. Exit 3 on a file that
+# the scan cannot parse. Any 3 exit prints the inspect note. A parse failure
+# is never a clean scan.
+
+import struct
+import sys
+
+# 73 00 00 00 ecall, 73 00 10 00 ebreak, 02 90 c.ebreak. The two 32-bit forms
+# are the little-endian encodings of the two instructions. A plain ebreak
+# assembles to c.ebreak (02 90), so the compressed form is needed to catch it.
+ECALL = b"\x73\x00\x00\x00"
+EBREAK = b"\x73\x00\x10\x00"
+C_EBREAK = b"\x02\x90"
+STEP = 2
+
+EM_RISCV = 243
+SHT_NOBITS = 8
+SHF_EXECINSTR = 0x4
+
+# ELF32 header field offsets.
+E_MACHINE = 18
+E_SHOFF = 32
+E_SHENTSIZE = 46
+E_SHNUM = 48
+
+# ELF32 section header field offsets, from the section header start.
+SH_TYPE = 4
+SH_FLAGS = 8
+SH_OFFSET = 16
+SH_SIZE = 20
+
+SHENT_MIN = 40
+
+
+def sections(data):
+    # Return a list of (offset, size) for every executable, non-NOBITS
+    # section. Return None when the file is not an object this scan can read.
+    if len(data) < 52:
+        return None
+    if data[:4] != b"\x7fELF" or data[4] != 1 or data[5] != 1:
+        return None
+    (machine,) = struct.unpack_from("<H", data, E_MACHINE)
+    if machine != EM_RISCV:
+        return None
+    (shoff,) = struct.unpack_from("<I", data, E_SHOFF)
+    (shentsize,) = struct.unpack_from("<H", data, E_SHENTSIZE)
+    (shnum,) = struct.unpack_from("<H", data, E_SHNUM)
+    if shentsize < SHENT_MIN:
+        return None
+    if shoff + shentsize > len(data):
+        return None
+    (sh0_size,) = struct.unpack_from("<I", data, shoff + SH_SIZE)
+    if shnum == 0:
+        shnum = sh0_size
+    if shnum == 0:
+        return None
+    if shoff + shnum * shentsize > len(data):
+        return None
+    found = []
+    for index in range(1, shnum):
+        base = shoff + index * shentsize
+        (sh_type,) = struct.unpack_from("<I", data, base + SH_TYPE)
+        if sh_type == SHT_NOBITS:
+            continue
+        (sh_flags,) = struct.unpack_from("<I", data, base + SH_FLAGS)
+        (sh_offset,) = struct.unpack_from("<I", data, base + SH_OFFSET)
+        (sh_size,) = struct.unpack_from("<I", data, base + SH_SIZE)
+        if sh_offset + sh_size > len(data):
+            return None
+        if sh_flags & SHF_EXECINSTR:
+            found.append((sh_offset, sh_size))
+    return found
+
+
+def scan(data, offset, size):
+    # Yield (file offset, encoding) for each match at an even offset. The
+    # section bytes live between offset and offset + size in the file.
+    end = offset + size
+    for start in range(offset, end - 3, STEP):
+        word = data[start:start + 4]
+        if word == ECALL:
+            yield start, "ecall"
+        elif word == EBREAK:
+            yield start, "ebreak"
+    for start in range(offset, end - 1, STEP):
+        if data[start:start + 2] == C_EBREAK:
+            yield start, "ebreak"
+
+
+def main():
+    if len(sys.argv) != 2:
+        print("usage: scan-object <object>", file=sys.stderr)
+        return 2
+    try:
+        with open(sys.argv[1], "rb") as stream:
+            data = stream.read()
+    except OSError:
+        print("scan-object: could not inspect the object", file=sys.stderr)
+        return 3
+    found = sections(data)
+    if found is None:
+        print("scan-object: could not inspect the object", file=sys.stderr)
+        return 3
+    for offset, size in found:
+        for start, encoding in scan(data, offset, size):
+            print("0x{0:x} {1}".format(start, encoding))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

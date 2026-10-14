@@ -19,7 +19,7 @@ void test_encode_yes(void) {
 }
 
 void test_encode_no(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "no");
@@ -27,7 +27,7 @@ void test_encode_no(void) {
 }
 
 void test_encode_omg(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "OMG");
@@ -35,7 +35,7 @@ void test_encode_omg(void) {
 }
 
 void test_encode_spaces(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "O M G");
@@ -43,7 +43,7 @@ void test_encode_spaces(void) {
 }
 
 void test_encode_mindblowingly(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "mindblowingly");
@@ -51,7 +51,7 @@ void test_encode_mindblowingly(void) {
 }
 
 void test_encode_numbers(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "Testing,1 2 3, testing.");
@@ -59,7 +59,7 @@ void test_encode_numbers(void) {
 }
 
 void test_encode_deep_thought(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "Truth is fiction.");
@@ -67,7 +67,7 @@ void test_encode_deep_thought(void) {
 }
 
 void test_encode_all_the_letters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "The quick brown fox jumps over the lazy dog.");
@@ -75,7 +75,7 @@ void test_encode_all_the_letters(void) {
 }
 
 void test_decode_exercism(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "vcvix rhn");
@@ -83,7 +83,7 @@ void test_decode_exercism(void) {
 }
 
 void test_decode_a_sentence(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "zmlyh gzxov rhlug vmzhg vkkrm thglm v");
@@ -91,7 +91,7 @@ void test_decode_a_sentence(void) {
 }
 
 void test_decode_numbers(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "gvhgr mt123 gvhgr mt");
@@ -99,7 +99,7 @@ void test_decode_numbers(void) {
 }
 
 void test_decode_all_the_letters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "gsvjf rxpyi ldmul cqfnk hlevi gsvoz abwlt");
@@ -107,7 +107,7 @@ void test_decode_all_the_letters(void) {
 }
 
 void test_decode_with_too_many_spaces(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "vc vix    r hn");
@@ -115,7 +115,7 @@ void test_decode_with_too_many_spaces(void) {
 }
 
 void test_decode_with_no_spaces(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     decode(buffer, "zmlyhgzxovrhlugvmzhgvkkrmthglmv");
@@ -123,7 +123,7 @@ void test_decode_with_no_spaces(void) {
 }
 
 void test_encode_boundary_characters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     encode(buffer, "/09:@AMNZ[`amnz{");

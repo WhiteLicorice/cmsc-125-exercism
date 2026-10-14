@@ -37,7 +37,7 @@ void test_when_teenth_monday_is_the_13th_the_first_day_of_the_teenth_week(void) 
 }
 
 void test_when_teenth_monday_is_the_19th_the_last_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 8, TEENTH, MONDAY);
@@ -45,7 +45,7 @@ void test_when_teenth_monday_is_the_19th_the_last_day_of_the_teenth_week(void) {
 }
 
 void test_when_teenth_monday_is_some_day_in_the_middle_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 9, TEENTH, MONDAY);
@@ -53,7 +53,7 @@ void test_when_teenth_monday_is_some_day_in_the_middle_of_the_teenth_week(void) 
 }
 
 void test_when_teenth_tuesday_is_the_19th_the_last_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, TEENTH, TUESDAY);
@@ -61,7 +61,7 @@ void test_when_teenth_tuesday_is_the_19th_the_last_day_of_the_teenth_week(void) 
 }
 
 void test_when_teenth_tuesday_is_some_day_in_the_middle_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, TEENTH, TUESDAY);
@@ -69,7 +69,7 @@ void test_when_teenth_tuesday_is_some_day_in_the_middle_of_the_teenth_week(void)
 }
 
 void test_when_teenth_tuesday_is_the_13th_the_first_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 8, TEENTH, TUESDAY);
@@ -77,7 +77,7 @@ void test_when_teenth_tuesday_is_the_13th_the_first_day_of_the_teenth_week(void)
 }
 
 void test_when_teenth_wednesday_is_some_day_in_the_middle_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 1, TEENTH, WEDNESDAY);
@@ -85,7 +85,7 @@ void test_when_teenth_wednesday_is_some_day_in_the_middle_of_the_teenth_week(voi
 }
 
 void test_when_teenth_wednesday_is_the_13th_the_first_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 2, TEENTH, WEDNESDAY);
@@ -93,7 +93,7 @@ void test_when_teenth_wednesday_is_the_13th_the_first_day_of_the_teenth_week(voi
 }
 
 void test_when_teenth_wednesday_is_the_19th_the_last_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 6, TEENTH, WEDNESDAY);
@@ -101,7 +101,7 @@ void test_when_teenth_wednesday_is_the_19th_the_last_day_of_the_teenth_week(void
 }
 
 void test_when_teenth_thursday_is_some_day_in_the_middle_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 5, TEENTH, THURSDAY);
@@ -109,7 +109,7 @@ void test_when_teenth_thursday_is_some_day_in_the_middle_of_the_teenth_week(void
 }
 
 void test_when_teenth_thursday_is_the_13th_the_first_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 6, TEENTH, THURSDAY);
@@ -117,7 +117,7 @@ void test_when_teenth_thursday_is_the_13th_the_first_day_of_the_teenth_week(void
 }
 
 void test_when_teenth_thursday_is_the_19th_the_last_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 9, TEENTH, THURSDAY);
@@ -125,7 +125,7 @@ void test_when_teenth_thursday_is_the_19th_the_last_day_of_the_teenth_week(void)
 }
 
 void test_when_teenth_friday_is_the_19th_the_last_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, TEENTH, FRIDAY);
@@ -133,7 +133,7 @@ void test_when_teenth_friday_is_the_19th_the_last_day_of_the_teenth_week(void) {
 }
 
 void test_when_teenth_friday_is_some_day_in_the_middle_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 8, TEENTH, FRIDAY);
@@ -141,7 +141,7 @@ void test_when_teenth_friday_is_some_day_in_the_middle_of_the_teenth_week(void) 
 }
 
 void test_when_teenth_friday_is_the_13th_the_first_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 9, TEENTH, FRIDAY);
@@ -149,7 +149,7 @@ void test_when_teenth_friday_is_the_13th_the_first_day_of_the_teenth_week(void) 
 }
 
 void test_when_teenth_saturday_is_some_day_in_the_middle_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 2, TEENTH, SATURDAY);
@@ -157,7 +157,7 @@ void test_when_teenth_saturday_is_some_day_in_the_middle_of_the_teenth_week(void
 }
 
 void test_when_teenth_saturday_is_the_13th_the_first_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, TEENTH, SATURDAY);
@@ -165,7 +165,7 @@ void test_when_teenth_saturday_is_the_13th_the_first_day_of_the_teenth_week(void
 }
 
 void test_when_teenth_saturday_is_the_19th_the_last_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 10, TEENTH, SATURDAY);
@@ -173,7 +173,7 @@ void test_when_teenth_saturday_is_the_19th_the_last_day_of_the_teenth_week(void)
 }
 
 void test_when_teenth_sunday_is_the_19th_the_last_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 5, TEENTH, SUNDAY);
@@ -181,7 +181,7 @@ void test_when_teenth_sunday_is_the_19th_the_last_day_of_the_teenth_week(void) {
 }
 
 void test_when_teenth_sunday_is_some_day_in_the_middle_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 6, TEENTH, SUNDAY);
@@ -189,7 +189,7 @@ void test_when_teenth_sunday_is_some_day_in_the_middle_of_the_teenth_week(void) 
 }
 
 void test_when_teenth_sunday_is_the_13th_the_first_day_of_the_teenth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 10, TEENTH, SUNDAY);
@@ -197,7 +197,7 @@ void test_when_teenth_sunday_is_the_13th_the_first_day_of_the_teenth_week(void) 
 }
 
 void test_when_first_monday_is_some_day_in_the_middle_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, FIRST, MONDAY);
@@ -205,7 +205,7 @@ void test_when_first_monday_is_some_day_in_the_middle_of_the_first_week(void) {
 }
 
 void test_when_first_monday_is_the_1st_the_first_day_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, FIRST, MONDAY);
@@ -213,7 +213,7 @@ void test_when_first_monday_is_the_1st_the_first_day_of_the_first_week(void) {
 }
 
 void test_when_first_tuesday_is_the_7th_the_last_day_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 5, FIRST, TUESDAY);
@@ -221,7 +221,7 @@ void test_when_first_tuesday_is_the_7th_the_last_day_of_the_first_week(void) {
 }
 
 void test_when_first_tuesday_is_some_day_in_the_middle_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 6, FIRST, TUESDAY);
@@ -229,7 +229,7 @@ void test_when_first_tuesday_is_some_day_in_the_middle_of_the_first_week(void) {
 }
 
 void test_when_first_wednesday_is_some_day_in_the_middle_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 7, FIRST, WEDNESDAY);
@@ -237,7 +237,7 @@ void test_when_first_wednesday_is_some_day_in_the_middle_of_the_first_week(void)
 }
 
 void test_when_first_wednesday_is_the_7th_the_last_day_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 8, FIRST, WEDNESDAY);
@@ -245,7 +245,7 @@ void test_when_first_wednesday_is_the_7th_the_last_day_of_the_first_week(void) {
 }
 
 void test_when_first_thursday_is_some_day_in_the_middle_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 9, FIRST, THURSDAY);
@@ -253,7 +253,7 @@ void test_when_first_thursday_is_some_day_in_the_middle_of_the_first_week(void) 
 }
 
 void test_when_first_thursday_is_another_day_in_the_middle_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 10, FIRST, THURSDAY);
@@ -261,7 +261,7 @@ void test_when_first_thursday_is_another_day_in_the_middle_of_the_first_week(voi
 }
 
 void test_when_first_friday_is_the_1st_the_first_day_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 11, FIRST, FRIDAY);
@@ -269,7 +269,7 @@ void test_when_first_friday_is_the_1st_the_first_day_of_the_first_week(void) {
 }
 
 void test_when_first_friday_is_some_day_in_the_middle_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 12, FIRST, FRIDAY);
@@ -277,7 +277,7 @@ void test_when_first_friday_is_some_day_in_the_middle_of_the_first_week(void) {
 }
 
 void test_when_first_saturday_is_some_day_in_the_middle_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 1, FIRST, SATURDAY);
@@ -285,7 +285,7 @@ void test_when_first_saturday_is_some_day_in_the_middle_of_the_first_week(void) 
 }
 
 void test_when_first_saturday_is_another_day_in_the_middle_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 2, FIRST, SATURDAY);
@@ -293,7 +293,7 @@ void test_when_first_saturday_is_another_day_in_the_middle_of_the_first_week(voi
 }
 
 void test_when_first_sunday_is_some_day_in_the_middle_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, FIRST, SUNDAY);
@@ -301,7 +301,7 @@ void test_when_first_sunday_is_some_day_in_the_middle_of_the_first_week(void) {
 }
 
 void test_when_first_sunday_is_the_7th_the_last_day_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, FIRST, SUNDAY);
@@ -309,7 +309,7 @@ void test_when_first_sunday_is_the_7th_the_last_day_of_the_first_week(void) {
 }
 
 void test_when_second_monday_is_some_day_in_the_middle_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, SECOND, MONDAY);
@@ -317,7 +317,7 @@ void test_when_second_monday_is_some_day_in_the_middle_of_the_second_week(void) 
 }
 
 void test_when_second_monday_is_the_8th_the_first_day_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, SECOND, MONDAY);
@@ -325,7 +325,7 @@ void test_when_second_monday_is_the_8th_the_first_day_of_the_second_week(void) {
 }
 
 void test_when_second_tuesday_is_the_14th_the_last_day_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 5, SECOND, TUESDAY);
@@ -333,7 +333,7 @@ void test_when_second_tuesday_is_the_14th_the_last_day_of_the_second_week(void) 
 }
 
 void test_when_second_tuesday_is_some_day_in_the_middle_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 6, SECOND, TUESDAY);
@@ -341,7 +341,7 @@ void test_when_second_tuesday_is_some_day_in_the_middle_of_the_second_week(void)
 }
 
 void test_when_second_wednesday_is_some_day_in_the_middle_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 7, SECOND, WEDNESDAY);
@@ -349,7 +349,7 @@ void test_when_second_wednesday_is_some_day_in_the_middle_of_the_second_week(voi
 }
 
 void test_when_second_wednesday_is_the_14th_the_last_day_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 8, SECOND, WEDNESDAY);
@@ -357,7 +357,7 @@ void test_when_second_wednesday_is_the_14th_the_last_day_of_the_second_week(void
 }
 
 void test_when_second_thursday_is_some_day_in_the_middle_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 9, SECOND, THURSDAY);
@@ -365,7 +365,7 @@ void test_when_second_thursday_is_some_day_in_the_middle_of_the_second_week(void
 }
 
 void test_when_second_thursday_is_another_day_in_the_middle_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 10, SECOND, THURSDAY);
@@ -373,7 +373,7 @@ void test_when_second_thursday_is_another_day_in_the_middle_of_the_second_week(v
 }
 
 void test_when_second_friday_is_the_8th_the_first_day_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 11, SECOND, FRIDAY);
@@ -381,7 +381,7 @@ void test_when_second_friday_is_the_8th_the_first_day_of_the_second_week(void) {
 }
 
 void test_when_second_friday_is_some_day_in_the_middle_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 12, SECOND, FRIDAY);
@@ -389,7 +389,7 @@ void test_when_second_friday_is_some_day_in_the_middle_of_the_second_week(void) 
 }
 
 void test_when_second_saturday_is_some_day_in_the_middle_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 1, SECOND, SATURDAY);
@@ -397,7 +397,7 @@ void test_when_second_saturday_is_some_day_in_the_middle_of_the_second_week(void
 }
 
 void test_when_second_saturday_is_another_day_in_the_middle_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 2, SECOND, SATURDAY);
@@ -405,7 +405,7 @@ void test_when_second_saturday_is_another_day_in_the_middle_of_the_second_week(v
 }
 
 void test_when_second_sunday_is_some_day_in_the_middle_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, SECOND, SUNDAY);
@@ -413,7 +413,7 @@ void test_when_second_sunday_is_some_day_in_the_middle_of_the_second_week(void) 
 }
 
 void test_when_second_sunday_is_the_14th_the_last_day_of_the_second_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, SECOND, SUNDAY);
@@ -421,7 +421,7 @@ void test_when_second_sunday_is_the_14th_the_last_day_of_the_second_week(void) {
 }
 
 void test_when_third_monday_is_some_day_in_the_middle_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, THIRD, MONDAY);
@@ -429,7 +429,7 @@ void test_when_third_monday_is_some_day_in_the_middle_of_the_third_week(void) {
 }
 
 void test_when_third_monday_is_the_15th_the_first_day_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, THIRD, MONDAY);
@@ -437,7 +437,7 @@ void test_when_third_monday_is_the_15th_the_first_day_of_the_third_week(void) {
 }
 
 void test_when_third_tuesday_is_the_21st_the_last_day_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 5, THIRD, TUESDAY);
@@ -445,7 +445,7 @@ void test_when_third_tuesday_is_the_21st_the_last_day_of_the_third_week(void) {
 }
 
 void test_when_third_tuesday_is_some_day_in_the_middle_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 6, THIRD, TUESDAY);
@@ -453,7 +453,7 @@ void test_when_third_tuesday_is_some_day_in_the_middle_of_the_third_week(void) {
 }
 
 void test_when_third_wednesday_is_some_day_in_the_middle_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 7, THIRD, WEDNESDAY);
@@ -461,7 +461,7 @@ void test_when_third_wednesday_is_some_day_in_the_middle_of_the_third_week(void)
 }
 
 void test_when_third_wednesday_is_the_21st_the_last_day_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 8, THIRD, WEDNESDAY);
@@ -469,7 +469,7 @@ void test_when_third_wednesday_is_the_21st_the_last_day_of_the_third_week(void) 
 }
 
 void test_when_third_thursday_is_some_day_in_the_middle_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 9, THIRD, THURSDAY);
@@ -477,7 +477,7 @@ void test_when_third_thursday_is_some_day_in_the_middle_of_the_third_week(void) 
 }
 
 void test_when_third_thursday_is_another_day_in_the_middle_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 10, THIRD, THURSDAY);
@@ -485,7 +485,7 @@ void test_when_third_thursday_is_another_day_in_the_middle_of_the_third_week(voi
 }
 
 void test_when_third_friday_is_the_15th_the_first_day_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 11, THIRD, FRIDAY);
@@ -493,7 +493,7 @@ void test_when_third_friday_is_the_15th_the_first_day_of_the_third_week(void) {
 }
 
 void test_when_third_friday_is_some_day_in_the_middle_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 12, THIRD, FRIDAY);
@@ -501,7 +501,7 @@ void test_when_third_friday_is_some_day_in_the_middle_of_the_third_week(void) {
 }
 
 void test_when_third_saturday_is_some_day_in_the_middle_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 1, THIRD, SATURDAY);
@@ -509,7 +509,7 @@ void test_when_third_saturday_is_some_day_in_the_middle_of_the_third_week(void) 
 }
 
 void test_when_third_saturday_is_another_day_in_the_middle_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 2, THIRD, SATURDAY);
@@ -517,7 +517,7 @@ void test_when_third_saturday_is_another_day_in_the_middle_of_the_third_week(voi
 }
 
 void test_when_third_sunday_is_some_day_in_the_middle_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, THIRD, SUNDAY);
@@ -525,7 +525,7 @@ void test_when_third_sunday_is_some_day_in_the_middle_of_the_third_week(void) {
 }
 
 void test_when_third_sunday_is_the_21st_the_last_day_of_the_third_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, THIRD, SUNDAY);
@@ -533,7 +533,7 @@ void test_when_third_sunday_is_the_21st_the_last_day_of_the_third_week(void) {
 }
 
 void test_when_fourth_monday_is_some_day_in_the_middle_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, FOURTH, MONDAY);
@@ -541,7 +541,7 @@ void test_when_fourth_monday_is_some_day_in_the_middle_of_the_fourth_week(void) 
 }
 
 void test_when_fourth_monday_is_the_22nd_the_first_day_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, FOURTH, MONDAY);
@@ -549,7 +549,7 @@ void test_when_fourth_monday_is_the_22nd_the_first_day_of_the_fourth_week(void) 
 }
 
 void test_when_fourth_tuesday_is_the_28th_the_last_day_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 5, FOURTH, TUESDAY);
@@ -557,7 +557,7 @@ void test_when_fourth_tuesday_is_the_28th_the_last_day_of_the_fourth_week(void) 
 }
 
 void test_when_fourth_tuesday_is_some_day_in_the_middle_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 6, FOURTH, TUESDAY);
@@ -565,7 +565,7 @@ void test_when_fourth_tuesday_is_some_day_in_the_middle_of_the_fourth_week(void)
 }
 
 void test_when_fourth_wednesday_is_some_day_in_the_middle_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 7, FOURTH, WEDNESDAY);
@@ -573,7 +573,7 @@ void test_when_fourth_wednesday_is_some_day_in_the_middle_of_the_fourth_week(voi
 }
 
 void test_when_fourth_wednesday_is_the_28th_the_last_day_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 8, FOURTH, WEDNESDAY);
@@ -581,7 +581,7 @@ void test_when_fourth_wednesday_is_the_28th_the_last_day_of_the_fourth_week(void
 }
 
 void test_when_fourth_thursday_is_some_day_in_the_middle_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 9, FOURTH, THURSDAY);
@@ -589,7 +589,7 @@ void test_when_fourth_thursday_is_some_day_in_the_middle_of_the_fourth_week(void
 }
 
 void test_when_fourth_thursday_is_another_day_in_the_middle_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 10, FOURTH, THURSDAY);
@@ -597,7 +597,7 @@ void test_when_fourth_thursday_is_another_day_in_the_middle_of_the_fourth_week(v
 }
 
 void test_when_fourth_friday_is_the_22nd_the_first_day_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 11, FOURTH, FRIDAY);
@@ -605,7 +605,7 @@ void test_when_fourth_friday_is_the_22nd_the_first_day_of_the_fourth_week(void) 
 }
 
 void test_when_fourth_friday_is_some_day_in_the_middle_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 12, FOURTH, FRIDAY);
@@ -613,7 +613,7 @@ void test_when_fourth_friday_is_some_day_in_the_middle_of_the_fourth_week(void) 
 }
 
 void test_when_fourth_saturday_is_some_day_in_the_middle_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 1, FOURTH, SATURDAY);
@@ -621,7 +621,7 @@ void test_when_fourth_saturday_is_some_day_in_the_middle_of_the_fourth_week(void
 }
 
 void test_when_fourth_saturday_is_another_day_in_the_middle_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 2, FOURTH, SATURDAY);
@@ -629,7 +629,7 @@ void test_when_fourth_saturday_is_another_day_in_the_middle_of_the_fourth_week(v
 }
 
 void test_when_fourth_sunday_is_some_day_in_the_middle_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, FOURTH, SUNDAY);
@@ -637,7 +637,7 @@ void test_when_fourth_sunday_is_some_day_in_the_middle_of_the_fourth_week(void) 
 }
 
 void test_when_fourth_sunday_is_the_28th_the_last_day_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, FOURTH, SUNDAY);
@@ -645,7 +645,7 @@ void test_when_fourth_sunday_is_the_28th_the_last_day_of_the_fourth_week(void) {
 }
 
 void test_last_monday_in_a_month_with_four_mondays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, LAST, MONDAY);
@@ -653,7 +653,7 @@ void test_last_monday_in_a_month_with_four_mondays(void) {
 }
 
 void test_last_monday_in_a_month_with_five_mondays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, LAST, MONDAY);
@@ -661,7 +661,7 @@ void test_last_monday_in_a_month_with_five_mondays(void) {
 }
 
 void test_last_tuesday_in_a_month_with_four_tuesdays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 5, LAST, TUESDAY);
@@ -669,7 +669,7 @@ void test_last_tuesday_in_a_month_with_four_tuesdays(void) {
 }
 
 void test_last_tuesday_in_another_month_with_four_tuesdays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 6, LAST, TUESDAY);
@@ -677,7 +677,7 @@ void test_last_tuesday_in_another_month_with_four_tuesdays(void) {
 }
 
 void test_last_wednesday_in_a_month_with_five_wednesdays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 7, LAST, WEDNESDAY);
@@ -685,7 +685,7 @@ void test_last_wednesday_in_a_month_with_five_wednesdays(void) {
 }
 
 void test_last_wednesday_in_a_month_with_four_wednesdays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 8, LAST, WEDNESDAY);
@@ -693,7 +693,7 @@ void test_last_wednesday_in_a_month_with_four_wednesdays(void) {
 }
 
 void test_last_thursday_in_a_month_with_four_thursdays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 9, LAST, THURSDAY);
@@ -701,7 +701,7 @@ void test_last_thursday_in_a_month_with_four_thursdays(void) {
 }
 
 void test_last_thursday_in_a_month_with_five_thursdays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 10, LAST, THURSDAY);
@@ -709,7 +709,7 @@ void test_last_thursday_in_a_month_with_five_thursdays(void) {
 }
 
 void test_last_friday_in_a_month_with_five_fridays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 11, LAST, FRIDAY);
@@ -717,7 +717,7 @@ void test_last_friday_in_a_month_with_five_fridays(void) {
 }
 
 void test_last_friday_in_a_month_with_four_fridays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 12, LAST, FRIDAY);
@@ -725,7 +725,7 @@ void test_last_friday_in_a_month_with_four_fridays(void) {
 }
 
 void test_last_saturday_in_a_month_with_four_saturdays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 1, LAST, SATURDAY);
@@ -733,7 +733,7 @@ void test_last_saturday_in_a_month_with_four_saturdays(void) {
 }
 
 void test_last_saturday_in_another_month_with_four_saturdays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 2, LAST, SATURDAY);
@@ -741,7 +741,7 @@ void test_last_saturday_in_another_month_with_four_saturdays(void) {
 }
 
 void test_last_sunday_in_a_month_with_five_sundays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 3, LAST, SUNDAY);
@@ -749,7 +749,7 @@ void test_last_sunday_in_a_month_with_five_sundays(void) {
 }
 
 void test_last_sunday_in_a_month_with_four_sundays(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2013, 4, LAST, SUNDAY);
@@ -757,7 +757,7 @@ void test_last_sunday_in_a_month_with_four_sundays(void) {
 }
 
 void test_when_last_wednesday_in_february_in_a_leap_year_is_the_29th(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2012, 2, LAST, WEDNESDAY);
@@ -765,7 +765,7 @@ void test_when_last_wednesday_in_february_in_a_leap_year_is_the_29th(void) {
 }
 
 void test_last_wednesday_in_december_that_is_also_the_last_day_of_the_year(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2014, 12, LAST, WEDNESDAY);
@@ -773,7 +773,7 @@ void test_last_wednesday_in_december_that_is_also_the_last_day_of_the_year(void)
 }
 
 void test_when_last_sunday_in_february_in_a_nonleap_year_is_not_the_29th(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2015, 2, LAST, SUNDAY);
@@ -781,7 +781,7 @@ void test_when_last_sunday_in_february_in_a_nonleap_year_is_not_the_29th(void) {
 }
 
 void test_when_first_friday_is_the_7th_the_last_day_of_the_first_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2012, 12, FIRST, FRIDAY);
@@ -789,7 +789,7 @@ void test_when_first_friday_is_the_7th_the_last_day_of_the_first_week(void) {
 }
 
 void test_when_last_saturday_in_february_in_a_nonleap_year_is_the_29th(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2020, 2, LAST, SATURDAY);
@@ -797,7 +797,7 @@ void test_when_last_saturday_in_february_in_a_nonleap_year_is_the_29th(void) {
 }
 
 void test_when_last_thursday_in_february_in_a_nonleap_year_is_not_the_29th(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2300, 2, LAST, THURSDAY);
@@ -805,7 +805,7 @@ void test_when_last_thursday_in_february_in_a_nonleap_year_is_not_the_29th(void)
 }
 
 void test_when_fourth_monday_is_the_23nd_the_second_day_of_the_fourth_week(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     meetup(buffer, 2468, 1, FOURTH, MONDAY);

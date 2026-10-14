@@ -19,7 +19,7 @@ void test_zero_pieces(void) {
 }
 
 void test_one_piece(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char *strings = "nail\n";
     const char *expected = "And all for the want of a nail.\n";
@@ -28,7 +28,7 @@ void test_one_piece(void) {
 }
 
 void test_two_pieces(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char *strings = "nail\nshoe\n";
     const char *expected = "For want of a nail the shoe was lost.\nAnd all for the want of a nail.\n";
@@ -37,7 +37,7 @@ void test_two_pieces(void) {
 }
 
 void test_three_pieces(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char *strings = "nail\nshoe\nhorse\n";
     const char *expected =
@@ -47,7 +47,7 @@ void test_three_pieces(void) {
 }
 
 void test_full_proverb(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char *strings = "nail\nshoe\nhorse\nrider\nmessage\nbattle\nkingdom\n";
     const char *expected =
@@ -59,7 +59,7 @@ void test_full_proverb(void) {
 }
 
 void test_four_pieces_modernized(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char *strings = "pin\ngun\nsoldier\nbattle\n";
     const char *expected =

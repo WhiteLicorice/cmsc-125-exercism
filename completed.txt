@@ -1,0 +1,11 @@
+# completed.txt
+#
+# List the exercises that you claim. Put one slug on each line.
+# A blank line and a line that starts with # are ignored.
+# Spaces at the start and the end of a line are removed.
+#
+# The complete list of slugs is in CATALOG.md.
+#
+# Example:
+# hello-world
+# leap

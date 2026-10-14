@@ -18,7 +18,7 @@ void test_empty_plaintext_results_in_an_empty_ciphertext(void) {
 }
 
 void test_normalization_results_in_empty_plaintext(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     ciphertext(buffer, "... --- ...");
@@ -26,7 +26,7 @@ void test_normalization_results_in_empty_plaintext(void) {
 }
 
 void test_lowercase(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     ciphertext(buffer, "A");
@@ -34,7 +34,7 @@ void test_lowercase(void) {
 }
 
 void test_remove_spaces(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     ciphertext(buffer, "  b ");
@@ -42,7 +42,7 @@ void test_remove_spaces(void) {
 }
 
 void test_remove_punctuation(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     ciphertext(buffer, "@1,%!");
@@ -50,7 +50,7 @@ void test_remove_punctuation(void) {
 }
 
 void test_9_character_plaintext_results_in_3_chunks_of_3_characters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     ciphertext(buffer, "This is fun!");
@@ -58,7 +58,7 @@ void test_9_character_plaintext_results_in_3_chunks_of_3_characters(void) {
 }
 
 void test_8_character_plaintext_results_in_3_chunks_the_last_one_with_a_trailing_space(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     ciphertext(buffer, "Chill out.");
@@ -66,7 +66,7 @@ void test_8_character_plaintext_results_in_3_chunks_the_last_one_with_a_trailing
 }
 
 void test_54_character_plaintext_results_in_8_chunks_the_last_two_with_trailing_spaces(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     ciphertext(buffer, "If man was meant to stay on the ground, god would have given us roots.");

@@ -23,7 +23,7 @@ void test_1(void) {
 }
 
 void test_2(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b10};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 2, 1, 0b0);
@@ -32,7 +32,7 @@ void test_2(void) {
 }
 
 void test_3(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b100};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 3, 1, 0b0);
@@ -41,7 +41,7 @@ void test_3(void) {
 }
 
 void test_4(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b1000};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 4, 1, 0b0);
@@ -50,7 +50,7 @@ void test_4(void) {
 }
 
 void test_5(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b10000};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 5, 1, 0b0);
@@ -59,7 +59,7 @@ void test_5(void) {
 }
 
 void test_6(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b100000};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 6, 1, 0b0);
@@ -68,7 +68,7 @@ void test_6(void) {
 }
 
 void test_7(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b1000000};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 7, 1, 0b0);
@@ -77,7 +77,7 @@ void test_7(void) {
 }
 
 void test_8(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b10000000};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 8, 1, 0b0);
@@ -86,7 +86,7 @@ void test_8(void) {
 }
 
 void test_9(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b100000000};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 9, 1, 0b0);
@@ -95,7 +95,7 @@ void test_9(void) {
 }
 
 void test_cage_with_sum_45_contains_all_digits_19(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b111111111};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 45, 9, 0b0);
@@ -104,7 +104,7 @@ void test_cage_with_sum_45_contains_all_digits_19(void) {
 }
 
 void test_cage_with_only_1_possible_combination(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b1011};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 7, 3, 0b0);
@@ -113,7 +113,7 @@ void test_cage_with_only_1_possible_combination(void) {
 }
 
 void test_cage_with_several_combinations(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b101000, 0b1000100, 0b10000010, 0b100000001};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 10, 2, 0b0);
@@ -122,7 +122,7 @@ void test_cage_with_several_combinations(void) {
 }
 
 void test_cage_with_several_combinations_that_is_restricted(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {0b1000100, 0b10000010};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = combinations(actual, 10, 2, 0b1001);

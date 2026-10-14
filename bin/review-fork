@@ -1,0 +1,216 @@
+#!/usr/bin/env bash
+# Review a student fork for the instructor.
+#
+# Usage: bin/review-fork <fork-url> <commit>
+#
+# Clone the fork. Fetch the course tag. Check out the submitted commit. List
+# every changed path outside the permitted student files. Build each submitted
+# solution and read its object for a system call, a library call, or forgery
+# text. Run make test-lab0 at that commit. Remove the temporary folder.
+#
+# The environment variable LAB0_COURSE_URL sets the course repository.
+# The environment variable LAB0_COURSE_TAG sets the baseline tag.
+# The defaults are the course repository and v1.0.
+#
+# Exit 0 when no protected path changed. Exit 1 when a protected path changed.
+# Exit 2 on a setup error.
+#
+# Requires: git, make, qemu-riscv32, zig, llvm, python3.
+
+set -uo pipefail
+
+COURSE_URL="${LAB0_COURSE_URL:-https://github.com/WhiteLicorice/cmsc-125-exercism.git}"
+COURSE_TAG="${LAB0_COURSE_TAG:-v1.0}"
+
+if [ $# -ne 2 ]; then
+  echo "usage: bin/review-fork <fork-url> <commit>" >&2
+  exit 2
+fi
+fork_url="$1"
+commit="$2"
+
+# The object scan needs llvm-nm, llvm-strings, and Python 3. Stop before the
+# clone when one is missing, so the instructor sees the setup error, not a
+# partial review.
+for tool in llvm-nm llvm-strings python3; do
+  if ! command -v "${tool}" >/dev/null 2>&1; then
+    echo "error: ${tool} is required" >&2
+    exit 2
+  fi
+done
+
+tmp="$(mktemp -d -t lab0-review-XXXXXX)"
+trap 'rm -rf "${tmp}"' EXIT
+
+echo "-> clone ${fork_url}"
+if ! git clone --quiet "${fork_url}" "${tmp}/fork"; then
+  echo "error: cannot clone ${fork_url}" >&2
+  exit 2
+fi
+
+# The clone holds every branch. Try the commit again in case it is not reachable.
+git -C "${tmp}/fork" fetch --quiet origin "${commit}" 2>/dev/null || true
+if ! git -C "${tmp}/fork" cat-file -e "${commit}^{commit}" 2>/dev/null; then
+  echo "error: commit ${commit} is not in the fork" >&2
+  exit 2
+fi
+
+echo "-> fetch ${COURSE_TAG} from ${COURSE_URL}"
+if ! git -C "${tmp}/fork" fetch --quiet "${COURSE_URL}" \
+    "refs/tags/${COURSE_TAG}:refs/tags/${COURSE_TAG}"; then
+  echo "error: cannot fetch tag ${COURSE_TAG}" >&2
+  exit 2
+fi
+
+# Check out the submitted commit before any scan. Every check below reads this
+# worktree, not the default branch of the fork.
+echo "-> check out ${commit}"
+if ! git -C "${tmp}/fork" checkout --quiet --detach "${commit}"; then
+  echo "error: cannot check out ${commit}" >&2
+  exit 2
+fi
+
+# The student may change README.md, completed.txt, EXPLANATIONS.md, and the
+# solution file of a course exercise. The allowlist holds the solution paths
+# of the course tag. Every other path is protected.
+declare -A allowed=()
+while IFS= read -r path; do
+  [ -z "${path}" ] && continue
+  allowed["${path}"]=1
+done < <(git -C "${tmp}/fork" ls-tree -r --name-only "${COURSE_TAG}" \
+           -- exercises/practice | awk -F/ '
+             NF==4 && $4 ~ /\.S$/ {
+               dir=$3; file=$4; sub(/\.S$/, "", file); gsub(/-/, "_", dir)
+               if (dir == file) print
+             }')
+
+is_permitted() {
+  case "$1" in
+    README.md|completed.txt|EXPLANATIONS.md) return 0 ;;
+  esac
+  [ -n "${allowed["$1"]:-}" ]
+}
+
+declare -a protected_paths=()
+declare -a permitted_paths=()
+while IFS= read -r path; do
+  [ -z "${path}" ] && continue
+  if is_permitted "${path}"; then
+    permitted_paths+=("${path}")
+  else
+    protected_paths+=("${path}")
+  fi
+done < <(git -C "${tmp}/fork" diff --name-only "${COURSE_TAG}" "${commit}")
+
+echo "-> changed paths outside the permitted student files: ${#protected_paths[@]}"
+for path in "${protected_paths[@]-}"; do
+  echo "    ${path}"
+done
+echo "-> permitted student file changes: ${#permitted_paths[@]}"
+for path in "${permitted_paths[@]-}"; do
+  echo "    ${path}"
+done
+
+# A solution runs in the same process as the test runner. It can print a test
+# result, and it can make a system call. Build every submitted solution with
+# its exercise Makefile and read the assembled object. Warn about a system
+# call, an unexpected library call, and forgery text. No exercise needs a
+# system call or a library call.
+assemble=0
+inspect=0
+syscall=0
+symbol=0
+forge=0
+self_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+for rel in "${permitted_paths[@]-}"; do
+  case "${rel}" in
+    exercises/practice/*/*.S) ;;
+    *) continue ;;
+  esac
+  src="${tmp}/fork/${rel}"
+  [ -f "${src}" ] || continue
+  slug="${rel#exercises/practice/}"
+  slug="${slug%%/*}"
+  dir="${tmp}/fork/exercises/practice/${slug}"
+  base="$(basename "${rel}" .S)"
+
+  # Build the object with the exercise Makefile rule, not a copied command.
+  rm -f "${dir}/${base}.o"
+  if ! make -C "${dir}" -s --no-print-directory "${base}.o" >/dev/null 2>&1; then
+    echo "    [WARNING] ${rel} does not assemble"
+    assemble=$((assemble + 1))
+    continue
+  fi
+  obj="${dir}/${base}.o"
+
+  # A system call or a breakpoint is a byte pattern in an executable section.
+  # scan-object reads the section bytes from the object itself and exits
+  # non-zero on a file it cannot parse. A failure is a warning, never a clean
+  # scan. The scan reads every 2-byte offset, so an overlapping instruction
+  # cannot hide a call.
+  if ! hits="$("${self_dir}/scan-object" "${obj}" 2>/dev/null)"; then
+    echo "    [WARNING] ${rel} could not inspect the object"
+    inspect=$((inspect + 1))
+  elif [ -n "${hits}" ]; then
+    echo "    [WARNING] ${rel} holds a system call or a breakpoint"
+    syscall=$((syscall + 1))
+  fi
+
+  # A library call is an undefined symbol. The example object gives the
+  # allowed set for that exercise.
+  if ! undefined_raw="$(llvm-nm -u "${obj}" 2>/dev/null)"; then
+    echo "    [WARNING] ${rel} could not inspect the object"
+    inspect=$((inspect + 1))
+  else
+    undefined="$(printf '%s\n' "${undefined_raw}" | awk '{print $NF}' | sort -u)"
+    if [ -n "${undefined}" ]; then
+      cp -f "${dir}/.meta/example.S" "${dir}/__review_example__.S"
+      rm -f "${dir}/__review_example__.o"
+      make -C "${dir}" -s --no-print-directory __review_example__.o \
+        >/dev/null 2>&1 || true
+      if ! allowed_raw="$(llvm-nm -u "${dir}/__review_example__.o" 2>/dev/null)"; then
+        echo "    [WARNING] ${rel} could not inspect the object"
+        inspect=$((inspect + 1))
+      else
+        allowed="$(printf '%s\n' "${allowed_raw}" | awk '{print $NF}' | sort -u)"
+        while IFS= read -r name; do
+          [ -z "${name}" ] && continue
+          case $'\n'"${allowed}"$'\n' in
+            *$'\n'"${name}"$'\n'*) ;;
+            *)
+              echo "    [WARNING] ${rel} calls an unexpected symbol: ${name}"
+              symbol=$((symbol + 1))
+              ;;
+          esac
+        done <<< "${undefined}"
+      fi
+      rm -f "${dir}/__review_example__.S" "${dir}/__review_example__.o"
+    fi
+  fi
+
+  # Forgery text is a string in the object, whatever built it.
+  if ! strings_out="$(llvm-strings "${obj}" 2>/dev/null)"; then
+    echo "    [WARNING] ${rel} could not inspect the object"
+    inspect=$((inspect + 1))
+  elif grep -Eq '[0-9]+ Tests [0-9]+ Failures [0-9]+ Ignored|:PASS' <<< "${strings_out}"; then
+    echo "    [WARNING] ${rel} holds text that can forge a test result"
+    forge=$((forge + 1))
+  fi
+done
+echo "-> solution files that do not assemble: ${assemble}"
+echo "-> solution files that could not be inspected: ${inspect}"
+echo "-> solution files that hold a system call or a breakpoint: ${syscall}"
+echo "-> solution files that call an unexpected symbol: ${symbol}"
+echo "-> solution files that can forge a test result: ${forge}"
+
+echo "-> make test-lab0 at ${commit}"
+(cd "${tmp}/fork" && make test-lab0)
+score_rc=$?
+echo "-> make test-lab0 exit code: ${score_rc}"
+
+if [ "${#protected_paths[@]}" -gt 0 ]; then
+  echo "-> ${#protected_paths[@]} protected path(s) changed"
+  exit 1
+fi
+echo "-> no protected path changed"
+exit 0

@@ -15,17 +15,17 @@ void test_0_eggs(void) {
 }
 
 void test_1_egg(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(1, egg_count(16));
 }
 
 void test_4_eggs(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(4, egg_count(89));
 }
 
 void test_13_eggs(void) {
-    TEST_IGNORE();
+
     TEST_ASSERT_EQUAL_INT(13, egg_count(2000000000));
 }
 

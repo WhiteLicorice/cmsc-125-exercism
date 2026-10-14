@@ -28,7 +28,7 @@ void test_recognizes_0(void) {
 }
 
 void test_recognizes_1(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         "   \n"
@@ -40,7 +40,7 @@ void test_recognizes_1(void) {
 }
 
 void test_unreadable_but_correctly_sized_inputs_return_(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         "   \n"
@@ -52,7 +52,7 @@ void test_unreadable_but_correctly_sized_inputs_return_(void) {
 }
 
 void test_input_with_a_number_of_lines_that_is_not_a_multiple_of_four_raises_an_error(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         " _ \n"
@@ -62,7 +62,7 @@ void test_input_with_a_number_of_lines_that_is_not_a_multiple_of_four_raises_an_
 }
 
 void test_input_with_a_number_of_columns_that_is_not_a_multiple_of_three_raises_an_error(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         "    \n"
@@ -73,7 +73,7 @@ void test_input_with_a_number_of_columns_that_is_not_a_multiple_of_three_raises_
 }
 
 void test_recognizes_110101100(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         "       _     _        _  _ \n"
@@ -85,7 +85,7 @@ void test_recognizes_110101100(void) {
 }
 
 void test_garbled_numbers_in_a_string_are_replaced_with_(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         "       _     _           _ \n"
@@ -97,7 +97,7 @@ void test_garbled_numbers_in_a_string_are_replaced_with_(void) {
 }
 
 void test_recognizes_2(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         " _ \n"
@@ -109,7 +109,7 @@ void test_recognizes_2(void) {
 }
 
 void test_recognizes_3(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         " _ \n"
@@ -121,7 +121,7 @@ void test_recognizes_3(void) {
 }
 
 void test_recognizes_4(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         "   \n"
@@ -133,7 +133,7 @@ void test_recognizes_4(void) {
 }
 
 void test_recognizes_5(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         " _ \n"
@@ -145,7 +145,7 @@ void test_recognizes_5(void) {
 }
 
 void test_recognizes_6(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         " _ \n"
@@ -157,7 +157,7 @@ void test_recognizes_6(void) {
 }
 
 void test_recognizes_7(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         " _ \n"
@@ -169,7 +169,7 @@ void test_recognizes_7(void) {
 }
 
 void test_recognizes_8(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         " _ \n"
@@ -181,7 +181,7 @@ void test_recognizes_8(void) {
 }
 
 void test_recognizes_9(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         " _ \n"
@@ -193,7 +193,7 @@ void test_recognizes_9(void) {
 }
 
 void test_recognizes_string_of_decimal_numbers(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         "    _  _     _  _  _  _  _  _ \n"
@@ -205,7 +205,7 @@ void test_recognizes_string_of_decimal_numbers(void) {
 }
 
 void test_numbers_separated_by_empty_lines_are_recognized_lines_are_joined_by_commas(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
     const char grid[] =
         "    _  _ \n"

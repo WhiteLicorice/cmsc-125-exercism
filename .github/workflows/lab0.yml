@@ -1,0 +1,54 @@
+# Score Lab 0 for this fork.
+#
+# This is the only workflow. It replaces the upstream maintenance workflows
+# so that a student fork never runs them.
+
+name: Lab 0
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  score:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Install make, jq, and qemu-riscv32
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes make jq qemu-user
+
+      # The same zig version as the track's test runner image.
+      - name: Install zig
+        uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2.2.1
+        with:
+          version: 0.16.0
+
+      - name: Print the commit under test
+        run: git rev-parse HEAD
+
+      - name: Score Lab 0
+        run: |
+          set +e
+          make test-lab0 > score.txt 2>&1
+          rc=$?
+          cat score.txt
+          exit $rc
+
+      - name: Write the score to the job summary
+        if: always()
+        run: |
+          commit="$(git rev-parse HEAD)"
+          points="$(grep -E '^TOTAL POINTS: ' score.txt 2>/dev/null | tail -n 1 || true)"
+          marks="$(grep -E '^TOTAL MARKS: ' score.txt 2>/dev/null | tail -n 1 || true)"
+          {
+            echo "## Lab 0 score"
+            echo ""
+            echo "- Commit: \`${commit}\`"
+            echo "- ${points:-TOTAL POINTS: unknown}"
+            echo "- ${marks:-TOTAL MARKS: unknown}"
+          } >> "$GITHUB_STEP_SUMMARY"

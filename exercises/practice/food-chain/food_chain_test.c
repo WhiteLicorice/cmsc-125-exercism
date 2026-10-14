@@ -21,7 +21,7 @@ void test_fly(void) {
 }
 
 void test_spider(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 2, 2);
@@ -34,7 +34,7 @@ void test_spider(void) {
 }
 
 void test_bird(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 3, 3);
@@ -48,7 +48,7 @@ void test_bird(void) {
 }
 
 void test_cat(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 4, 4);
@@ -63,7 +63,7 @@ void test_cat(void) {
 }
 
 void test_dog(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 5, 5);
@@ -79,7 +79,7 @@ void test_dog(void) {
 }
 
 void test_goat(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 6, 6);
@@ -96,7 +96,7 @@ void test_goat(void) {
 }
 
 void test_cow(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 7, 7);
@@ -114,7 +114,7 @@ void test_cow(void) {
 }
 
 void test_horse(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 8, 8);
@@ -125,7 +125,7 @@ void test_horse(void) {
 }
 
 void test_multiple_verses(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 1, 3);
@@ -147,7 +147,7 @@ void test_multiple_verses(void) {
 }
 
 void test_full_song(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     recite(buffer, 1, 8);

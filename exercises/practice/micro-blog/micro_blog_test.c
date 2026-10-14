@@ -18,7 +18,7 @@ void test_english_language_short(void) {
 }
 
 void test_english_language_long(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "Hello there");
@@ -26,7 +26,7 @@ void test_english_language_long(void) {
 }
 
 void test_german_language_short_broth(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "brühe");
@@ -34,7 +34,7 @@ void test_german_language_short_broth(void) {
 }
 
 void test_german_language_long_bear_carpet__beards(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "Bärteppich");
@@ -42,7 +42,7 @@ void test_german_language_long_bear_carpet__beards(void) {
 }
 
 void test_bulgarian_language_short_good(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "Добър");
@@ -50,7 +50,7 @@ void test_bulgarian_language_short_good(void) {
 }
 
 void test_greek_language_short_health(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "υγειά");
@@ -58,7 +58,7 @@ void test_greek_language_short_health(void) {
 }
 
 void test_maths_short(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "a=πr²");
@@ -66,7 +66,7 @@ void test_maths_short(void) {
 }
 
 void test_maths_long(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "∅⊊ℕ⊊ℤ⊊ℚ⊊ℝ⊊ℂ");
@@ -74,7 +74,7 @@ void test_maths_long(void) {
 }
 
 void test_english_and_emoji_short(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "Fly 🛫");
@@ -82,7 +82,7 @@ void test_english_and_emoji_short(void) {
 }
 
 void test_emoji_short(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "💇");
@@ -90,7 +90,7 @@ void test_emoji_short(void) {
 }
 
 void test_emoji_long(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "❄🌡🤧🤒🏥🕰😀");
@@ -98,7 +98,7 @@ void test_emoji_long(void) {
 }
 
 void test_royal_flush(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     truncate(buffer, "🃎🂸🃅🃋🃍🃁🃊");

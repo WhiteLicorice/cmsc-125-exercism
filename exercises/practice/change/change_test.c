@@ -27,7 +27,7 @@ void test_change_for_1_cent(void) {
 }
 
 void test_single_coin_change(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {1, 5, 10, 25, 100};
     const uint32_t expected[] = {25};
@@ -36,7 +36,7 @@ void test_single_coin_change(void) {
 }
 
 void test_multiple_coin_change(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {1, 5, 10, 25, 100};
     const uint32_t expected[] = {5, 10};
@@ -45,7 +45,7 @@ void test_multiple_coin_change(void) {
 }
 
 void test_change_with_lilliputian_coins(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {1, 4, 15, 20, 50};
     const uint32_t expected[] = {4, 4, 15};
@@ -54,7 +54,7 @@ void test_change_with_lilliputian_coins(void) {
 }
 
 void test_change_with_lower_elbonia_coins(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {1, 5, 10, 21, 25};
     const uint32_t expected[] = {21, 21, 21};
@@ -63,7 +63,7 @@ void test_change_with_lower_elbonia_coins(void) {
 }
 
 void test_large_target_values(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {1, 2, 5, 10, 20, 50, 100};
     const uint32_t expected[] = {2, 2, 5, 20, 20, 50, 100, 100, 100, 100, 100, 100, 100, 100, 100};
@@ -72,7 +72,7 @@ void test_large_target_values(void) {
 }
 
 void test_possible_change_without_unit_coins_available(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {2, 5, 10, 20, 50};
     const uint32_t expected[] = {2, 2, 2, 5, 10};
@@ -81,7 +81,7 @@ void test_possible_change_without_unit_coins_available(void) {
 }
 
 void test_another_possible_change_without_unit_coins_available(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {4, 5};
     const uint32_t expected[] = {4, 4, 4, 5, 5, 5};
@@ -90,7 +90,7 @@ void test_another_possible_change_without_unit_coins_available(void) {
 }
 
 void test_a_greedy_approach_is_not_optimal(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {1, 10, 11};
     const uint32_t expected[] = {10, 10};
@@ -99,28 +99,28 @@ void test_a_greedy_approach_is_not_optimal(void) {
 }
 
 void test_no_coins_make_0_change(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {1, 5, 10, 21, 25};
     TEST_ASSERT_EQUAL_INT32(0, find_fewest_coins(buffer, coins, ARRAY_SIZE(coins), 0));
 }
 
 void test_error_testing_for_change_smaller_than_the_smallest_of_coins(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {5, 10};
     TEST_ASSERT_EQUAL_INT32(UNREACHABLE_TARGET, find_fewest_coins(buffer, coins, ARRAY_SIZE(coins), 3));
 }
 
 void test_error_if_no_combination_can_add_up_to_target(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {5, 10};
     TEST_ASSERT_EQUAL_INT32(UNREACHABLE_TARGET, find_fewest_coins(buffer, coins, ARRAY_SIZE(coins), 94));
 }
 
 void test_cannot_find_negative_change_values(void) {
-    TEST_IGNORE();
+
     uint32_t buffer[BUFFER_SIZE];
     const uint32_t coins[] = {1, 2, 5};
     TEST_ASSERT_EQUAL_INT32(NEGATIVE_TARGET, find_fewest_coins(buffer, coins, ARRAY_SIZE(coins), -5));

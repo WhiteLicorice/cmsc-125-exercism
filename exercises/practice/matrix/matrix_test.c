@@ -25,7 +25,7 @@ void test_extract_row_from_one_number_matrix(void) {
 }
 
 void test_can_extract_row(void) {
-    TEST_IGNORE();
+
     int32_t buffer[BUFFER_SIZE];
 
     const int32_t expected[] = {3, 4};
@@ -35,7 +35,7 @@ void test_can_extract_row(void) {
 }
 
 void test_extract_row_where_numbers_have_different_widths(void) {
-    TEST_IGNORE();
+
     int32_t buffer[BUFFER_SIZE];
 
     const int32_t expected[] = {10, 20};
@@ -45,7 +45,7 @@ void test_extract_row_where_numbers_have_different_widths(void) {
 }
 
 void test_can_extract_row_from_nonsquare_matrix_with_no_corresponding_column(void) {
-    TEST_IGNORE();
+
     int32_t buffer[BUFFER_SIZE];
 
     const int32_t expected[] = {8, 7, 6};
@@ -55,7 +55,7 @@ void test_can_extract_row_from_nonsquare_matrix_with_no_corresponding_column(voi
 }
 
 void test_extract_column_from_one_number_matrix(void) {
-    TEST_IGNORE();
+
     int32_t buffer[BUFFER_SIZE];
 
     const int32_t expected[] = {1};
@@ -65,7 +65,7 @@ void test_extract_column_from_one_number_matrix(void) {
 }
 
 void test_can_extract_column(void) {
-    TEST_IGNORE();
+
     int32_t buffer[BUFFER_SIZE];
 
     const int32_t expected[] = {3, 6, 9};
@@ -75,7 +75,7 @@ void test_can_extract_column(void) {
 }
 
 void test_can_extract_column_from_nonsquare_matrix_with_no_corresponding_row(void) {
-    TEST_IGNORE();
+
     int32_t buffer[BUFFER_SIZE];
 
     const int32_t expected[] = {4, 8, 6};
@@ -85,7 +85,7 @@ void test_can_extract_column_from_nonsquare_matrix_with_no_corresponding_row(voi
 }
 
 void test_extract_column_where_numbers_have_different_widths(void) {
-    TEST_IGNORE();
+
     int32_t buffer[BUFFER_SIZE];
 
     const int32_t expected[] = {1903, 3, 4};
@@ -95,7 +95,7 @@ void test_extract_column_where_numbers_have_different_widths(void) {
 }
 
 void test_row_with_negative_numbers(void) {
-    TEST_IGNORE();
+
     int32_t buffer[BUFFER_SIZE];
 
     const int32_t expected[] = {-57, 9, -42};
@@ -105,7 +105,7 @@ void test_row_with_negative_numbers(void) {
 }
 
 void test_column_with_negative_numbers(void) {
-    TEST_IGNORE();
+
     int32_t buffer[BUFFER_SIZE];
 
     const int32_t expected[] = {-4, -42, -465};

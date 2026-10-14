@@ -18,7 +18,7 @@ void test_basic(void) {
 }
 
 void test_lowercase_words(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     abbreviate(buffer, "Ruby on Rails");
@@ -26,7 +26,7 @@ void test_lowercase_words(void) {
 }
 
 void test_punctuation(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     abbreviate(buffer, "First In, First Out");
@@ -34,7 +34,7 @@ void test_punctuation(void) {
 }
 
 void test_all_caps_word(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     abbreviate(buffer, "GNU Image Manipulation Program");
@@ -42,7 +42,7 @@ void test_all_caps_word(void) {
 }
 
 void test_punctuation_without_whitespace(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     abbreviate(buffer, "Complementary metal-oxide semiconductor");
@@ -50,7 +50,7 @@ void test_punctuation_without_whitespace(void) {
 }
 
 void test_very_long_abbreviation(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     abbreviate(buffer, "Rolling On The Floor Laughing So Hard That My Dogs Came Over And Licked Me");
@@ -58,7 +58,7 @@ void test_very_long_abbreviation(void) {
 }
 
 void test_consecutive_delimiters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     abbreviate(buffer, "Something - I made up from thin air");
@@ -66,7 +66,7 @@ void test_consecutive_delimiters(void) {
 }
 
 void test_apostrophes(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     abbreviate(buffer, "Halley's Comet");
@@ -74,7 +74,7 @@ void test_apostrophes(void) {
 }
 
 void test_underscore_emphasis(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     abbreviate(buffer, "The Road _Not_ Taken");

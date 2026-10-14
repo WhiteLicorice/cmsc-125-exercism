@@ -18,7 +18,7 @@ void test_rotate_a_by_0_same_output_as_input(void) {
 }
 
 void test_rotate_a_by_1(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     rotate(buffer, "a", 1);
@@ -26,7 +26,7 @@ void test_rotate_a_by_1(void) {
 }
 
 void test_rotate_a_by_26_same_output_as_input(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     rotate(buffer, "a", 26);
@@ -34,7 +34,7 @@ void test_rotate_a_by_26_same_output_as_input(void) {
 }
 
 void test_rotate_m_by_13(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     rotate(buffer, "m", 13);
@@ -42,7 +42,7 @@ void test_rotate_m_by_13(void) {
 }
 
 void test_rotate_n_by_13_with_wrap_around_alphabet(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     rotate(buffer, "n", 13);
@@ -50,7 +50,7 @@ void test_rotate_n_by_13_with_wrap_around_alphabet(void) {
 }
 
 void test_rotate_capital_letters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     rotate(buffer, "OMG", 5);
@@ -58,7 +58,7 @@ void test_rotate_capital_letters(void) {
 }
 
 void test_rotate_spaces(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     rotate(buffer, "O M G", 5);
@@ -66,7 +66,7 @@ void test_rotate_spaces(void) {
 }
 
 void test_rotate_numbers(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     rotate(buffer, "Testing 1 2 3 testing", 4);
@@ -74,7 +74,7 @@ void test_rotate_numbers(void) {
 }
 
 void test_rotate_punctuation(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     rotate(buffer, "Let's eat, Grandma!", 21);
@@ -82,7 +82,7 @@ void test_rotate_punctuation(void) {
 }
 
 void test_rotate_all_letters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     rotate(buffer, "The quick brown fox jumps over the lazy dog.", 13);
@@ -90,7 +90,7 @@ void test_rotate_all_letters(void) {
 }
 
 void test_rotate_boundary_characters(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     rotate(buffer, "/09:@AMNZ[`amnz{", 13);

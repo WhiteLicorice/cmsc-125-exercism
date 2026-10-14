@@ -21,7 +21,7 @@ void test_no_primes_under_two(void) {
 }
 
 void test_find_first_prime(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {2};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = sieve(actual, 2);
@@ -30,7 +30,7 @@ void test_find_first_prime(void) {
 }
 
 void test_find_primes_up_to_10(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {2, 3, 5, 7};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = sieve(actual, 10);
@@ -39,7 +39,7 @@ void test_find_primes_up_to_10(void) {
 }
 
 void test_limit_is_prime(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {2, 3, 5, 7, 11, 13};
     uint32_t actual[MAX_ARRAY_SIZE];
     const size_t size = sieve(actual, 13);
@@ -48,7 +48,7 @@ void test_limit_is_prime(void) {
 }
 
 void test_find_primes_up_to_1000(void) {
-    TEST_IGNORE();
+
     const uint32_t expected[] = {2,   3,   5,   7,   11,  13,  17,  19,  23,  29,  31,  37,  41,  43,  47,  53,  59,  61,  67,  71,  73,
                                  79,  83,  89,  97,  101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181,
                                  191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307,

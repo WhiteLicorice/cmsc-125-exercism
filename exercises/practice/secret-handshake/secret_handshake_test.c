@@ -18,7 +18,7 @@ void test_wink_for_1(void) {
 }
 
 void test_double_blink_for_10(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     commands(buffer, 2);
@@ -26,7 +26,7 @@ void test_double_blink_for_10(void) {
 }
 
 void test_close_your_eyes_for_100(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     commands(buffer, 4);
@@ -34,7 +34,7 @@ void test_close_your_eyes_for_100(void) {
 }
 
 void test_jump_for_1000(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     commands(buffer, 8);
@@ -42,7 +42,7 @@ void test_jump_for_1000(void) {
 }
 
 void test_combine_two_actions(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     commands(buffer, 3);
@@ -50,7 +50,7 @@ void test_combine_two_actions(void) {
 }
 
 void test_reverse_two_actions(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     commands(buffer, 19);
@@ -58,7 +58,7 @@ void test_reverse_two_actions(void) {
 }
 
 void test_reversing_one_action_gives_the_same_action(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     commands(buffer, 24);
@@ -66,7 +66,7 @@ void test_reversing_one_action_gives_the_same_action(void) {
 }
 
 void test_reversing_no_actions_still_gives_no_actions(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     commands(buffer, 16);
@@ -74,7 +74,7 @@ void test_reversing_no_actions_still_gives_no_actions(void) {
 }
 
 void test_all_possible_actions(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     commands(buffer, 15);
@@ -82,7 +82,7 @@ void test_all_possible_actions(void) {
 }
 
 void test_reverse_all_possible_actions(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     commands(buffer, 31);
@@ -90,7 +90,7 @@ void test_reverse_all_possible_actions(void) {
 }
 
 void test_do_nothing_for_zero(void) {
-    TEST_IGNORE();
+
     char buffer[BUFFER_SIZE];
 
     commands(buffer, 0);
