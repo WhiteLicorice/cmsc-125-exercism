@@ -1,0 +1,104 @@
+#!/usr/bin/env python3
+# Find a system call or a breakpoint in an object.
+#
+# Usage: scan-object <object>
+#
+# Read each executable section of the object with llvm-readelf. Dump the bytes
+# of each such section with llvm-objcopy. Print one line for each system-call
+# or breakpoint encoding that starts at an even offset.
+#
+# The system-call encoding is 73 00 00 00. The breakpoint encoding is
+# 73 00 10 00. A plain ebreak assembles to the compressed form c.ebreak,
+# 02 90, so the scan covers that encoding too.
+#
+# Exit 0 when the scan completes. Exit 3 when a tool fails.
+
+import os
+import re
+import subprocess
+import sys
+import tempfile
+
+ECALL = b"\x73\x00\x00\x00"
+EBREAK = b"\x73\x00\x10\x00"
+C_EBREAK = b"\x02\x90"
+STEP = 2
+SECTION_LINE = re.compile(r"^\[\s*\d+\]\s+(.*)$")
+
+
+def executable_sections(obj):
+    # A tool failure is not a clean scan. The caller reads exit 3 as an error.
+    result = subprocess.run(
+        ["llvm-readelf", "-S", "-W", obj],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if result.returncode != 0:
+        return None
+    sections = []
+    for line in result.stdout.decode("utf-8", "replace").splitlines():
+        match = SECTION_LINE.match(line.strip())
+        if not match:
+            continue
+        fields = match.group(1).split()
+        # The last nine fields are Type, Address, Off, Size, ES, Flg, Lk,
+        # Inf, Al. The name is everything before them.
+        if len(fields) < 10:
+            continue
+        name = " ".join(fields[:-9])
+        flag = fields[-4]
+        if "X" in flag:
+            sections.append(name)
+    return sections
+
+
+def section_bytes(obj, name):
+    handle, path = tempfile.mkstemp(prefix="scan-object-", suffix=".bin")
+    os.close(handle)
+    try:
+        result = subprocess.run(
+            ["llvm-objcopy", "-O", "binary", "--only-section=" + name, obj, path],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if result.returncode != 0:
+            return None
+        with open(path, "rb") as stream:
+            return stream.read()
+    finally:
+        os.remove(path)
+
+
+def scan(data):
+    for offset in range(0, len(data) - 3, STEP):
+        word = data[offset:offset + 4]
+        if word == ECALL:
+            yield offset, "ecall"
+        elif word == EBREAK:
+            yield offset, "ebreak"
+    for offset in range(0, len(data) - 1, STEP):
+        if data[offset:offset + 2] == C_EBREAK:
+            yield offset, "ebreak"
+
+
+def main():
+    if len(sys.argv) != 2:
+        print("usage: scan-object <object>", file=sys.stderr)
+        return 2
+    obj = sys.argv[1]
+    sections = executable_sections(obj)
+    if sections is None:
+        print("scan-object: llvm-readelf failed", file=sys.stderr)
+        return 3
+    for name in sections:
+        data = section_bytes(obj, name)
+        if data is None:
+            print("scan-object: llvm-objcopy failed", file=sys.stderr)
+            return 3
+        for offset, encoding in scan(data):
+            print("{0} 0x{1:x} {2}".format(name, offset, encoding))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
