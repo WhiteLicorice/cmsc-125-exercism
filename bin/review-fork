@@ -31,7 +31,7 @@ commit="$2"
 
 # The object scan needs the LLVM tools. Stop before the clone when one is
 # missing, so the instructor sees the setup error, not a partial review.
-for tool in llvm-objdump llvm-nm llvm-strings; do
+for tool in llvm-readelf llvm-objcopy llvm-nm llvm-strings; do
   if ! command -v "${tool}" >/dev/null 2>&1; then
     echo "error: ${tool} is required" >&2
     exit 2
@@ -112,15 +112,15 @@ done
 
 # A solution runs in the same process as the test runner. It can print a test
 # result, and it can make a system call. Build every submitted solution with
-# its exercise Makefile and read the assembled object. The object holds the
-# instructions that run, so a directive, a macro, a section trick, or a
-# preprocessor trick cannot hide a system call, a library call, or forgery
-# text. Warn about each such file. No exercise needs a system call or a
-# library call.
+# its exercise Makefile and read the assembled object. Warn about a system
+# call, an unexpected library call, and forgery text. No exercise needs a
+# system call or a library call.
 assemble=0
+inspect=0
 syscall=0
 symbol=0
 forge=0
+self_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 for rel in "${permitted_paths[@]-}"; do
   case "${rel}" in
     exercises/practice/*/*.S) ;;
@@ -142,42 +142,61 @@ for rel in "${permitted_paths[@]-}"; do
   fi
   obj="${dir}/${base}.o"
 
-  # The disassembly holds the real instructions, whatever produced the bytes.
-  if llvm-objdump -d "${obj}" | sed 's/#.*//' |
-      grep -E '^[[:space:]]*[0-9a-f]+:' |
-      grep -Eq '(^|[^A-Za-z0-9_])(ecall|ebreak)([^A-Za-z0-9_]|$)'; then
+  # A system call or a breakpoint is a byte pattern in an executable section.
+  # Read the full output and the exit status of each tool. A tool failure is a
+  # warning, never a clean scan. Scan every 2-byte offset, so an overlapping
+  # instruction cannot hide a call.
+  if ! hits="$("${self_dir}/scan-object" "${obj}" 2>/dev/null)"; then
+    echo "    [WARNING] ${rel} could not inspect the object"
+    inspect=$((inspect + 1))
+  elif [ -n "${hits}" ]; then
     echo "    [WARNING] ${rel} holds a system call or a breakpoint"
     syscall=$((syscall + 1))
   fi
 
   # A library call is an undefined symbol. The example object gives the
   # allowed set for that exercise.
-  undefined="$(llvm-nm -u "${obj}" 2>/dev/null | awk '{print $NF}' | sort -u)"
-  if [ -n "${undefined}" ]; then
-    cp -f "${dir}/.meta/example.S" "${dir}/__review_example__.S"
-    rm -f "${dir}/__review_example__.o"
-    make -C "${dir}" -s --no-print-directory __review_example__.o \
-      >/dev/null 2>&1 || true
-    allowed="$(llvm-nm -u "${dir}/__review_example__.o" 2>/dev/null |
-      awk '{print $NF}' | sort -u)"
-    rm -f "${dir}/__review_example__.S" "${dir}/__review_example__.o"
-    while IFS= read -r name; do
-      [ -z "${name}" ] && continue
-      if ! printf '%s\n' "${allowed}" | grep -qxF "${name}"; then
-        echo "    [WARNING] ${rel} calls an unexpected symbol: ${name}"
-        symbol=$((symbol + 1))
+  if ! undefined_raw="$(llvm-nm -u "${obj}" 2>/dev/null)"; then
+    echo "    [WARNING] ${rel} could not inspect the object"
+    inspect=$((inspect + 1))
+  else
+    undefined="$(printf '%s\n' "${undefined_raw}" | awk '{print $NF}' | sort -u)"
+    if [ -n "${undefined}" ]; then
+      cp -f "${dir}/.meta/example.S" "${dir}/__review_example__.S"
+      rm -f "${dir}/__review_example__.o"
+      make -C "${dir}" -s --no-print-directory __review_example__.o \
+        >/dev/null 2>&1 || true
+      if ! allowed_raw="$(llvm-nm -u "${dir}/__review_example__.o" 2>/dev/null)"; then
+        echo "    [WARNING] ${rel} could not inspect the object"
+        inspect=$((inspect + 1))
+      else
+        allowed="$(printf '%s\n' "${allowed_raw}" | awk '{print $NF}' | sort -u)"
+        while IFS= read -r name; do
+          [ -z "${name}" ] && continue
+          case $'\n'"${allowed}"$'\n' in
+            *$'\n'"${name}"$'\n'*) ;;
+            *)
+              echo "    [WARNING] ${rel} calls an unexpected symbol: ${name}"
+              symbol=$((symbol + 1))
+              ;;
+          esac
+        done <<< "${undefined}"
       fi
-    done <<< "${undefined}"
+      rm -f "${dir}/__review_example__.S" "${dir}/__review_example__.o"
+    fi
   fi
 
   # Forgery text is a string in the object, whatever built it.
-  if llvm-strings "${obj}" |
-      grep -Eq '[0-9]+ Tests [0-9]+ Failures [0-9]+ Ignored|:PASS'; then
+  if ! strings_out="$(llvm-strings "${obj}" 2>/dev/null)"; then
+    echo "    [WARNING] ${rel} could not inspect the object"
+    inspect=$((inspect + 1))
+  elif grep -Eq '[0-9]+ Tests [0-9]+ Failures [0-9]+ Ignored|:PASS' <<< "${strings_out}"; then
     echo "    [WARNING] ${rel} holds text that can forge a test result"
     forge=$((forge + 1))
   fi
 done
 echo "-> solution files that do not assemble: ${assemble}"
+echo "-> solution files that could not be inspected: ${inspect}"
 echo "-> solution files that hold a system call or a breakpoint: ${syscall}"
 echo "-> solution files that call an unexpected symbol: ${symbol}"
 echo "-> solution files that can forge a test result: ${forge}"
