@@ -103,7 +103,7 @@ Change only these files:
 Every other file is protected.
 The tests, `vendor/`, every `Makefile`, `.meta/`, `config.json`, the catalog,
 `bin/`, and `.github/` are protected.
-The instructor compares your fork with the course tag `v1.0`.
+The instructor compares your fork with the course tag `v1.1`.
 
 Each exercise has an example solution in `.meta/example.S`.
 The exercise `Makefile` does not compile this file.
@@ -116,7 +116,10 @@ The test program runs with `qemu-riscv32`.
 `qemu-riscv32` is QEMU user mode. It runs Linux binaries.
 It exists only on a Linux host.
 A Windows student uses WSL. Install `make`, `qemu-user`, and Zig 0.16.0 in WSL.
-No supported macOS path for QEMU user mode is known. Treat this as an open limitation.
+A macOS student runs Ubuntu 24.04 Server in a UTM virtual machine.
+Install the same tools inside that virtual machine.
+The CMSC 125 `b1` manual, Part 4, gives the steps.
+A Linux student installs the same tools on the Linux host.
 
 The course operating system later uses Clang and QEMU system mode, `qemu-system-riscv32`.
 That is a different runtime.
