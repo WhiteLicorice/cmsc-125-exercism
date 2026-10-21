@@ -75,7 +75,7 @@ The scorer prints `reason=tamper` with the changed path.
 It then prints 0 points and 0 marks, and exits non-zero.
 The instructor review compares the other protected files with the course tag.
 Those files include `config.json` and `.github/`.
-The instructor review aid flags a system call for that reason.
+The instructor review also flags a system call in a solution.
 
 ## Claim an exercise
 
@@ -103,7 +103,7 @@ Change only these files:
 Every other file is protected.
 The tests, `vendor/`, every `Makefile`, `.meta/`, `config.json`, the catalog,
 `bin/`, and `.github/` are protected.
-The instructor compares your fork with the course tag `v1.1`.
+The instructor compares your fork with the course tag `v1.2`.
 
 Each exercise has an example solution in `.meta/example.S`.
 The exercise `Makefile` does not compile this file.
