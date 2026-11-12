@@ -103,7 +103,7 @@ Change only these files:
 Every other file is protected.
 The tests, `vendor/`, every `Makefile`, `.meta/`, `config.json`, the catalog,
 `bin/`, and `.github/` are protected.
-The instructor compares your fork with the course tag `v1.2`.
+The instructor compares your fork with the course tag `v1.4`.
 
 Each exercise has an example solution in `.meta/example.S`.
 The exercise `Makefile` does not compile this file.

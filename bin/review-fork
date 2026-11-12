@@ -10,7 +10,7 @@
 #
 # The environment variable LAB0_COURSE_URL sets the course repository.
 # The environment variable LAB0_COURSE_TAG sets the baseline tag.
-# The defaults are the course repository and v1.0.
+# The defaults are the course repository and v1.4.
 #
 # Exit 0 when no protected path changed. Exit 1 when a protected path changed.
 # Exit 2 on a setup error.
@@ -20,7 +20,7 @@
 set -uo pipefail
 
 COURSE_URL="${LAB0_COURSE_URL:-https://github.com/WhiteLicorice/cmsc-125-exercism.git}"
-COURSE_TAG="${LAB0_COURSE_TAG:-v1.0}"
+COURSE_TAG="${LAB0_COURSE_TAG:-v1.4}"
 
 if [ $# -ne 2 ]; then
   echo "usage: bin/review-fork <fork-url> <commit>" >&2
